@@ -19,6 +19,12 @@ Route::get('/cetak-lplpo', [DashboardController::class, 'printLplpo'])->name('lp
 Route::get('/input-lplpo', [DashboardController::class, 'dataEntry'])->name('lplpo.input');
 Route::post('/input-lplpo', [DashboardController::class, 'storeLplpo'])->name('lplpo.store');
 
+// Beralih Akun Pengguna (Apt. Siti Rahmawati vs dr. Bambang Utoyo)
+Route::get('/ganti-akun/{role}', [DashboardController::class, 'switchUser'])->name('user.switch');
+
+// Otorisasi & Disposisi Pengesahan Pengadaan oleh Kepala Puskesmas
+Route::post('/setujui-pengadaan', [DashboardController::class, 'approveProcurement'])->name('procurement.approve');
+
 // Pusat Entri Data Faskes Terpadu (4 Modul: LPLPO, Morbiditas SIMPUS, Berita Acara ED, Registrasi Obat)
 Route::get('/entri-data', [DashboardController::class, 'dataEntry'])->name('data.entry');
 Route::post('/entri-data/lplpo', [DashboardController::class, 'storeLplpo'])->name('data.entry.lplpo');

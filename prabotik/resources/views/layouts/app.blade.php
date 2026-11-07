@@ -187,21 +187,40 @@
 
         </nav>
 
-        <!-- Sidebar Bottom Footer -->
-        <div class="p-4 border-t border-slate-800/80 bg-slate-950/40">
+        <!-- Active User Account Profile Box in Sidebar -->
+        <div class="px-4 py-3 bg-slate-900/90 border-t border-slate-800">
             <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-medical-400 text-xs">
-                    <i class="fa-solid fa-shield-halved"></i>
+                <div class="w-10 h-10 rounded-xl {{ ($currentUser->role ?? 'farmasi') == 'kepala' ? 'bg-amber-600 text-amber-100' : 'bg-emerald-600 text-emerald-100' }} flex items-center justify-center text-base font-bold shadow-md shrink-0">
+                    <i class="fa-solid {{ ($currentUser->role ?? 'farmasi') == 'kepala' ? 'fa-user-doctor' : 'fa-pills' }}"></i>
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center space-x-1.5">
-                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <p class="text-xs font-bold text-white truncate">Sistem Logistik Online</p>
+                        <span class="w-2 h-2 rounded-full {{ ($currentUser->role ?? 'farmasi') == 'kepala' ? 'bg-amber-400' : 'bg-emerald-400' }} animate-pulse"></span>
+                        <p class="text-xs font-bold text-white truncate">{{ $currentUser->name ?? 'Apt. Siti Rahmawati, S.Farm' }}</p>
                     </div>
-                    <p class="text-[10px] text-slate-400 truncate">Database Terhubung & Sinkron</p>
+                    <p class="text-[10px] text-slate-400 truncate">{{ $currentUser->jabatan ?? 'Penanggung Jawab Farmasi' }}</p>
                 </div>
             </div>
-            <div class="mt-3 text-[10px] text-slate-500 text-center">
+            
+            <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px]">
+                <span class="text-slate-400 font-mono text-[9px]">{{ $currentUser->nip ?? '' }}</span>
+                @if(($currentUser->role ?? 'farmasi') == 'farmasi')
+                <a href="{{ route('user.switch', 'kepala') }}" class="font-bold text-amber-400 hover:text-amber-300 flex items-center space-x-1">
+                    <span>Ganti ke Kapus</span>
+                    <i class="fa-solid fa-arrow-right-arrow-left text-[9px]"></i>
+                </a>
+                @else
+                <a href="{{ route('user.switch', 'farmasi') }}" class="font-bold text-emerald-400 hover:text-emerald-300 flex items-center space-x-1">
+                    <span>Ganti ke Farmasi</span>
+                    <i class="fa-solid fa-arrow-right-arrow-left text-[9px]"></i>
+                </a>
+                @endif
+            </div>
+        </div>
+
+        <!-- Sidebar Bottom Footer -->
+        <div class="p-3 border-t border-slate-800/80 bg-slate-950/40">
+            <div class="text-[10px] text-slate-500 text-center">
                 UPTD Puskesmas Teluk Sasah &bull; Kab. Bintan
             </div>
         </div>
@@ -248,6 +267,28 @@
                             <i class="fa-solid fa-print mr-1.5"></i>
                             <span>Cetak LPLPO P5</span>
                         </a>
+
+                        <!-- Active User Account Dropdown/Badge -->
+                        <div class="flex items-center space-x-2 pl-2 border-l border-slate-200">
+                            <div class="w-8 h-8 rounded-xl {{ ($currentUser->role ?? 'farmasi') == 'kepala' ? 'bg-amber-600 text-white' : 'bg-emerald-600 text-white' }} flex items-center justify-center text-xs font-bold shadow-xs">
+                                <i class="fa-solid {{ ($currentUser->role ?? 'farmasi') == 'kepala' ? 'fa-user-doctor' : 'fa-pills' }}"></i>
+                            </div>
+                            <div class="hidden xl:block text-left text-xs leading-tight">
+                                <span class="font-extrabold text-slate-800 block truncate max-w-[140px]">{{ $currentUser->name ?? 'Apt. Siti Rahmawati' }}</span>
+                                <span class="text-[10px] text-slate-400 block">{{ ($currentUser->role ?? 'farmasi') == 'kepala' ? 'Kepala Puskesmas' : 'Bagian Farmasi' }}</span>
+                            </div>
+                            @if(($currentUser->role ?? 'farmasi') == 'farmasi')
+                            <a href="{{ route('user.switch', 'kepala') }}" title="Ganti ke Akun dr. Bambang Utoyo (Kepala Puskesmas)" class="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-[11px] font-bold transition flex items-center space-x-1">
+                                <i class="fa-solid fa-arrow-right-arrow-left text-[9px]"></i>
+                                <span class="hidden sm:inline">Ganti ke Kapus</span>
+                            </a>
+                            @else
+                            <a href="{{ route('user.switch', 'farmasi') }}" title="Ganti ke Akun Apt. Siti Rahmawati (Farmasi)" class="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[11px] font-bold transition flex items-center space-x-1">
+                                <i class="fa-solid fa-arrow-right-arrow-left text-[9px]"></i>
+                                <span class="hidden sm:inline">Ganti ke Farmasi</span>
+                            </a>
+                            @endif
+                        </div>
 
                     </div>
                 </div>

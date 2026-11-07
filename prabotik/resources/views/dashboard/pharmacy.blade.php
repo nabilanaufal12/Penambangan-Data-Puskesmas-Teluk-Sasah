@@ -6,24 +6,80 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-    <!-- ROLE SWITCHER BAR (Peralihan Peran Fleksibel) -->
-    <div class="bg-white rounded-2xl p-2.5 border border-slate-200/80 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div class="flex items-center space-x-3 px-2">
-            <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
-            <div class="text-xs">
-                <span class="text-slate-500 font-medium">Mode Tampilan:</span>
-                <span class="font-extrabold text-slate-900 ml-1">💊 Petugas Farmasi & Pengelola Obat</span>
+    <!-- ROLE SWITCHER & ACCOUNT IDENTITY BAR -->
+    <div class="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="flex items-center space-x-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-xl shadow-md shadow-emerald-600/30 shrink-0">
+                <i class="fa-solid fa-prescription-bottle-medical"></i>
+            </div>
+            <div>
+                <div class="flex items-center space-x-2">
+                    <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase border border-emerald-200">
+                        Akun Bagian Farmasi
+                    </span>
+                    <span class="text-xs text-slate-400 font-mono">SIP. 19890415/SIPA/2018/021</span>
+                </div>
+                <h2 class="text-base sm:text-lg font-black text-slate-900 mt-0.5">
+                    Apt. Siti Rahmawati, S.Farm
+                </h2>
+                <p class="text-xs text-slate-500">
+                    Penanggung Jawab Farmasi & Pengelola Gudang Obat Puskesmas
+                </p>
             </div>
         </div>
-        <div class="flex items-center space-x-2 w-full sm:w-auto">
-            <a href="{{ route('dashboard.pharmacy') }}" class="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-medical-600 text-white text-xs font-bold shadow-md shadow-medical-600/20 flex items-center justify-center space-x-2">
-                <i class="fa-solid fa-prescription-bottle-medical"></i>
+        
+        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto pt-2 md:pt-0 border-t md:border-t-0 border-slate-100">
+            <span class="text-xs text-slate-400 font-medium hidden sm:inline mr-1">Beralih Peran:</span>
+            <a href="{{ route('dashboard.pharmacy') }}" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-md shadow-emerald-600/20 flex items-center space-x-1.5">
+                <i class="fa-solid fa-circle-check"></i>
                 <span>Bagian Farmasi</span>
             </a>
-            <a href="{{ route('dashboard.executive') }}" class="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-2">
+            <a href="{{ route('user.switch', 'kepala') }}" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center space-x-1.5">
                 <i class="fa-solid fa-user-doctor text-amber-600"></i>
-                <span>Kepala Puskesmas / Admin &rarr;</span>
+                <span>dr. Bambang Utoyo (Kapus) &rarr;</span>
             </a>
+        </div>
+    </div>
+
+    <!-- PANDUAN WEWENANG: APA SAJA YANG BISA DILAKUKAN BAGIAN FARMASI -->
+    <div class="bg-emerald-50/70 border border-emerald-200 rounded-3xl p-5 sm:p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-emerald-200/80">
+            <div class="flex items-center space-x-2.5 text-emerald-950 font-black text-sm">
+                <i class="fa-solid fa-clipboard-check text-emerald-600 text-base"></i>
+                <span>Wewenang & Hak Akses Akun Farmasi (Apt. Siti Rahmawati)</span>
+            </div>
+            <span class="text-[11px] font-bold text-emerald-800 bg-white/80 px-3 py-1 rounded-full border border-emerald-300">
+                Akses Operasional & Gudang (Level 1)
+            </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div class="space-y-2 bg-white/80 p-3.5 rounded-2xl border border-emerald-100">
+                <span class="font-extrabold text-emerald-900 block flex items-center space-x-1.5">
+                    <i class="fa-solid fa-check text-emerald-600"></i>
+                    <span>Tugas & Fitur yang BISA Dilakukan:</span>
+                </span>
+                <ul class="space-y-1.5 text-slate-700 text-[11px] list-disc list-inside">
+                    <li><strong>Audit Stok Fisik (SOH):</strong> Memantau 150 sediaan obat di gudang dan kamar obat.</li>
+                    <li><strong>Entri Pemakaian & Tutup Buku LPLPO:</strong> Menginput data konsumsi dan stok opname.</li>
+                    <li><strong>Registrasi Formularium Baru:</strong> Menambah sediaan obat baru ke katalog aktif.</li>
+                    <li><strong>Pencatatan Berita Acara ED:</strong> Menginput obat kadaluarsa/rusak untuk audit kerugian.</li>
+                    <li><strong>Rekomendasi Pengadaan P5:</strong> Menghitung usulan order berdasar WMA dan 95% Safety Stock.</li>
+                    <li><strong>Cetak Draf LPLPO:</strong> Mencetak format kerja LPLPO sebelum diajukan ke Kepala Puskesmas.</li>
+                </ul>
+            </div>
+
+            <div class="space-y-2 bg-white/80 p-3.5 rounded-2xl border border-rose-100">
+                <span class="font-extrabold text-rose-900 block flex items-center space-x-1.5">
+                    <i class="fa-solid fa-xmark text-rose-600"></i>
+                    <span>Batasan Wewenang (Dilimpahkan ke Kapus):</span>
+                </span>
+                <ul class="space-y-1.5 text-slate-700 text-[11px] list-disc list-inside">
+                    <li><strong class="text-rose-800">Bukan Otorisator Pengesahan:</strong> Tidak dapat menandatangani disposisi final LPLPO ke Dinkes Bintan (wewenang Kepala Puskesmas).</li>
+                    <li><strong class="text-rose-800">Bukan Penentu Alokasi Anggaran:</strong> Penyetujuan plafon anggaran belanja obat wewenang Kuasa Pengguna Anggaran (KPA).</li>
+                    <li><em>Catatan:</em> Setelah selesai menginput data, ajukan dokumen ke <strong>dr. Bambang Utoyo, M.M.</strong> melalui menu Kepala Puskesmas.</li>
+                </ul>
+            </div>
         </div>
     </div>
 

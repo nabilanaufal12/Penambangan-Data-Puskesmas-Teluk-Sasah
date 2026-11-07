@@ -75,6 +75,8 @@ class DashboardController extends Controller
         // Estimasi nilai pengadaan P5 (rata-rata harga Rp 1.350 per unit obat)
         $estimasiAnggaran = $totalOrderUnit * 1350;
 
+        $isApproved = session('p5_procurement_approved', false);
+
         $kpis = [
             'ketersediaan_pct' => $ketersediaanPct,
             'obat_tersedia' => $obatTersedia,
@@ -85,7 +87,8 @@ class DashboardController extends Controller
             'estimasi_anggaran' => $estimasiAnggaran,
             'rasio_peresepan' => '94.6%',
             'periode_aktif' => '2026-P5 (Sep-Okt)',
-            'status_disposisi' => 'Menunggu Pengesahan Akhir',
+            'is_approved' => $isApproved,
+            'status_disposisi' => $isApproved ? 'Telah Disahkan Kepala Puskesmas' : 'Menunggu Pengesahan Akhir',
             'kapus_nama' => 'dr. Bambang Utoyo, M.M.',
             'kapus_nip' => 'NIP. 19780512 200604 1 008',
             'pengelola_nama' => 'Apt. Siti Rahmawati, S.Farm',
@@ -426,5 +429,26 @@ class DashboardController extends Controller
         ]);
 
         return redirect()->route('data.entry', ['tab' => 'obat'])->with('success', "Sediaan obat baru '{$validated['nama_obat']}' berhasil didaftarkan ke katalog aktif dengan estimasi kebutuhan " . number_format($est, 0, ',', '.') . " {$validated['satuan']}!");
+    }
+
+    public function switchUser(Request $request, $role)
+    {
+        if (!in_array($role, ['farmasi', 'kepala'])) {
+            $role = 'farmasi';
+        }
+
+        session(['active_user_role' => $role]);
+
+        if ($role === 'kepala') {
+            return redirect()->route('dashboard.executive')->with('success', 'Beralih Akun: dr. Bambang Utoyo, M.M. (Kepala UPTD Puskesmas Teluk Sasah). Tampilan Dashboard Eksekutif Aktif.');
+        } else {
+            return redirect()->route('dashboard.pharmacy')->with('success', 'Beralih Akun: Apt. Siti Rahmawati, S.Farm (Penanggung Jawab Farmasi & Gudang Obat). Tampilan Dashboard Operasional Aktif.');
+        }
+    }
+
+    public function approveProcurement(Request $request)
+    {
+        session(['p5_procurement_approved' => true]);
+        return redirect()->back()->with('success', 'Usulan Rencana Kebutuhan Obat P5 (2026) BERHASIL DISAHKAN oleh Kepala UPTD Puskesmas Teluk Sasah (dr. Bambang Utoyo, M.M. - NIP. 19780512 200604 1 008). Dokumen resmi siap dikirim ke Dinas Kesehatan Kabupaten Bintan.');
     }
 }

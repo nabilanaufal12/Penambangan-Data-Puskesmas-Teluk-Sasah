@@ -158,18 +158,24 @@
         <!-- Official Signatures Block (Format Pemerintah) -->
         <div class="mt-8 pt-4 border-t border-slate-300 grid grid-cols-2 text-center text-xs">
             <div>
-                <p>Mengetahui,</p>
+                <p>Mengetahui / Mengesahkan,</p>
                 <p class="font-bold">Kepala UPTD Puskesmas Teluk Sasah</p>
-                <div class="h-20"></div>
-                <p class="font-bold underline text-slate-900">dr. H. Kurniawan</p>
+                <div class="h-20 flex items-center justify-center">
+                    @if(session('p5_procurement_approved'))
+                    <span class="px-3 py-1 border-2 border-emerald-600 text-emerald-700 font-black text-xs uppercase tracking-widest rotate-[-5deg] rounded">
+                        DISAHKAN DIGITAL
+                    </span>
+                    @endif
+                </div>
+                <p class="font-bold underline text-slate-900">dr. Bambang Utoyo, M.M.</p>
                 <p class="text-[10px] text-slate-600">NIP. 19780512 200604 1 008</p>
             </div>
             <div>
                 <p>Teluk Sasah, {{ date('d F Y') }}</p>
                 <p class="font-bold">Pengelola Obat / Petugas Gudang Farmasi</p>
                 <div class="h-20"></div>
-                <p class="font-bold underline text-slate-900">Apoteker Penanggung Jawab Puskesmas</p>
-                <p class="text-[10px] text-slate-600">NIP. 19850920 201101 2 015</p>
+                <p class="font-bold underline text-slate-900">Apt. Siti Rahmawati, S.Farm</p>
+                <p class="text-[10px] text-slate-600">SIP. 19890415/SIPA/2018/021</p>
             </div>
         </div>
 

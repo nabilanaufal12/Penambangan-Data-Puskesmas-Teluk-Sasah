@@ -6,24 +6,78 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-    <!-- ROLE SWITCHER BAR (Peralihan Peran Fleksibel) -->
-    <div class="bg-white rounded-2xl p-2.5 border border-slate-200/80 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div class="flex items-center space-x-3 px-2">
-            <span class="w-3 h-3 rounded-full bg-amber-500 animate-pulse"></span>
-            <div class="text-xs">
-                <span class="text-slate-500 font-medium">Mode Tampilan:</span>
-                <span class="font-extrabold text-slate-900 ml-1">🏛️ Kepala UPTD Puskesmas & Manajemen (Admin)</span>
+    <!-- ROLE SWITCHER & ACCOUNT IDENTITY BAR -->
+    <div class="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="flex items-center space-x-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-amber-600 text-white flex items-center justify-center text-xl shadow-md shadow-amber-600/30 shrink-0">
+                <i class="fa-solid fa-user-doctor"></i>
+            </div>
+            <div>
+                <div class="flex items-center space-x-2">
+                    <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-extrabold uppercase border border-amber-200">
+                        Akun Pimpinan Faskes
+                    </span>
+                    <span class="text-xs text-slate-400 font-mono">NIP. 19780512 200604 1 008</span>
+                </div>
+                <h2 class="text-base sm:text-lg font-black text-slate-900 mt-0.5">
+                    dr. Bambang Utoyo, M.M.
+                </h2>
+                <p class="text-xs text-slate-500">
+                    Kepala UPTD Puskesmas Teluk Sasah &bull; Kuasa Pengguna Anggaran (KPA)
+                </p>
             </div>
         </div>
-        <div class="flex items-center space-x-2 w-full sm:w-auto">
-            <a href="{{ route('dashboard.pharmacy') }}" class="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center space-x-2">
-                <i class="fa-solid fa-prescription-bottle-medical text-medical-600"></i>
-                <span>&larr; Bagian Farmasi</span>
+        
+        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto pt-2 md:pt-0 border-t md:border-t-0 border-slate-100">
+            <span class="text-xs text-slate-400 font-medium hidden sm:inline mr-1">Beralih Peran:</span>
+            <a href="{{ route('user.switch', 'farmasi') }}" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center space-x-1.5">
+                <i class="fa-solid fa-prescription-bottle-medical text-emerald-600"></i>
+                <span>&larr; Apt. Siti Rahmawati (Farmasi)</span>
             </a>
-            <a href="{{ route('dashboard.executive') }}" class="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-amber-600 text-white text-xs font-bold shadow-md shadow-amber-600/20 flex items-center justify-center space-x-2">
-                <i class="fa-solid fa-user-doctor"></i>
+            <a href="{{ route('dashboard.executive') }}" class="px-4 py-2 rounded-xl bg-amber-600 text-white text-xs font-bold shadow-md shadow-amber-600/20 flex items-center space-x-1.5">
+                <i class="fa-solid fa-circle-check"></i>
                 <span>Kepala Puskesmas</span>
             </a>
+        </div>
+    </div>
+
+    <!-- PANDUAN WEWENANG: APA SAJA YANG BISA DILAKUKAN KEPALA PUSKESMAS -->
+    <div class="bg-amber-50/70 border border-amber-200 rounded-3xl p-5 sm:p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-amber-200/80">
+            <div class="flex items-center space-x-2.5 text-amber-950 font-black text-sm">
+                <i class="fa-solid fa-stamp text-amber-600 text-base"></i>
+                <span>Wewenang & Hak Akses Akun Kepala Puskesmas (dr. Bambang Utoyo)</span>
+            </div>
+            <span class="text-[11px] font-bold text-amber-800 bg-white/80 px-3 py-1 rounded-full border border-amber-300">
+                Akses Otorisasi & Eksekutif (Level Pimpinan)
+            </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div class="space-y-2 bg-white/80 p-3.5 rounded-2xl border border-amber-100">
+                <span class="font-extrabold text-amber-900 block flex items-center space-x-1.5">
+                    <i class="fa-solid fa-check text-amber-600"></i>
+                    <span>Kewenangan Strategis yang BISA Dilakukan:</span>
+                </span>
+                <ul class="space-y-1.5 text-slate-700 text-[11px] list-disc list-inside">
+                    <li><strong>Disposisi & Pengesahan Usulan LPLPO:</strong> Memberikan persetujuan resmi atas 184.077 unit obat yang diajukan bagian farmasi.</li>
+                    <li><strong>Pengawasan SPM Kemenkes:</strong> Memantau indeks ketersediaan obat pelayanan dasar faskes (target $\ge 80\%$, capaian 91,3%).</li>
+                    <li><strong>Audit Akuntabilitas Kerugian ED:</strong> Memeriksa riwayat kerugian obat kadaluarsa/rusak (Rp 43,35 Jt dalam 3 tahun dari APBD/DAK) untuk audit BPKP.</li>
+                    <li><strong>Analisis Morbiditas Penyakit SIMPUS:</strong> Menggunakan data epidemiologi 10 penyakit terbesar untuk penyusunan rencana intervensi puskesmas.</li>
+                    <li><strong>Cetak Dokumen LPLPO Resmi Ber-NIP:</strong> Mengunduh dokumen final LPLPO ber-NIP resmi untuk dikirim ke Kepala Dinas Kesehatan Kabupaten Bintan.</li>
+                </ul>
+            </div>
+
+            <div class="space-y-2 bg-white/80 p-3.5 rounded-2xl border border-slate-200">
+                <span class="font-extrabold text-slate-800 block flex items-center space-x-1.5">
+                    <i class="fa-solid fa-shield text-slate-500"></i>
+                    <span>Prinsip Pembagian Tugas (De-konsentrasi):</span>
+                </span>
+                <ul class="space-y-1.5 text-slate-600 text-[11px] list-disc list-inside">
+                    <li><strong class="text-slate-800">Tidak Menginput Teknis Transaksi:</strong> Pencatatan butir obat, kartu stok gudang, dan stok opname fisik didelegasikan penuh kepada <strong>Apt. Siti Rahmawati</strong>.</li>
+                    <li><strong class="text-slate-800">Fokus Pengawasan & Evaluasi:</strong> Kepala Puskesmas fokus menelaah efisiensi anggaran, mencegah keterlambatan suplai dinas, dan menandatangani disposisi resmi.</li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -174,6 +228,21 @@
 
                 <!-- Signatory & Legal Disposition Box -->
                 <div class="bg-slate-50 rounded-2xl p-4 sm:p-5 border border-slate-200 space-y-4">
+                    @if($kpis['is_approved'])
+                    <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-300 flex items-center space-x-3 text-emerald-900 text-xs shadow-xs">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0 shadow-sm">
+                            <i class="fa-solid fa-stamp text-base"></i>
+                        </div>
+                        <div class="flex-1">
+                            <span class="font-black text-emerald-950 block text-xs">DOKUMEN RESMI TELAH DISAHKAN OLEH KEPALA PUSKESMAS</span>
+                            <span class="text-[11px] text-emerald-800">Tanda tangan digital dr. Bambang Utoyo, M.M. telah tersemat dan siap dikirim ke Dinas Kesehatan Kabupaten Bintan.</span>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-600 text-white text-[10px] font-black uppercase">
+                            Disahkan
+                        </span>
+                    </div>
+                    @endif
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                         <div class="p-3 bg-white rounded-xl border border-slate-200">
                             <span class="text-[10px] text-slate-400 block uppercase font-semibold">Petugas Penelaah Farmasi:</span>
@@ -184,13 +253,19 @@
                             </span>
                         </div>
 
-                        <div class="p-3 bg-white rounded-xl border border-amber-200">
+                        <div class="p-3 bg-white rounded-xl border {{ $kpis['is_approved'] ? 'border-emerald-300 bg-emerald-50/40' : 'border-amber-200' }}">
                             <span class="text-[10px] text-amber-600 block uppercase font-semibold">Kepala UPTD Puskesmas Teluk Sasah:</span>
                             <span class="font-bold text-slate-900 text-sm mt-0.5 block">{{ $kpis['kapus_nama'] }}</span>
                             <span class="text-[10px] text-slate-500 font-mono">{{ $kpis['kapus_nip'] }}</span>
-                            <span class="inline-block mt-2 px-2 py-0.5 rounded bg-amber-50 text-amber-700 text-[10px] font-bold border border-amber-200">
-                                Otorisasi Kepala Faskes
+                            @if($kpis['is_approved'])
+                            <span class="inline-block mt-2 px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-bold shadow-xs">
+                                <i class="fa-solid fa-stamp mr-1"></i>Telah Disahkan Secara Digital
                             </span>
+                            @else
+                            <span class="inline-block mt-2 px-2 py-0.5 rounded bg-amber-50 text-amber-700 text-[10px] font-bold border border-amber-200">
+                                Menunggu Otorisasi Kepala Faskes
+                            </span>
+                            @endif
                         </div>
                     </div>
 
@@ -201,12 +276,23 @@
                         <div class="flex items-center space-x-2 shrink-0 w-full sm:w-auto">
                             <a href="{{ route('lplpo.print') }}" target="_blank" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition flex items-center justify-center space-x-1.5 shadow-sm">
                                 <i class="fa-solid fa-print"></i>
-                                <span>Cetak LPLPO</span>
+                                <span>Cetak LPLPO Resmi</span>
                             </a>
-                            <button onclick="alert('Disposisi Pengesahan Pengadaan P5 (2026) oleh Kepala UPTD Puskesmas Teluk Sasah berhasil dicatat dalam log sistem!');" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-600/30 transition flex items-center justify-center space-x-1.5">
-                                <i class="fa-solid fa-signature"></i>
-                                <span>Setujui Usulan P5</span>
-                            </button>
+                            
+                            @if(!$kpis['is_approved'])
+                            <form method="POST" action="{{ route('procurement.approve') }}" class="flex-1 sm:flex-none">
+                                @csrf
+                                <button type="submit" class="w-full px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-600/30 transition flex items-center justify-center space-x-1.5">
+                                    <i class="fa-solid fa-stamp"></i>
+                                    <span>Setujui Usulan P5 (Sahkan)</span>
+                                </button>
+                            </form>
+                            @else
+                            <span class="px-4 py-2.5 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center space-x-1.5 border border-emerald-300">
+                                <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                                <span>Usulan Telah Disahkan</span>
+                            </span>
+                            @endif
                         </div>
                     </div>
                 </div>
