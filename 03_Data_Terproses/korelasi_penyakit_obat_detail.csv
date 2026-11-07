@@ -1,0 +1,11 @@
+kode_icd,nama_penyakit,nama_obat_standar,nama_obat_lplpo,indikasi_klinis,pearson_r,spearman_rho,rasio_dosis_per_pasien,prediksi_kasus_P5,prediksi_kebutuhan_obat_P5
+J00,ISPA / Nasopharyngitis,Parasetamol tablet 500 mg,Parasetamol tablet 500 mg,Analgesik/Antipiretik Panas & Nyeri,0.5851,0.5517,13.43,338.0,4541.0
+J00,ISPA / Nasopharyngitis,Amoksisilin kaplet 500 mg,Amoksisilin kaplet 500 mg,Antibiotik Lini Pertama ISPA Bakterial,0.6351,0.6702,5.06,338.0,1710.0
+J00,ISPA / Nasopharyngitis,Ambroksol tablet 30 mg,Ambroksol tablet 30 mg,Mukolitik/Ekspektoran Batuk Berdahak,-0.0341,-0.0404,3.3,338.0,1115.0
+I10,Hipertensi Primer,Amlodipin tablet 5 mg,Amlodipin tablet 5 mg,Antihipertensi CCB Lini Pertama (5mg),-0.0469,0.0577,6.78,342.5,2323.0
+I10,Hipertensi Primer,Amlodipin 10 mg tablet,Amlodipin 10 mg tablet,Antihipertensi CCB Dosis Tinggi (10mg),-0.0194,0.0955,19.08,342.5,6534.0
+I10,Hipertensi Primer,Kaptopril tablet 25 mg,Kaptopril tablet 25 mg,Antihipertensi ACE Inhibitor,0.1751,0.1139,2.96,342.5,1015.0
+K30,Dispepsia / Maag,Antasida DOEN I tablet,Antasida DOEN I tablet komb : Al(OH) 200 mg + Mg (OH) 200 mg,Antasida Penetral Asam Lambung,-0.171,-0.1673,5.59,145.7,814.0
+K30,Dispepsia / Maag,Ranitidine tablet 150 mg,Ranitidine tablet 150 mg,H2 Receptor Blocker Penekan Asam,0.0904,0.2417,4.48,145.7,653.0
+E11,Diabetes Melitus Tipe 2,Metformin tablet 500 mg,Metformin tablet 500 mg,Antidiabetes Oral Biguanid Utama,0.5942,0.7753,40.95,69.0,2826.0
+E11,Diabetes Melitus Tipe 2,Glibenklamid tablet 5 mg,Glibenklamid tablet 5 mg,Antidiabetes Oral Sulfonilurea,0.3028,0.3533,6.53,69.0,450.0

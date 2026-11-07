@@ -1,0 +1,11 @@
+Kode ICD-10,Diagnosis Penyakit,Obat Terkait,Rasio Dosis (Unit/Kasus),Indikasi Klinis
+J00,ISPA / Nasopharyngitis,Parasetamol tablet 500 mg,13.43,Analgesik/Antipiretik Panas & Nyeri
+J00,ISPA / Nasopharyngitis,Amoksisilin kaplet 500 mg,5.06,Antibiotik Lini Pertama ISPA Bakterial
+J00,ISPA / Nasopharyngitis,Ambroksol tablet 30 mg,3.3,Mukolitik/Ekspektoran Batuk Berdahak
+I10,Hipertensi Primer,Amlodipin tablet 5 mg,6.78,Antihipertensi CCB Lini Pertama (5mg)
+I10,Hipertensi Primer,Amlodipin 10 mg tablet,19.08,Antihipertensi CCB Dosis Tinggi (10mg)
+I10,Hipertensi Primer,Kaptopril tablet 25 mg,2.96,Antihipertensi ACE Inhibitor
+K30,Dispepsia / Maag,Antasida DOEN I tablet,5.59,Antasida Penetral Asam Lambung
+K30,Dispepsia / Maag,Ranitidine tablet 150 mg,4.48,H2 Receptor Blocker Penekan Asam
+E11,Diabetes Melitus Tipe 2,Metformin tablet 500 mg,40.95,Antidiabetes Oral Biguanid Utama
+E11,Diabetes Melitus Tipe 2,Glibenklamid tablet 5 mg,6.53,Antidiabetes Oral Sulfonilurea

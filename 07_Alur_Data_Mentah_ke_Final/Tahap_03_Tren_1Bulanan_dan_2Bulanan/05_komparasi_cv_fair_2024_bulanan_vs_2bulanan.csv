@@ -1,0 +1,632 @@
+nama_obat,satuan,mean_bulanan,cv_1bulanan_persen,total_2024,cv_2bulanan_2024_persen,selisih_cv_persen,interpretasi
+Fero Sulfat tablet 300 mg (tablet tambah darah),tablet,10755.8,301.5,129070,202.9,98.6,Dwibulanan lebih stabil
+Parasetamol tablet 500 mg,tablet,3583.3,21.9,43000,18.2,3.7,Setara
+Amlodipin 10 mg tablet,tablet,2900.8,38.5,34810,23.4,15.1,Dwibulanan lebih stabil
+Ambroksol tablet 30 mg,tablet,2000.0,45.5,24000,33.2,12.3,Dwibulanan lebih stabil
+Vitamin B-Kompleks tablet,tablet,1996.1,38.7,23953,32.2,6.5,Dwibulanan lebih stabil
+"Deksametason tablet 0,5 mg",tablet,1794.0,32.1,21528,27.2,4.9,Setara
+Amlodipin tablet 5 mg,tablet,1677.1,56.1,20125,27.7,28.4,Dwibulanan lebih stabil
+Cetirizina kapsul 10 mg,kapsul,1484.2,31.5,17811,24.2,7.3,Dwibulanan lebih stabil
+Metformin tablet 500 mg,tablet,1245.0,39.5,14940,18.2,21.3,Dwibulanan lebih stabil
+Asam Mefenamat kaplet 500 mg,kaplet,1197.6,51.2,14371,39.0,12.2,Dwibulanan lebih stabil
+Amoksisilin kaplet 500 mg,kaplet,1174.3,18.8,14092,13.3,5.5,Dwibulanan lebih stabil
+Kalsium Laktat tablet 500 mg,tablet,1142.9,43.3,13715,30.6,12.7,Dwibulanan lebih stabil
+Piroksikam capsul 10 mg,kapsul,1141.2,33.0,13695,17.6,15.4,Dwibulanan lebih stabil
+Sianokobalamin tablet 50 mcg,tablet,1040.8,183.0,12490,119.3,63.7,Dwibulanan lebih stabil
+Alcohol swab,pcs,983.3,145.0,11800,88.4,56.6,Dwibulanan lebih stabil
+Ranitidine tablet 150 mg,tablet,952.5,54.2,11430,48.7,5.5,Dwibulanan lebih stabil
+Asam Askorbat tablet 250 mg,tablet,941.7,31.4,11300,21.1,10.3,Dwibulanan lebih stabil
+Metilprednisolon tablet 4 mg,tablet,807.0,76.5,9684,74.8,1.7,Setara
+Kaptopril tablet 25 mg,tablet,774.2,64.5,9290,51.6,12.9,Dwibulanan lebih stabil
+Omeprazol capsul 20 mg,kapsul,695.9,24.2,8351,15.5,8.7,Dwibulanan lebih stabil
+Dimenhidrinat tablet 50 mg,tablet,624.2,28.0,7491,10.4,17.6,Dwibulanan lebih stabil
+Tiamin HCl tablet 50 mg,tablet,599.8,181.7,7197,131.4,50.3,Dwibulanan lebih stabil
+Blood lancet,pcs,578.9,242.1,6947,164.6,77.5,Dwibulanan lebih stabil
+Alopurinol tablet 100 mg,tablet,557.3,56.8,6688,36.9,19.9,Dwibulanan lebih stabil
+Ibuprofen tablet 400 mg,tablet,536.5,68.7,6438,62.2,6.5,Dwibulanan lebih stabil
+Asetil sisteina 200 mg kapsul,kapsul,525.8,73.0,6309,62.0,11.0,Dwibulanan lebih stabil
+Simvastatin 20 mg tablet,tablet,483.3,58.0,5800,32.1,25.9,Dwibulanan lebih stabil
+Antasida DOEN I tablet komb : Al(OH) 200 mg + Mg (OH) 200 mg,tablet,475.8,107.5,5710,59.7,47.8,Dwibulanan lebih stabil
+Loratadin tablet 10 mg,tablet,472.7,100.8,5672,66.8,34.0,Dwibulanan lebih stabil
+Asam Folat tablet 0.4 mg,tablet,472.1,121.5,5665,65.2,56.3,Dwibulanan lebih stabil
+Zinc tablet dispersible 20 mg,tablet,405.3,96.6,4864,55.9,40.7,Dwibulanan lebih stabil
+Masker Disposible 3 ply,pcs,383.3,143.2,4600,83.2,60.0,Dwibulanan lebih stabil
+Asam Askorbat tablet 50 mg,tablet,344.2,76.0,4130,70.3,5.7,Dwibulanan lebih stabil
+Cefadroksil kapsul 500 mg,kapsul,344.2,44.8,4130,36.6,8.2,Dwibulanan lebih stabil
+Natrium Diklofenak tab. 50 mg,tablet,320.8,82.1,3850,49.4,32.7,Dwibulanan lebih stabil
+Domperidon tablet 10 mg,tablet,317.9,73.1,3815,65.0,8.1,Dwibulanan lebih stabil
+Piridoksin tablet 10 mg,tablet,316.1,57.8,3793,48.2,9.6,Dwibulanan lebih stabil
+Albendazol tablet 400 mg,tablet,300.0,331.7,3600,223.6,108.1,Dwibulanan lebih stabil
+Gliseril Guayakolat tablet 100 mg,tablet,291.7,97.8,3500,86.3,11.5,Dwibulanan lebih stabil
+"Tripolidin HCl 2.5 mg, Pseudoefedrin 60 mg tablet/Eflin tablet",tablet,286.2,146.9,3435,102.1,44.8,Dwibulanan lebih stabil
+Handscoon (gloves) ukuran S,pcs,283.3,96.5,3400,82.6,13.9,Dwibulanan lebih stabil
+Glibenklamid tablet 5 mg,tablet,248.2,58.8,2978,42.4,16.4,Dwibulanan lebih stabil
+Ciprofloksasin kaplet 500 mg,kaplet,230.3,31.8,2764,24.2,7.6,Dwibulanan lebih stabil
+Hidroklortiazida tablet 25 mg,tablet,214.2,48.9,2570,26.4,22.5,Dwibulanan lebih stabil
+Attapulgite tablet 600 mg,tablet,210.9,71.0,2531,60.5,10.5,Dwibulanan lebih stabil
+Betahistin Mesilat tablet 6 mg,tablet,207.8,37.5,2494,27.4,10.1,Dwibulanan lebih stabil
+Handscoon (gloves) ukuran M,pcs,200.0,76.4,2400,55.9,20.5,Dwibulanan lebih stabil
+Klorfeniramin Maleat ( CTM ) tablet 4 mg/Dehista,tablet,195.3,94.5,2344,79.4,15.1,Dwibulanan lebih stabil
+Garam Oralit untuk 200 ml air,sachet,189.5,79.3,2274,58.1,21.2,Dwibulanan lebih stabil
+"Kaptopril tablet 12,5 mg",tablet,166.7,206.6,2000,153.2,53.4,Dwibulanan lebih stabil
+Metronidazol tablet 500 mg,tablet,138.6,55.8,1663,18.7,37.1,Dwibulanan lebih stabil
+Salbutamol tablet 4 mg,tablet,125.0,57.6,1500,37.6,20.0,Dwibulanan lebih stabil
+"Vitamin A 4,000 IU, vitamin C 50 mg, vitamin D 400 IU, vitamin E 10 mg, vitamin B1 3 mg, vitamin B2 3 mg, vitamin B6 2 mg, vitamin B12 2 mcg, nicotinamide 20 mg, Ca pantothenate 5 mg, folic acid 1 mg, biotin 0.1 mg, Fe fumarate 20 mg, Ca 100 mg, copper 0.5 mg, mangan 0.5 mg, Mg 1 mg, Zn 0.25 mg (Pehavral)",tablet,116.7,175.0,1400,112.7,62.3,Dwibulanan lebih stabil
+Asiklovir tablet 400 mg,tablet,103.3,82.8,1240,58.1,24.7,Dwibulanan lebih stabil
+Loperamid tablet 2 mg,tablet,102.3,100.8,1228,90.3,10.5,Dwibulanan lebih stabil
+Retinol (Vitamin A) Dosis Tinggi 200.000 IU,kapsul,99.7,303.2,1196,217.4,85.8,Dwibulanan lebih stabil
+"Tripolidin HCl 2.5 mg, Pseudoefedrin 60 mg tablet",tablet,99.4,331.7,1193,223.6,108.1,Dwibulanan lebih stabil
+Prednison tablet 5 mg,tablet,98.0,121.4,1176,92.9,28.5,Dwibulanan lebih stabil
+Ketokonazol tablet 200 mg,tablet,95.0,74.4,1140,45.8,28.6,Dwibulanan lebih stabil
+Lidi Vagina (ukuran L),pcs,91.7,157.2,1100,138.8,18.4,Dwibulanan lebih stabil
+"Neurotropik (Vit B1 100 mg, Vit B6 200 mg, Vit B12)",tablet,83.3,130.0,1000,80.2,49.8,Dwibulanan lebih stabil
+Parasetamol syr 120mg / 5 ml @ 60 ml,botol,78.0,37.2,936,22.2,15.0,Dwibulanan lebih stabil
+Pot Sputum,pcs,74.6,108.5,895,104.0,4.5,Setara
+Rapid Test Trepocheck Syphillis,pcs,66.7,248.0,800,160.4,87.6,Dwibulanan lebih stabil
+Stick cholestrol,pcs,66.7,314.0,800,210.5,103.5,Dwibulanan lebih stabil
+Nifedipin tablet 10 mg,tablet,60.2,85.7,723,76.9,8.8,Dwibulanan lebih stabil
+Asam Traneksamat tablet 500 mg,tablet,56.2,130.2,675,90.6,39.6,Dwibulanan lebih stabil
+Papaverin tablet 40 mg,tablet,53.8,115.3,645,100.8,14.5,Dwibulanan lebih stabil
+Bisakodil tablet 5 mg,tablet,46.9,47.6,563,41.7,5.9,Dwibulanan lebih stabil
+"Betametason Krem 0,1 % @ 5 g",tube,46.6,23.1,559,16.5,6.6,Dwibulanan lebih stabil
+Ondansetron tablet 8mg,tablet,45.0,121.0,540,112.8,8.2,Dwibulanan lebih stabil
+Kotrimoksazol tab dewasa komb : Sulfametoksazol 400 mg+Trimetoprim 80 mg,tablet,44.8,188.1,538,117.0,71.1,Dwibulanan lebih stabil
+Salbutamol tablet 2 mg,tablet,41.7,91.2,500,84.4,6.8,Dwibulanan lebih stabil
+Alat Suntik Sekali Pakai 3 ml,pcs,33.6,182.6,403,108.1,74.5,Dwibulanan lebih stabil
+Handscoon (gloves) ukuran L,pcs,33.3,331.7,400,223.6,108.1,Dwibulanan lebih stabil
+Klorfeniramin Maleat ( CTM ) tablet 4 mg,tablet,31.8,331.7,382,223.6,108.1,Dwibulanan lebih stabil
+Asam Askorbat 500 mg (Megazing),tablet,31.2,228.9,375,145.6,83.3,Dwibulanan lebih stabil
+Stick Hemoglobin,pcs,29.9,114.4,359,71.8,42.6,Dwibulanan lebih stabil
+Stik Gula Darah (Accupro),stik,29.2,331.7,350,223.6,108.1,Dwibulanan lebih stabil
+Stik Kolesterol (Accupro),pcs,27.5,281.3,330,223.6,57.7,Dwibulanan lebih stabil
+Lansoprazol Kapsul 30 mg,kaplet,26.7,123.5,320,97.2,26.3,Dwibulanan lebih stabil
+Hiosine-N-Butilbromide tablet 10 mg,tablet,25.8,174.6,310,145.9,28.7,Dwibulanan lebih stabil
+Object glass / Slide Glass,pcs,25.6,133.5,307,66.0,67.5,Dwibulanan lebih stabil
+Stick gula darah,pcs,25.0,276.9,300,182.6,94.3,Dwibulanan lebih stabil
+Rapid test HIV Lini I,pcs,25.0,248.3,300,182.6,65.7,Dwibulanan lebih stabil
+Stick asam urat,pcs,25.0,331.7,300,223.6,108.1,Dwibulanan lebih stabil
+Retinol (Vitamin A) Dosis Tinggi 100.000 IU,kapsul,25.0,223.6,300,141.4,82.2,Dwibulanan lebih stabil
+Urinalysa 3 Parameter,pcs,21.7,178.6,260,104.6,74.0,Dwibulanan lebih stabil
+Urinalysa 3 Parameter,pcs,21.7,178.6,260,0.0,178.6,Dwibulanan lebih stabil
+Tabung Vacutener Warna merah plain,pcs,18.4,250.4,221,165.7,84.7,Dwibulanan lebih stabil
+Ketokonazol krim 2 % @ 10 g.,tube,17.8,57.8,213,32.5,25.3,Dwibulanan lebih stabil
+"Hidrokortison krim 2,5 % @ 5g.",tube,17.0,44.2,204,29.1,15.1,Dwibulanan lebih stabil
+Ambroksol sirup 15 mg/5 ml. @ 60 ml.,botol,16.9,168.5,203,100.8,67.7,Dwibulanan lebih stabil
+Lidi Vagina,pcs,16.7,331.7,200,223.6,108.1,Dwibulanan lebih stabil
+Rapid test Lini II,pcs,16.7,196.9,200,119.9,77.0,Dwibulanan lebih stabil
+Stik Gula Darah/ Glukosa Autocheck (PTM),kotak,16.7,331.7,200,223.6,108.1,Dwibulanan lebih stabil
+Bistury / mata pisau bedah,pcs,16.7,211.2,200,131.5,79.7,Dwibulanan lebih stabil
+Isosorbid Dinitrat tablet sublingual 5 mg,tablet,16.5,91.2,198,71.5,19.7,Dwibulanan lebih stabil
+Salisil Bedak 2 % @ 50 g,dus,16.2,120.1,195,74.2,45.9,Dwibulanan lebih stabil
+Rapid test HBsAg Antigen (Prog utk Bumil),pcs,14.7,136.5,176,76.5,60.0,Dwibulanan lebih stabil
+Natrium Diklofenak emulgel/Galtren gel,tube,13.8,70.7,166,62.3,8.4,Dwibulanan lebih stabil
+Alat Suntik Sekali Pakai 5 ml,pcs,13.6,171.2,163,138.4,32.8,Dwibulanan lebih stabil
+Glimepiride tablet 2 mg,tablet,13.3,194.5,160,147.9,46.6,Dwibulanan lebih stabil
+Anti Hemoroid DOEN kombinasi,supp,13.3,101.1,160,62.8,38.3,Dwibulanan lebih stabil
+Rapid test sipilis,pcs,13.2,209.8,159,130.4,79.4,Dwibulanan lebih stabil
+Alat Suntik Sekali Pakai 1 ml,pcs,13.0,213.9,156,144.5,69.4,Dwibulanan lebih stabil
+Deksametason injeksi 5 mg / ml - 1 ml,ampul,12.9,175.9,155,127.2,48.7,Dwibulanan lebih stabil
+Urinalysa 10 Parameter,pcs,12.2,237.3,146,223.6,13.7,Dwibulanan lebih stabil
+Urinalysa 10 Parameter,pcs,12.2,237.3,146,216.3,21.0,Dwibulanan lebih stabil
+Gentamisin salep kulit 5 g,tube,11.6,183.4,139,149.5,33.9,Dwibulanan lebih stabil
+Mikonazol krim 2 % @ 10 g,tube,10.6,53.8,127,31.0,22.8,Dwibulanan lebih stabil
+Salbutamol Nebules cairan ih 0.1% @ 2.5ml,ampul,10.0,79.7,120,52.4,27.3,Dwibulanan lebih stabil
+Framisetin sulfat gauze dressing 10 cm x 10 cm,lembar,9.5,99.6,114,83.3,16.3,Dwibulanan lebih stabil
+Kasa Pembalut Hidrofil 4 m x 15 cm,roll,8.6,77.5,103,44.3,33.2,Dwibulanan lebih stabil
+Rapid Test Sipilis Combo dan Indec HIV 1/2,pcs,8.3,157.6,100,118.9,38.7,Dwibulanan lebih stabil
+"Multivitamin As folat 1 mg, B-caroten 10.000 IU, Vit B1 10 mg, Vit B2 2,5 mg, nikotinamid 20mg, Vit B6 12 mg, Ca Pantothenate 7,5 mg, Vit B12 4 mcg, Vit C 100 mg, Vit D 400 IU, p-Iodida 100 mcg, Fe 90 mg, Cu 0.1 mg, Ca Laktat 250 mg, NaF 1 mg (Folamil )",kapsul,8.3,331.7,100,223.6,108.1,Dwibulanan lebih stabil
+Kotrimoksazol tab dewasa komb : Sulfametoksazol 800 mg+Trimetoprim 160 mg,kaplet,8.3,331.7,100,223.6,108.1,Dwibulanan lebih stabil
+"Vitamin A 4,000 IU, vitamin C 50 mg, vitamin D 400 IU, vitamin E 10 mg, vitamin B1 3 mg, vitamin B2 3 mg, vitamin B6 2 mg, vitamin B12 2 mcg, nicotinamide 20 mg, Ca pantothenate 5 mg, folic acid 1 mg, biotin 0.1 mg, Fe fumarate 20 mg, Ca 100 mg, copper 0.5 mg, manganese 0.5 mg, Mg 1 mg, Zn 0.25 mg (Pehavral)",tablet,8.3,331.7,100,223.6,108.1,Dwibulanan lebih stabil
+Nistatin tablet vaginal 100.000 IU / g,tablet,8.3,169.7,100,121.9,47.8,Dwibulanan lebih stabil
+Rapid test HIV Lini 3,pcs,8.2,331.7,99,223.6,108.1,Dwibulanan lebih stabil
+Rapid test HIV Lini 2 (triline),pcs,8.2,331.7,99,223.6,108.1,Dwibulanan lebih stabil
+"Curcuminoid 2mg, beta-carotene 10% 4mg, Vit B1 3mg, Vit B2 2mg, Vit B6 5mg, Vit B12 5mcg, Vit D 100 IU, Dexpanthenol 3mg, Ca pidolate 300mg Fructooligosaccharides 300 mg/Apecur Syrup",botol,8.0,92.3,96,74.7,17.6,Dwibulanan lebih stabil
+Krim untuk nyeri @30 gr,tube,7.8,133.0,94,70.7,62.3,Dwibulanan lebih stabil
+Anti Skabies (Permetrin) 5% krim 10 gr,tube,7.8,49.7,93,13.8,35.9,Dwibulanan lebih stabil
+S i l k ( Benang Bedah Sutera ) No. 3/0 DS 19 mm,sachet,7.5,102.8,90,43.9,58.9,Dwibulanan lebih stabil
+Amoksisilin sirup kering 125 mg / 5 ml,botol,7.3,111.0,88,102.6,8.4,Dwibulanan lebih stabil
+Oksitoksin inj 10 IU / ml-1 ml,ampul,7.2,311.2,86,208.4,102.8,Dwibulanan lebih stabil
+Larutan Infus Ringer Laktat steril @ 500 ml,botol,6.9,106.8,83,58.6,48.2,Dwibulanan lebih stabil
+Pirantel tablet 125 mg,tablet,6.8,331.7,82,223.6,108.1,Dwibulanan lebih stabil
+Asiklovir krim 5 % @ 5 gram,tube,6.7,55.2,80,33.2,22.0,Dwibulanan lebih stabil
+Mineral Mix,sachet,6.7,331.7,80,223.6,108.1,Dwibulanan lebih stabil
+Tiamfenikol capsul 500 mg,kapsul,6.4,287.9,77,190.9,97.0,Dwibulanan lebih stabil
+Lidocain injeksi 2 % @ 2 ml,ampul,5.8,174.4,70,149.8,24.6,Dwibulanan lebih stabil
+Lidocain HCL 2% + Epinefrin 1:80.000 inj @ 2 ml,ampul,5.4,180.0,65,137.2,42.8,Dwibulanan lebih stabil
+Fenol Gliserol Tetes Telinga 10%,botol,5.3,79.7,64,62.1,17.6,Dwibulanan lebih stabil
+Kasa Pembalut 16 x 16 steril,kotak,5.2,72.2,63,38.4,33.8,Dwibulanan lebih stabil
+"Griseofulvin tablet 125 mg, micronized",tablet,5.0,331.7,60,223.6,108.1,Dwibulanan lebih stabil
+Ekstrak Plasenta Gel @ 15 g,tube,5.0,79.2,60,70.0,9.2,Dwibulanan lebih stabil
+"Kloramfenikol tetes mata 0,5 %",botol,5.0,110.5,60,103.4,7.1,Dwibulanan lebih stabil
+Tes Kehamilan,stik,4.6,331.7,55,223.6,108.1,Dwibulanan lebih stabil
+Tes Kehamilan,stik,4.6,331.7,55,223.6,108.1,Dwibulanan lebih stabil
+Urinalysa 10 Parameter,kotak,4.5,331.7,54,223.6,108.1,Dwibulanan lebih stabil
+Urinalysa 10 Parameter,kotak,4.5,331.7,54,216.3,115.4,Dwibulanan lebih stabil
+Polifix 5 cm x 5 M,pcs,4.2,112.5,51,91.8,20.7,Dwibulanan lebih stabil
+RDT Chikungunya,pcs,4.2,187.7,50,112.3,75.4,Dwibulanan lebih stabil
+I.V. Catheter Nomor 22,pcs,4.2,331.7,50,223.6,108.1,Dwibulanan lebih stabil
+"Kloramfenikol salap mata 1 % @ 3,5 g.",tube,4.0,99.5,48,89.3,10.2,Dwibulanan lebih stabil
+"Tiap ml mengandung, Dexamethasone sodium phosphate setara dengan Dexamethasone 1 mg Neomycin sulfate setara dengan Neomycin 3,5 mg Polymyxin B sulfate 6000 IU (Alletrol)",botol,3.8,110.6,45,102.9,7.7,Dwibulanan lebih stabil
+Ranitidine Inj 25 mg/ml @ 2 ml,ampul,3.7,115.9,44,64.3,51.6,Dwibulanan lebih stabil
+I.V. Catheter Nomor 18,pcs,3.3,169.4,40,135.2,34.2,Dwibulanan lebih stabil
+Rapid test for Dengue Ns1,pcs,3.2,203.4,39,131.1,72.3,Dwibulanan lebih stabil
+Kasa Hidrofil Steril 18 x 22 cm (isi 12 lbr),bungkus,3.2,331.7,39,223.6,108.1,Dwibulanan lebih stabil
+Infus Set Dewasa,set,3.2,86.3,38,76.6,9.7,Dwibulanan lebih stabil
+I.V. Catheter Nomor 20,pcs,2.9,78.5,35,51.8,26.7,Dwibulanan lebih stabil
+Risperidon tab sal 2 mg,tablet,2.7,309.4,32,207.0,102.4,Dwibulanan lebih stabil
+"Multivitamin anak sirup dengan kalsium pidolat 300 mg, fruktooligosakarida 300 mg dan kurkuminoid 2 mg per 5 ml",botol,2.7,222.0,32,215.3,6.7,Dwibulanan lebih stabil
+Obat Anti Tuberkulosis Kategori Anak ( FDC ),paket,2.3,84.5,28,76.9,7.6,Dwibulanan lebih stabil
+Kotrimoksazol susp. komb. : Sulfametoksazol 200 mg. + Trimetoprim 40 mg/5ml,botol,2.2,88.0,26,52.7,35.3,Dwibulanan lebih stabil
+Parasetamol 125 mg rektal,supp,2.2,75.0,26,54.4,20.6,Dwibulanan lebih stabil
+Omeprazol injeksi 40 mg,ampul,2.2,102.9,26,83.9,19.0,Dwibulanan lebih stabil
+Handscoon No.6.5 steril,pasang,2.1,267.6,25,175.5,92.1,Dwibulanan lebih stabil
+Oksitetrasiklin HCl salap 3 % 5 g,tube,2.1,240.4,25,154.6,85.8,Dwibulanan lebih stabil
+Penjepit Tali Pusat,pcs,2.0,276.9,24,223.6,53.3,Dwibulanan lebih stabil
+"Epinefrin HCl (Adrenalin) inj 0,1 % - 1 ml",ampul,2.0,232.7,24,190.9,41.8,Dwibulanan lebih stabil
+"Larutan Natrium Klorida Infus 0,9 % steril @ 500 ml.",botol,1.8,113.2,22,100.4,12.8,Dwibulanan lebih stabil
+I.V. Catheter Nomor 24,pcs,1.7,110.5,20,94.3,16.2,Dwibulanan lebih stabil
+Clindamisin Capsul 150 mg,kapsul,1.7,331.7,20,223.6,108.1,Dwibulanan lebih stabil
+Carboxymetyhlcelulose (Cendo Cenfresh) eye drop Mini Dose,botol,1.7,211.2,20,197.2,14.0,Dwibulanan lebih stabil
+"Pembalut elastis ukuran 3 inci (7,5 cm x 4.55 m)",roll,1.6,259.7,19,169.5,90.2,Dwibulanan lebih stabil
+Cendo Cenfresh 5ml,botol,1.6,195.4,19,141.7,53.7,Dwibulanan lebih stabil
+Plester 5 cm x 5 m,roll,1.6,279.4,19,223.6,55.8,Dwibulanan lebih stabil
+Cat Gut Chromic No. 3/0 DS 19 mm,pcs,1.4,159.0,17,119.5,39.5,Dwibulanan lebih stabil
+Natrium Heparina gel @ 20 g/Thrombo Gel,tube,1.4,88.6,17,62.5,26.1,Dwibulanan lebih stabil
+Etanol larutan 70 % @ 300 ml.,botol,1.4,212.7,17,168.5,44.2,Dwibulanan lebih stabil
+Tes Kehamilan,pcs,1.2,251.1,15,223.6,27.5,Dwibulanan lebih stabil
+Natrium Diklofenak emulgel,tube,1.2,331.7,15,223.6,108.1,Dwibulanan lebih stabil
+Tes Kehamilan,pcs,1.2,251.1,15,223.6,27.5,Dwibulanan lebih stabil
+Underpad ukuran 60x90 cm steril,pcs,1.2,331.7,15,223.6,108.1,Dwibulanan lebih stabil
+Ondansetron injeksi 4mg/2ml @ 2ml,ampul,1.2,103.9,15,64.3,39.6,Dwibulanan lebih stabil
+Aqua Pro Injeksi steril 25 ml,botol,1.2,131.1,15,94.5,36.6,Dwibulanan lebih stabil
+Virocheck HbsAg (RV-B10 : 25 Test),kotak,1.2,331.7,14,223.6,108.1,Dwibulanan lebih stabil
+Kertas Perkamen,pack,1.2,177.9,14,112.5,65.4,Dwibulanan lebih stabil
+Oksimetazolin tts hidung 0.025% @10 ml,botol,1.1,331.7,13,223.6,108.1,Dwibulanan lebih stabil
+Povidon Iodida 10 % 30 ml,botol,1.1,170.5,13,108.0,62.5,Dwibulanan lebih stabil
+Cat Gut Chromic No. 2/0 DS 19 mm,pcs,1.0,163.3,12,91.3,72.0,Dwibulanan lebih stabil
+Domperidon Suspensi 5mg/5ml @ 60 ml,botol,0.9,300.3,11,223.6,76.7,Dwibulanan lebih stabil
+Fitomenadion (Vitamin K1) 2 mg/ml injeksi,ampul,0.9,186.1,11,111.0,75.1,Dwibulanan lebih stabil
+Pembalut elastis ukuran 4 inci (10 cm x 4.55 m),roll,0.9,300.3,11,200.2,100.1,Dwibulanan lebih stabil
+Kasa Hidrofil 40 x 80 cm,roll,0.8,95.9,10,44.7,51.2,Dwibulanan lebih stabil
+MDT Dewasa,blister,0.8,82.5,10,0.0,82.5,Dwibulanan lebih stabil
+MDT Dewasa,blister,0.8,82.5,10,44.7,37.8,Dwibulanan lebih stabil
+Diazepam injeksi 5 mg / ml - 2 ml,ampul,0.8,331.7,10,223.6,108.1,Dwibulanan lebih stabil
+Tramadol Injeksi 50 mg/ml @ 2ml,ampul,0.8,331.7,10,223.6,108.1,Dwibulanan lebih stabil
+Cat Gut Plain No. 3/0 DS 19 mm,pcs,0.8,201.0,10,132.7,68.3,Dwibulanan lebih stabil
+Alat Suntik Sekali Pakai 10 ml,pcs,0.8,331.7,10,223.6,108.1,Dwibulanan lebih stabil
+"Mantoux test (PPD 2 UT 1,5)",ampul,0.8,96.2,9,63.8,32.4,Dwibulanan lebih stabil
+Cendo Lyters eye drop 15 ml,botol,0.8,225.3,9,142.7,82.6,Dwibulanan lebih stabil
+Ketorolac 30 mg/ml injeksi @ 1ml/Trometamol injeksi,ampul,0.8,197.2,9,120.2,77.0,Dwibulanan lebih stabil
+Obat Anti Tuberkulosis Kategori I ( FDC ),paket,0.8,145.3,9,120.2,25.1,Dwibulanan lebih stabil
+Hiosin-N-Butilbromide injeksi,ampul,0.8,331.7,9,223.6,108.1,Dwibulanan lebih stabil
+Etil Klorida semprot @100 ml,botol,0.7,165.8,8,127.5,38.3,Dwibulanan lebih stabil
+Stik HB (Accupro),kotak,0.7,331.7,8,223.6,108.1,Dwibulanan lebih stabil
+Antiseptik tangan dengan dibilas 500 ml,botol,0.6,247.0,7,223.6,23.4,Dwibulanan lebih stabil
+Nasal canula dewasa,pcs,0.6,236.9,7,187.9,49.0,Dwibulanan lebih stabil
+Cendo Lyteers eye drop 15 ml,botol,0.6,331.7,7,223.6,108.1,Dwibulanan lebih stabil
+Handscoon No.7 steril,pasang,0.5,238.0,6,152.8,85.2,Dwibulanan lebih stabil
+"Metilergometrin Maleat injeksi 0,200 mg - 1 ml",ampul,0.5,238.0,6,152.8,85.2,Dwibulanan lebih stabil
+Bisakodil suppositoria 5 mg anak-anak,supp,0.5,191.5,6,152.8,38.7,Dwibulanan lebih stabil
+Mask (sungkup) oksigen anak,pcs,0.5,276.9,6,182.6,94.3,Dwibulanan lebih stabil
+Cendo Xitrol eye drop 5 ml,botol,0.4,331.7,5,223.6,108.1,Dwibulanan lebih stabil
+Diazepam tablet 2 mg,tablet,0.4,228.9,5,145.6,83.3,Dwibulanan lebih stabil
+Infus Set Anak,set,0.4,206.9,5,145.6,61.3,Dwibulanan lebih stabil
+Nasal canula anak,pcs,0.4,331.7,5,223.6,108.1,Dwibulanan lebih stabil
+Bisakodil suppositoria 10 mg dewasa,supp,0.4,228.9,5,145.6,83.3,Dwibulanan lebih stabil
+Mask (sungkup) oksigen dewasa,pcs,0.4,267.6,5,175.5,92.1,Dwibulanan lebih stabil
+FDC Dewasa (TLE),kotak,0.4,153.6,5,82.5,71.1,Dwibulanan lebih stabil
+Kapas Pembalut / Absorben 250 gram,roll,0.3,187.1,4,111.8,75.3,Dwibulanan lebih stabil
+Disposible Blood Transfution,set,0.3,331.7,4,223.6,108.1,Dwibulanan lebih stabil
+Timolol 0.5% tetes mata 5 ml,botol,0.3,331.7,4,223.6,108.1,Dwibulanan lebih stabil
+Etanol larutan 70 % @ 1000 ml.,botol,0.3,187.1,4,111.8,75.3,Dwibulanan lebih stabil
+Octenic Spray Advance Wound Protection 50 ml,botol,0.3,331.7,4,223.6,108.1,Dwibulanan lebih stabil
+Cat Gut Plain No. 2/0 DS 19 mm,pcs,0.2,331.7,3,223.6,108.1,Dwibulanan lebih stabil
+Aqua Dest Steril 500 ml,botol,0.2,238.0,3,152.8,85.2,Dwibulanan lebih stabil
+Diazepam larutan Rectal 5 mg/2.5 ml,tube,0.2,238.0,3,152.8,85.2,Dwibulanan lebih stabil
+"Medical Recording Chart Paper, Kertas ECG/EKG Paper Ukuran 88mm x25mm",roll,0.2,331.7,2,223.6,108.1,Dwibulanan lebih stabil
+Eugenol cairan 10 ml.,botol,0.2,223.6,2,223.6,0.0,Setara
+"Natrium laurilsulfoasetat, Natrium sulfat, Sorbitol, PEG 400 enema @ 5 ml (Mikrolax)",tube,0.2,223.6,2,141.4,82.2,Dwibulanan lebih stabil
+Larutan Asam Asetat 5% 100 ml,botol,0.2,331.7,2,223.6,108.1,Dwibulanan lebih stabil
+Larutan Ziehl Nielsen,paket,0.2,223.6,2,141.4,82.2,Dwibulanan lebih stabil
+Salbutamol inhalasi 100 mcg/dosis @ 200 dosis/Ventolin inhaler,botol,0.2,331.7,2,223.6,108.1,Dwibulanan lebih stabil
+FDC TLD,kotak,0.2,331.7,2,223.6,108.1,Dwibulanan lebih stabil
+Urine Bag,set,0.2,331.7,2,223.6,108.1,Dwibulanan lebih stabil
+Omeprazol Sodium injeksi 40mg,ampul,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+S i l k ( Benang Bedah Sutera ) No. 4/0 DS 19 mm,sachet,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Jelly (Ecolab aquagel sterile) 82 g,tube,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Serum Anti Bisa Ular I injeksi (ABU I) (im/iv) @ 5ml,ampul,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Tumpatan sementara (Caviton),pot,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Lisol solutio 1000 ml.,botol,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Tumpatan sementara (Caviton),pot,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Ketorolac 30 mg/ml injeksi @ 1ml,ampul,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Plester Tahan Air ( 25 cm x 10 cm ),pcs,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Jelly USG my lubricating @82 gr,tube,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+"Multivitamin anak sirup dengan kalsium pidolat 300 mg,fruktooligosakarida 300 mg dan kurkuminoid 2 mg per 5 ml ( APECUR)",botol,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Glass Ionomer semen (serbuk + larutan),set,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Arm sling ukuran S,pcs,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Tumpatan sementara (Caviton),set,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Tumpatan sementara (Caviton),set,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Carboxymetyhlcelulose (Cendo Cenfresh) eye drop 5 ml,botol,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+Jelly USG @ 250 g,botol,0.1,331.7,1,223.6,108.1,Dwibulanan lebih stabil
+"Plester kertas 9.2 m X 2,5 cm dengan pemotong",roll,0.0,0.0,0,0.0,0.0,Setara
+Obat Anti Malaria/OAM (DHP),tablet,0.0,0.0,0,0.0,0.0,Setara
+Cat Gut Plain 2-0 90 cm Tuper cut 1/2 circle 35 mm,pcs,0.0,0.0,0,0.0,0.0,Setara
+Bromheksin sirup 100 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Borax Gliserin solutio 15 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Bracket hand wash plastik,pcs,0.0,0.0,0,0.0,0.0,Setara
+Box Slide (kotak slides) isi untuk 50 slides,kotak,0.0,0.0,0,0.0,0.0,Setara
+Cairan Irigasi NaOCl 5% dan EDTA 5% inf 1000 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+"Betamethasone valerat 0.1 %, Gentamycin sulfat 0.1% krim (Benoson G)",tube,0.0,0.0,0,0.0,0.0,Setara
+"Betamethasone valerat 0.1 %, Miconazole nitrate 2% krim (Benoson M)",tube,0.0,0.0,0,0.0,0.0,Setara
+Bisakodil tablet 10 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+"Betametason 0,1%, Neomisin 0,5% krim (Nisagon)",tube,0.0,0.0,0,0.0,0.0,Setara
+Micropore Dispenser 3 M,pcs,0.0,0.0,0,0.0,0.0,Setara
+Pembalut elastis ukuran 6 inci (15 cm x 4.55 m),roll,0.0,0.0,0,0.0,0.0,Setara
+Perak sulfadiazin krim 1%,tube,0.0,0.0,0,0.0,0.0,Setara
+Permetrin krim 5 %,tube,0.0,0.0,0,0.0,0.0,Setara
+Bromheksin tablet 8 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Pirantel pamoat susp 125 mg/5 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Pirasetam inj,ampul,0.0,0.0,0,0.0,0.0,Setara
+Cat Gut Plain 3-0 76 cm reverse cutting 3/8 circle 16 mm,pcs,0.0,0.0,0,0.0,0.0,Setara
+Pirasetam tablet 400 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+"Piratiazin teoklat 40 mg, Piridoksin HCl 30 mg tablet",tablet,0.0,0.0,0,0.0,0.0,Setara
+Pirazinamid tablet 500 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Piridoksin injeksi 1 ml.,ampul,0.0,0.0,0,0.0,0.0,Setara
+Piroksikam tablet 20 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Natrium Bikarbonat tablet 500 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Permetrin krim 5 % 10 gram,tube,0.0,0.0,0,0.0,0.0,Setara
+"Oksitetrasiklin HCl salap mata 1 % @ 3,5 g.",tube,0.0,0.0,0,0.0,0.0,Setara
+Cendo Cenfresh 5mg/ml (minidose),amplop,0.0,0.0,0,0.0,0.0,Setara
+Ceftriakson injeksi 1 g,ampul,0.0,0.0,0,0.0,0.0,Setara
+Cefadroksil 250 mg / 5 ml sirup kering @ 60 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Pancreatin komb. tablet,tablet,0.0,0.0,0,0.0,0.0,Setara
+Papaverin inj 40 mg / ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Parasetamol 250 mg rektal,supp,0.0,0.0,0,0.0,0.0,Setara
+Cefixime 100 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+"OBH Plus 100 ml (Paracetamol 200 mg, pseudoefedrin 3 mg, CTM 0.5mg, Amonium klorida 25 mg, Succus liquiritiae 75 mg per 5ml)",botol,0.0,0.0,0,0.0,0.0,Setara
+Cefotaksim injeksi 1 g,ampul,0.0,0.0,0,0.0,0.0,Setara
+Natrium Diklofenak tab. 25 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+"Neurotropik (Vit B1 100 mg, Vit B6 200 mg, Vit B12) injeksi",ampul,0.0,0.0,0,0.0,0.0,Setara
+Natrium Heparina gel @ 20 g,tube,0.0,0.0,0,0.0,0.0,Setara
+Needle 25 G,pcs,0.0,0.0,0,0.0,0.0,Setara
+Natrium Tiosulfat injeksi 25 % - 10 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Needle 24 G,pcs,0.0,0.0,0,0.0,0.0,Setara
+Cefixime 100 mg/5 ml sirup kering @ 30ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Needle 23 G,pcs,0.0,0.0,0,0.0,0.0,Setara
+Bonding refill,set,0.0,0.0,0,0.0,0.0,Setara
+Calcium Alginate/Bioplacenton Tulle,lembar,0.0,0.0,0,0.0,0.0,Setara
+"Calcium carbonate 766 mg, Magnesium Hydroxide 372,5 mg, zinc 5 mg, Vitamin D3 2,5 mcg, Boron 1 mg (Formical B)",tablet,0.0,0.0,0,0.0,0.0,Setara
+Carbon Steel Surgical Blade Size No.10,kotak,0.0,0.0,0,0.0,0.0,Setara
+Carbon Steel Surgical Blade Size No.11,kotak,0.0,0.0,0,0.0,0.0,Setara
+Cat Gut Chromic 2-0 90 cm Round Bodied 1/2 circle 35 mm,pcs,0.0,0.0,0,0.0,0.0,Setara
+Cat Gut Chromic 3-0 76 cm Reverse Cutting 3/8 circle 24 mm,pcs,0.0,0.0,0,0.0,0.0,Setara
+Parasetamol drop 100 mg/ml @ 10ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Pembalut Gips,roll,0.0,0.0,0,0.0,0.0,Setara
+Noskapin 25 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Cefadroksil 125 mg / 5 ml sirup kering @ 60ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Obat Anti Tuberkulosis Kategori II ( FDC ),paket,0.0,0.0,0,0.0,0.0,Setara
+Norepinefrin inj 1 mg/ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Obat Anti Tuberkulosis Kategori III,paket,0.0,0.0,0,0.0,0.0,Setara
+Obat Anti Tuberkulosis Sisipan,paket,0.0,0.0,0,0.0,0.0,Setara
+Obat Batuk Hitam ( O B H ) sirup 100 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Nistatin tablet salut 500.000 IU,tablet,0.0,0.0,0,0.0,0.0,Setara
+Nistatin oral drop,botol,0.0,0.0,0,0.0,0.0,Setara
+Oksimetazolin tts hidung 0.05% @10 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Oksitetrasiklin HCl injeksi i.m 50 mg/ ml - 10 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Norit (Carbo adsorben) tablet,tube,0.0,0.0,0,0.0,0.0,Setara
+Suction Catheter FR 10,pcs,0.0,0.0,0,0.0,0.0,Setara
+Suction Catheter FR 6,pcs,0.0,0.0,0,0.0,0.0,Setara
+Suction Catheter FR 8,pcs,0.0,0.0,0,0.0,0.0,Setara
+TPHA,pcs,0.0,0.0,0,0.0,0.0,Setara
+TPT 3HR (TB),tablet,0.0,0.0,0,0.0,0.0,Setara
+Tabung Hematokrit,pcs,0.0,0.0,0,0.0,0.0,Setara
+Tabung Vacutener tutup ungu dengan anti koagulan 3 ml,pcs,0.0,0.0,0,0.0,0.0,Setara
+Temporary Restorative white 30 gram,set,0.0,0.0,0,0.0,0.0,Setara
+Temporary Stopping Fletcher serbuk 100 g. & cairan,set,0.0,0.0,0,0.0,0.0,Setara
+Teofilin Tablet 150 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+"Terbutalin tablet 2,5 mg",tablet,0.0,0.0,0,0.0,0.0,Setara
+Tetrasiklin HCl kapsul 500 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Micropipette Tips Blue Tip,pack,0.0,0.0,0,0.0,0.0,Setara
+Spons gelatin Cubicles 1 x 1 x 1 cm @ 24 pcs,kotak,0.0,0.0,0,0.0,0.0,Setara
+Startes HCV (FW-V04 : 25 Test),kotak,0.0,0.0,0,0.0,0.0,Setara
+Anti Migren DOEN kombinasi : Ergotamin Tartrat 1 mg + Koffein 50 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Antiseptik tangan tanpa dibilas 500 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Arm sling ukuran L,pcs,0.0,0.0,0,0.0,0.0,Setara
+Arm sling ukuran M,pcs,0.0,0.0,0,0.0,0.0,Setara
+Artemeter Injeksi @ 1ml ampul,ampul,0.0,0.0,0,0.0,0.0,Setara
+Artesunat Injeksi,ampul,0.0,0.0,0,0.0,0.0,Setara
+Asam Asetil Salisilat ( Asetosal ) tablet 80 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Asam Askorbat tablet 500 mg dalam bentuk buffer (Lavit C),tablet,0.0,0.0,0,0.0,0.0,Setara
+Stik Asam Urat (Accupro),pcs,0.0,0.0,0,0.0,0.0,Setara
+Safety Box,kotak,0.0,0.0,0,0.0,0.0,Setara
+Speculum vaginal disposible,pcs,0.0,0.0,0,0.0,0.0,Setara
+Air Untuk Irigasi 1000 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Amitriptilin HCl tablet salut 25 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Amoksisilin 100 mg/ml drop kering,botol,0.0,0.0,0,0.0,0.0,Setara
+Amoksisilin capsul 250 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Amoksisilin injeksi 1000 mg,ampul,0.0,0.0,0,0.0,0.0,Setara
+Amoksisilin sirup kering 250 mg / 5 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Ampisilin serbuk injeksi 1000 mg,ampul,0.0,0.0,0,0.0,0.0,Setara
+Antasida DOEN II susp. 60 ml.komb.:Al(OH) 200 mg/5 ml.+Mg(OH) 200 mg/5 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Anti Bakteri DOEN salap komb : Basitrasin 500 IU/g + Polimiksin 1000 IU/g,tube,0.0,0.0,0,0.0,0.0,Setara
+Anti Fungi DOEN komb : As. Benzoat 6 % + As. Salisilat 3 %,pot,0.0,0.0,0,0.0,0.0,Setara
+Anti Malaria DOEN kombinasi : Pirimetamin 25 mg + Sulfadoksin 500 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Tourniquet,pcs,0.0,0.0,0,0.0,0.0,Setara
+Streptomisin injeksi 1500 mg / ml @ 15 ml.,ampul,0.0,0.0,0,0.0,0.0,Setara
+Alprazolam tab 1 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+"Amilase 100 mg, Protease 100 mg, Lipase 180 100 mg/ Vitazym )",tablet,0.0,0.0,0,0.0,0.0,Setara
+"Amilase 4500 U, Protease 4050 U, Lipase 180 U dan simetikon 44 mg per tablet (Vitazym Plus)",tablet,0.0,0.0,0,0.0,0.0,Setara
+Aminofilin injeksi 24 mg / ml @ 10 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Aminofilin tablet 200 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Turbocaina (pengganti cresophene),kotak,0.0,0.0,0,0.0,0.0,Setara
+Ultrasound Transmission Gel (EKG) 250 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Underpad (120X100),pcs,0.0,0.0,0,0.0,0.0,Setara
+Urinalysa 3 Parameter,kotak,0.0,0.0,0,0.0,0.0,Setara
+Urinalysa 3 Parameter,kotak,0.0,0.0,0,104.6,-104.6,Bulanan lebih stabil
+Eritromisin sirup 200 mg / 5 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+"Etakridin ( Rivanol ) larutan 0,1 % @ 300 ml.",botol,0.0,0.0,0,0.0,0.0,Setara
+Etambutol tablet 250 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Tramadol capsul 50 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Bisoprolol tablet 5 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Primakuin tablet 15 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Prokain Benzil Penisillin injeksi 3 Juta IU,ampul,0.0,0.0,0,0.0,0.0,Setara
+Proline Kolesterol FS 10,kotak,0.0,0.0,0,0.0,0.0,Setara
+Proline Triglyserides FS 10,kotak,0.0,0.0,0,0.0,0.0,Setara
+Propanolol HCl tablet 40 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Propanolol tablet 10 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Propiltiourasil tablet 100 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Psidii folium 250 mg/5ml @ 60 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+RPR,pcs,0.0,0.0,0,0.0,0.0,Setara
+Rapid Test IgG/IgM-NS1 (Dengue Combo),pcs,0.0,0.0,0,0.0,0.0,Setara
+Rapid test HIV 1/2,pcs,0.0,0.0,0,0.0,0.0,Setara
+Salap 2 - 4 Kombinasi : As.Salisilat 2 % + Belerang Endap 4 % @ 30 g,pot,0.0,0.0,0,0.0,0.0,Setara
+Rapid test for Malaria Pan/Pf,pcs,0.0,0.0,0,0.0,0.0,Setara
+Rapid test for Malaria Pf dan Pv,pcs,0.0,0.0,0,0.0,0.0,Setara
+"Reserpin tablet 0,10 mg",tablet,0.0,0.0,0,0.0,0.0,Setara
+"Plester transparan 5 m X 1,25 cm",roll,0.0,0.0,0,0.0,0.0,Setara
+Pot Feces,pcs,0.0,0.0,0,0.0,0.0,Setara
+Pot Urine 75 ml,pcs,0.0,0.0,0,0.0,0.0,Setara
+Povidon Iodida 10 % 300 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Autoclick lancing device,pcs,0.0,0.0,0,0.0,0.0,Setara
+Bahan pengisi saluran akar gigi,set,0.0,0.0,0,0.0,0.0,Setara
+Baygel Ultrasound Transmission Gel 250 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+"Benzatin Benzil Penisillin injeksi 2,4 Juta IU",ampul,0.0,0.0,0,0.0,0.0,Setara
+Besi (Fe) 15 mg per 15 ml suspensi 120 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Rapid test for Dengue IgG/IgM,pcs,0.0,0.0,0,0.0,0.0,Setara
+Salbutamol inhalasi 100 mcg/dosis @ 200 dosis,botol,0.0,0.0,0,0.0,0.0,Setara
+Semen Seng Fosfat serbuk & Cairan,set,0.0,0.0,0,0.0,0.0,Setara
+Serum Anti Difteri injeksi 20.000 IU / vial (ADS),ampul,0.0,0.0,0,0.0,0.0,Setara
+Serum Anti Tetanus injeksi 1.500 IU/ml (ATS) @1 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Serum Anti Tetanus injeksi 20.000 IU / Vial (ATS),ampul,0.0,0.0,0,0.0,0.0,Setara
+Sianokobalamin injeksi 500 mcg/ml - 1 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Silk Braided black 4-0 DS 19mm 75cm,pcs,0.0,0.0,0,0.0,0.0,Setara
+Silk Non Absopabel Suture 75 Black 3-0 26mm 38 sircle reversecutting,kotak,0.0,0.0,0,0.0,0.0,Setara
+Silver Amalgam serbuk 65 - 75 % 1 oz,set,0.0,0.0,0,0.0,0.0,Setara
+Simvastatin tablet 10 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Spare Part Thermal Paper 216mm x 20mm (12ch),pcs,0.0,0.0,0,0.0,0.0,Setara
+"Reserpin tablet 0,25 mg",tablet,0.0,0.0,0,0.0,0.0,Setara
+S i l k ( Benang Bedah Sutera ) No. 2/0 DS 19 mm,sachet,0.0,0.0,0,0.0,0.0,Setara
+Rifampisin kaplet 450 mg,kaplet,0.0,0.0,0,0.0,0.0,Setara
+Asam Mefenamat capsul 250 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Asam Traneksamat injeksi 100 mg @ 5 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Asetil sisterina 100mg/5ml drop kering,botol,0.0,0.0,0,0.0,0.0,Setara
+Asiatikosida krim 1 % @ 10 g,tube,0.0,0.0,0,0.0,0.0,Setara
+Asiklovir tablet 200 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+"Atropin Sulfat Injeksi 0,25mg/ml-1 ml.",ampul,0.0,0.0,0,0.0,0.0,Setara
+"Atropin Sulfat Tetes Mata 0,5 % @ 5 ml.",tablet,0.0,0.0,0,0.0,0.0,Setara
+"Auoto Disposibel syringe 0,5 ml",pcs,0.0,0.0,0,0.0,0.0,Setara
+"Auto Disposibel syringe 0,05 ml",pcs,0.0,0.0,0,0.0,0.0,Setara
+Rifampisin kaplet 600 mg,kaplet,0.0,0.0,0,0.0,0.0,Setara
+Rifapentine 300mg/ Isoniazid 300mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+S i l k ( Benang Bedah Sutera ) No. 1 DS 24 mm,sachet,0.0,0.0,0,0.0,0.0,Setara
+Rifampisin capsul 300 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Hyoscine-N-Butilbromide tablet 10 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+I.V. Canula Venocath No. 20,pcs,0.0,0.0,0,0.0,0.0,Setara
+I.V. Canula Venocath No. 22,pcs,0.0,0.0,0,0.0,0.0,Setara
+I.V. Canula Venocath No. 26,pcs,0.0,0.0,0,0.0,0.0,Setara
+Ibuprofen Suspensi 100 mg / 5 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Ibuprofen tablet 200 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Ichtyol ( Salap Hitam ),pot,0.0,0.0,0,0.0,0.0,Setara
+Iodium Test,botol,0.0,0.0,0,0.0,0.0,Setara
+"Ipratrium Br 21 mcg, Salbutamol Sulfat 120 mcg perhirup (Combivent)",botol,0.0,0.0,0,0.0,0.0,Setara
+Isoniazid tablet 100 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Isoniazid tablet 300 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Handscoon No.6.5 non steril,pasang,0.0,0.0,0,0.0,0.0,Setara
+Tiamin HCl injeksi 100 mg / ml - 1 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Doksisiklin capsul 100 mg/Interdoxin 100 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Domperidon 5 mg/ml drop @ 10ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Echant (etching),set,0.0,0.0,0,0.0,0.0,Setara
+Echant (etching)/ETSA/Any-Etch 37% Phosphoric Acid Etchant,set,0.0,0.0,0,0.0,0.0,Setara
+Efedrin HCl tablet 25 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Ekstrak Centella Asiatica 1% salep (Tekasol),tube,0.0,0.0,0,0.0,0.0,Setara
+Elastic Verban 15 cm x 4.55m (Tensocrepe),roll,0.0,0.0,0,0.0,0.0,Setara
+Equispon Absorbeble Gelatin Sponge Dental Bottle 10 x 10 x 10mm,pack,0.0,0.0,0,0.0,0.0,Setara
+Eritromisin kaplet 500 mg,kaplet,0.0,0.0,0,0.0,0.0,Setara
+Handscoon No.7.5 non steril,pasang,0.0,0.0,0,0.0,0.0,Setara
+Handscoon No.7.5 steril,pasang,0.0,0.0,0,0.0,0.0,Setara
+Gemfibrozil capsul 600 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Doksisiklin capsul 100 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Dect Glass / cover glass,kotak,0.0,0.0,0,0.0,0.0,Setara
+Dect Glass / cover glass,pcs,0.0,0.0,0,0.0,0.0,Setara
+Dect Glass / cover glass,pcs,0.0,0.0,0,0.0,0.0,Setara
+Dermafik T 10 x 25 cm,lembar,0.0,0.0,0,0.0,0.0,Setara
+Developer 20 lt,jerigen,0.0,0.0,0,0.0,0.0,Setara
+Devitalisasi Pasta ( Non Arsen ),botol,0.0,0.0,0,0.0,0.0,Setara
+Devitalizer Pasta ( Non Arsen ),botol,0.0,0.0,0,0.0,0.0,Setara
+"Diazepam Enema 5 mg/2,5 ml",tube,0.0,0.0,0,0.0,0.0,Setara
+Diazepam tablet 5 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Difenhidramin HCl injeksi 10 mg / ml - 1 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+"Digoksin tablet 0,25 mg",tablet,0.0,0.0,0,0.0,0.0,Setara
+Kartu Golongan Darah,kotak,0.0,0.0,0,0.0,0.0,Setara
+Hyoscine-N-Butilbromide injeksi,ampul,0.0,0.0,0,0.0,0.0,Setara
+Kalcidor Calsium Hydroxide Compositum,kotak,0.0,0.0,0,0.0,0.0,Setara
+Kalium Permanganat serbuk 5 g.,pot,0.0,0.0,0,0.0,0.0,Setara
+Kalium diklofenak 25 mg tablet,tablet,0.0,0.0,0,0.0,0.0,Setara
+Kalium diklofenak 50 mg tablet,tablet,0.0,0.0,0,0.0,0.0,Setara
+Kalsium Glukonat injeksi 10% (100 mg/ml) @ 10 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Kalsium Hidroksida pasta @ 2 tube,set,0.0,0.0,0,0.0,0.0,Setara
+Kanamycin injeksi 1 gram,ampul,0.0,0.0,0,0.0,0.0,Setara
+Kaolin Pektin sirup,botol,0.0,0.0,0,0.0,0.0,Setara
+Kapas Berlemak 500 gram,roll,0.0,0.0,0,0.0,0.0,Setara
+Kaptopril tablet 50 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Karbamazepin tablet 200 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Karbol (Fenol) Gliserol tetes telinga 10% @ 5 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Kaca Mata Pelindung (Google),pcs,0.0,0.0,0,0.0,0.0,Setara
+Gemfibrozil capsul 300 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Etanol larutan 70 % @ 100 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Etanol larutan 96% @ 1000 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+"Feeding tube 3,5 fr (3,5cm)",set,0.0,0.0,0,0.0,0.0,Setara
+Fenilbutazon tablet 200 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Fenobarbital injeksi 50 mg / ml - 2 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Fenobarbital tablet 100 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Fenobarbital tablet 30 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Film Rongent dental 3 x 4,pcs,0.0,0.0,0,0.0,0.0,Setara
+Film Rongent uk 24 x 30,pcs,0.0,0.0,0,0.0,0.0,Setara
+Film Rongent uk 30 x 40,pcs,0.0,0.0,0,0.0,0.0,Setara
+Triheksifenidil Hidroklorida tab 2 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Gentamisin Sulfat tetes mata 0.3%,botol,0.0,0.0,0,0.0,0.0,Setara
+"Tripolidin Hcl 1.25mg, Pseudoefedrin Hcl 30mg/5ml @60 ml",botol,0.0,0.0,0,0.0,0.0,Setara
+Tumpatan Composite (Light cured),set,0.0,0.0,0,0.0,0.0,Setara
+Tumpatan Composite Anterior A2/B2,tube,0.0,0.0,0,0.0,0.0,Setara
+Tumpatan Composite Anterior A3,tube,0.0,0.0,0,0.0,0.0,Setara
+Tumpatan Composite Anterior A3.5,tube,0.0,0.0,0,0.0,0.0,Setara
+Air Raksa Dental Use 100 G.,botol,0.0,0.0,0,0.0,0.0,Setara
+"Vitamin B1 100 mg, B6 200 mg, B12 200 mcg, vit E 30 mg per tablet (Lapibion)",tablet,0.0,0.0,0,0.0,0.0,Setara
+Vitamin D3 1000 IU tablet,tablet,0.0,0.0,0,0.0,0.0,Setara
+Zinc sirup 20 mg/5 ml @ 60 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+A C T ( Artesunat 50 mg + Amodiaquin 200 mg ) tablet,tablet,0.0,0.0,0,0.0,0.0,Setara
+Three (3) way,pcs,0.0,0.0,0,0.0,0.0,Setara
+"Alprazolam tab 0,5 mg",tablet,0.0,0.0,0,0.0,0.0,Setara
+Trikresol Formalin (TKF),botol,0.0,0.0,0,0.0,0.0,Setara
+Gentamisin injeksi 40 mg/ml @ 2ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Gentamisin injeksi 80 mg,ampul,0.0,0.0,0,0.0,0.0,Setara
+Gentian Violet larutan 1 % 10 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Glimepiride tablet 1 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Gliserin larutan 50% @ 100 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Griseofulvin 500 mg tab,tablet,0.0,0.0,0,0.0,0.0,Setara
+Gutta percha,kotak,0.0,0.0,0,0.0,0.0,Setara
+Haloperidol 5 mg tablet,tablet,0.0,0.0,0,0.0,0.0,Setara
+Haloperidol decanoat inj 50 mg/ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+"Haloperidol tablet 1,5 mg",tablet,0.0,0.0,0,0.0,0.0,Setara
+Haloperidol tablet 2 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Handschoon obgyn steril,pasang,0.0,0.0,0,0.0,0.0,Setara
+Gameksan Emulsi 1 %,botol,0.0,0.0,0,0.0,0.0,Setara
+Film Rongent uk 35 x 35,pcs,0.0,0.0,0,0.0,0.0,Setara
+Filter Paper,pcs,0.0,0.0,0,0.0,0.0,Setara
+Fitomenadion (Vitamin K1) injeksi 10 mg/ml - 1 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Fitomenadion (Vitamin K1) tablet salut gula 10 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Fixer 20 lt,jerigen,0.0,0.0,0,0.0,0.0,Setara
+Flavoksat HCl tab. 200 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Flouksetin kaps 10 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Flukonazol 150 mg kapsul,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Folley Catheter 2. W 30 cc No.14,pcs,0.0,0.0,0,0.0,0.0,Setara
+Folley Catheter 2. W 30 cc No.16,pcs,0.0,0.0,0,0.0,0.0,Setara
+Folley Catheter 2. W 30 cc No.18,pcs,0.0,0.0,0,0.0,0.0,Setara
+Furosemid injeksi 10 mg/ml @ 2 ml.,ampul,0.0,0.0,0,0.0,0.0,Setara
+Furosemid tablet 40 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Handscoon No.6 non steril,pasang,0.0,0.0,0,0.0,0.0,Setara
+MDT Dewasa,pcs,0.0,0.0,0,0.0,0.0,Setara
+Magnesium Sulfat injeksi (IV) 20 % - 25 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Magnesium Sulfat injeksi (IV) 40 % - 25 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Masker 4 ply earloop,kotak,0.0,0.0,0,0.0,0.0,Setara
+Masker N95,pcs,0.0,0.0,0,0.0,0.0,Setara
+Masker hi oxygen dewasa (non rebreathing mask),pcs,0.0,0.0,0,0.0,0.0,Setara
+Mebendazol tablet 100 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Medical Recording Chart Paper (Kertas ECG/EKG) 80mmX25m,roll,0.0,0.0,0,0.0,0.0,Setara
+"Medical Recording Chart Paper, Kertas ECG/EKG Paper Ukuran 110mm x30mm",roll,0.0,0.0,0,0.0,0.0,Setara
+Larutan Metilen Biru 100 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+"Larutan NaCl 0,225 %+ Dextrose 5 % ( cairan 1 : 4 ) infus @ 500 ml.",botol,0.0,0.0,0,0.0,0.0,Setara
+"Larutan NaCl 1,75 g, KCl 1,5 g, Na Laktat 2,24 g, Dextrose 27 g @ 500 ml (KaEN 3B)",botol,0.0,0.0,0,0.0,0.0,Setara
+Klobazam tab 10 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Larutan Ress Echer 100 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan Turk 100 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan infus Glukosa 10% steril @ 500 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan infus Glukosa 40% steril,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan infus Glukosa 5% steril @ 500 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Lidocain jelly 2% 10 gr,syringe,0.0,0.0,0,0.0,0.0,Setara
+Lidocain semprot 10 %,botol,0.0,0.0,0,0.0,0.0,Setara
+Linkomisin capsul 500 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Lorazepam tablet 2 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Cervical collar universal (neck collar),pcs,0.0,0.0,0,0.0,0.0,Setara
+Cetirizina Hcl 10 mg/ml tetes,botol,0.0,0.0,0,0.0,0.0,Setara
+Cetirizina sirup 5 mg / 5 ml @ 60 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan Natrium Citras 3 % @100 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Mitela Kain,pcs,0.0,0.0,0,0.0,0.0,Setara
+"Multivitamin Fe 30 mg, Asam Folat 200 mcg, Vitamin B12 2 mcg per 5 ml (Ferri Kid Sirup)",botol,0.0,0.0,0,0.0,0.0,Setara
+Multivitamin dan mineral tetes sirup@ 15 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Multivitamin mineral dengan zat besi tablet dewasa,tablet,0.0,0.0,0,0.0,0.0,Setara
+Mummifying Pasta,botol,0.0,0.0,0,0.0,0.0,Setara
+NGT (Naso Gastric Tube/stomach tube) no.14,pcs,0.0,0.0,0,0.0,0.0,Setara
+NGT (Naso Gastric Tube/stomach tube) no.16,pcs,0.0,0.0,0,0.0,0.0,Setara
+NGT (Naso Gastric Tube/stomach tube) no.18,pcs,0.0,0.0,0,0.0,0.0,Setara
+Nasal Oxygen Canula Dewasa,pcs,0.0,0.0,0,0.0,0.0,Setara
+Nasal canula bayi,pcs,0.0,0.0,0,0.0,0.0,Setara
+"Medical Recording Chart Paper, Kertas ECG/EKG Paper Ukuran 215mm x280mm",roll,0.0,0.0,0,0.0,0.0,Setara
+Meloksikam capsul 15 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+MDT Dewasa,pcs,0.0,0.0,0,44.7,-44.7,Bulanan lebih stabil
+Metampiron ( Antalgin ) tablet 500 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+"Metilergometrin Maleat tablet salut 0,125 mg",tablet,0.0,0.0,0,0.0,0.0,Setara
+Metoklopramid drop 2 mg/ml @ 10 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Metoklopramid injeksi 5 mg/ml @ 2 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Metoklopramid syrup @ 60 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Metoklorpramid tablet 10 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Metronidazol infus,botol,0.0,0.0,0,0.0,0.0,Setara
+Metronidazol sirup 125 mg/5ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Metronidazol tablet 250 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Micro Aplicator,kotak,0.0,0.0,0,0.0,0.0,Setara
+Micro brush,kotak,0.0,0.0,0,0.0,0.0,Setara
+Lubricant Gel,tube,0.0,0.0,0,0.0,0.0,Setara
+Metampiron ( Antalgin ) injeksi 500 mg /1 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Kloramfenikol tetes telinga 3 % @ 5 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Klorfenol Kamfer Mentol ( CHKM ) cairan 10 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Klorfenol Kamfer Mentol ( CHKM ) cairan 20 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Klorheksidin lar 0.2% (larutan kumur antiseptik gigi) @ 60 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Klorokuin tablet 150 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Klorpromazin HCl injeksi 25 mg / ml - 1 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Klorpromazin HCl tablet salut 100 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Klorpromazin HCl tablet salut 25 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Klozapin tab 25 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Kodein Fosfat tablet 10 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+"Kombinasi anti alergi lotion 100 ml (Kalamin 8%, Difenhidramin HCl 1%, Kamfer 0.1%, Gliserol alkohol 2%)",botol,0.0,0.0,0,0.0,0.0,Setara
+"Kombinasi krim mengandung Metilsalisilat 102 mg, Menthol 54,4 mg, Eugenol 13,6 mg, kapsaicin/Nostren",tube,0.0,0.0,0,0.0,0.0,Setara
+Chlorine Desinfectan 1% 1L,botol,0.0,0.0,0,0.0,0.0,Setara
+Kasa Kompres 40 cm x 40 cm,bungkus,0.0,0.0,0,0.0,0.0,Setara
+Kasa Pembalut 2 m x 80 cm,bungkus,0.0,0.0,0,0.0,0.0,Setara
+Kasa Pembalut Hidrofil 4 m x 10 cm,roll,0.0,0.0,0,0.0,0.0,Setara
+Kasa Pembalut Hidrofil 4 m x 3 cm,roll,0.0,0.0,0,0.0,0.0,Setara
+Kasa Pembalut Hidrofil 4 m x 5 cm,roll,0.0,0.0,0,0.0,0.0,Setara
+Kasa hidrofil 36 x 80 cm,roll,0.0,0.0,0,0.0,0.0,Setara
+Kateter Nelaton No.10,pcs,0.0,0.0,0,0.0,0.0,Setara
+Kateter Nelaton No.12,pcs,0.0,0.0,0,0.0,0.0,Setara
+Kateter Nelaton No.14,pcs,0.0,0.0,0,0.0,0.0,Setara
+Ketoprofen Supp 100 mg,supp,0.0,0.0,0,0.0,0.0,Setara
+Ketoprofen injeksi 100 mg @ 1 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+Ketoprofen tablet 100 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+"Kombinasi krim mengandung Metilsalisilat 110 mg, Menthol 60 mg, Eugenol 15 mg (Lespain)",tube,0.0,0.0,0,0.0,0.0,Setara
+Cimetidin tablet 200 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Ciprofloksasin tetes mata 3 mg/ml minidose 0.6 ml,strip,0.0,0.0,0,0.0,0.0,Setara
+Clobazam 10 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Cotton swab,pcs,0.0,0.0,0,0.0,0.0,Setara
+Curcuma xanthorrhiza Extract 20 mg (mengandung Curcuminoid 15%) (Cavicur),tablet,0.0,0.0,0,0.0,0.0,Setara
+Dect Glass / cover glass,kotak,0.0,0.0,0,0.0,0.0,Setara
+Larutan KOH 10% 100 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan Karbol Fuchsin 100 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan Mersi Oil 100 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan Metanol 100 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Kuinin ( Kina ) tablet 200 mg,tablet,0.0,0.0,0,0.0,0.0,Setara
+Kuinin Injeksi IV 25 % sebagai 2HCl - 2 ml,ampul,0.0,0.0,0,0.0,0.0,Setara
+"Kloramfenikol tetes mata 0,5 % + Deksametason",botol,0.0,0.0,0,0.0,0.0,Setara
+Lanzoprazol Kapsul 30 mg,kaplet,0.0,0.0,0,0.0,0.0,Setara
+Larutan Anisol 100 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan Asam Asetat6% 100 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+"Larutan Asam Klorida 0,1N 100 ml",botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan Asam sulfosalisilat 20 % 100 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan Benedict 100 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan Eosin 2 % 100 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan Etanol Asam 3% 100 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan Giemsa Stain 100 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan H2O2 3% @ 100 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Larutan Hayem 100 ml,botol,0.0,0.0,0,0.0,0.0,Setara
+Kloramfenikol capsul 250 mg,kapsul,0.0,0.0,0,0.0,0.0,Setara
+Kloramfenikol suspensi 125 mg / 5 ml. @ 60 ml.,botol,0.0,0.0,0,0.0,0.0,Setara
+Lactobacillus,sachet,0.0,0.0,0,0.0,0.0,Setara

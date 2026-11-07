@@ -1,0 +1,6 @@
+Indikator Logistik Farmasi,Nilai Kuantitas / Nominal,Dasar Perhitungan / Sumber Data
+Total Kebutuhan Obat Esensial (150 Item Aktif),184.250 Unit Obat,Akumulasi Model Terbaik (SMA/WMA) 2026-P5
+Alokasi Cadangan Penyangga (Safety Stock 95%),28.940 Unit Obat (15.7%),"Lead Time 1 Dwibulan, Service Level 95% (Z=1.645)"
+Total Rekomendasi Alokasi Pengadaan Puskesmas,213.190 Unit Obat,Proyeksi Kebutuhan Titik + Buffer Pengaman
+Riwayat Kerugian Obat Kadaluarsa (2023–2025),Rp 43.348.626 (138 Item),Data Audit Fisik Berita Acara Pemusnahan Farmasi
+Estimasi Penghematan Anggaran via Model Peramalan,Rp 27.500.000 s/d Rp 34.000.000 / Tahun,Pencegahan Overstocking Menggunakan WMA & MACD

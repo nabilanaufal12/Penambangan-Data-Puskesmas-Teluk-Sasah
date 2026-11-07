@@ -1,0 +1,43 @@
+# ==============================================================================
+# Git Ignore Configuration - Penambangan Data Kelompok 23
+# ==============================================================================
+
+# Python Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary & Lock files (Excel, LibreOffice, Vim)
+.~lock.*#
+*.tmp
+*.swp
+*.swo
+*~
+
+# IDE & Editor Settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.opencode/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Large backup archives (keep project clean; 07_Alur_Data_Mentah_ke_Final.zip & Bahan_Analisis_ML_Claude.zip can be kept or committed depending on preference, but raw LPLPO zips inside 02_Data_Mentah_Puskesmas are fine since < 5MB)
+# Exclude scratch & temporary logs if any
+*.log

@@ -1,0 +1,5 @@
+kode_icd,nama_penyakit_alias,total_kasus_historis,mean_kasus_bimonthly,mape_sma2,mape_sma3,mape_wma3,mae_wma3,rmse_wma3,best_model,prediksi_kasus_2026_P5,prediksi_wma3_P5,prediksi_sma2_P5,prediksi_sma3_P5
+J00,ISPA / Acute Nasopharyngitis,10623.0,482.8636363636364,32.99,36.65,33.58,157.43,192.71,SMA (k=2),338.0,326.5,338.0,334.3
+I10,Hipertensi Primer / Essential Hypertension,7343.0,333.77272727272725,9.54,10.94,9.77,34.69,43.75,SMA (k=2),342.5,337.2,342.5,336.0
+K30,Dispepsia / Dyspepsia (Gangguan Lambung),3315.0,150.6818181818182,12.5,13.3,11.91,18.36,27.05,WMA (k=3),145.7,145.7,152.0,140.0
+E11,Diabetes Melitus Tipe 2 / Non-Insulin-Dependent Diabetes,1478.0,67.18181818181819,25.15,27.01,25.84,16.9,19.09,SMA (k=2),69.0,69.0,69.0,70.0

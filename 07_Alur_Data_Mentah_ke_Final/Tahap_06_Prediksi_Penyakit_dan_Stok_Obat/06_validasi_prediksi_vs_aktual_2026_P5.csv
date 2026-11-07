@@ -1,0 +1,5 @@
+kode_icd,nama_penyakit,model_terbaik,prediksi_total_2bulan_P5,estimasi_1bulan_dari_prediksi,aktual_september_2026,ape_september_persen,catatan
+J00,ISPA,SMA (k=2),338.0,169.0,204.0,17.2,Validasi parsial: hanya Sep 2026 tersedia. Prediksi 2 bulan dibagi 2 untuk perbandingan 1-bulan. Data Okt 2026 belum tersedia untuk validasi penuh.
+I10,Hipertensi,SMA (k=2),342.0,171.0,142.0,20.4,Validasi parsial: hanya Sep 2026 tersedia. Prediksi 2 bulan dibagi 2 untuk perbandingan 1-bulan. Data Okt 2026 belum tersedia untuk validasi penuh.
+K30,Dispepsia,WMA (k=3),146.0,73.0,77.0,5.2,Validasi parsial: hanya Sep 2026 tersedia. Prediksi 2 bulan dibagi 2 untuk perbandingan 1-bulan. Data Okt 2026 belum tersedia untuk validasi penuh.
+E11,Diabetes,SMA (k=2),69.0,34.0,37.0,8.1,Validasi parsial: hanya Sep 2026 tersedia. Prediksi 2 bulan dibagi 2 untuk perbandingan 1-bulan. Data Okt 2026 belum tersedia untuk validasi penuh.
