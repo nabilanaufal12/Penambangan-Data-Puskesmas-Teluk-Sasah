@@ -121,10 +121,10 @@
                         <i class="fa-solid fa-house-chimney-medical w-6 text-center text-base {{ request()->routeIs('dashboard') ? 'text-white' : 'text-medical-400' }}"></i>
                         <span class="ml-2.5">Beranda & Monitoring</span>
                     </a>
-                    <a href="{{ route('lplpo.input') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('lplpo.input') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
-                        <i class="fa-solid fa-pen-to-square w-6 text-center text-base {{ request()->routeIs('lplpo.input') ? 'text-white' : 'text-amber-400' }}"></i>
-                        <span class="ml-2.5">Input / Tutup Buku LPLPO</span>
-                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded font-bold {{ request()->routeIs('lplpo.input') ? 'bg-white/20 text-white' : 'bg-amber-500/20 text-amber-300' }}">Entry</span>
+                    <a href="{{ route('data.entry') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('data.entry') || request()->routeIs('lplpo.input') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
+                        <i class="fa-solid fa-folder-open w-6 text-center text-base {{ request()->routeIs('data.entry') || request()->routeIs('lplpo.input') ? 'text-white' : 'text-amber-400' }}"></i>
+                        <span class="ml-2.5">Pusat Entri Data Faskes</span>
+                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded font-bold {{ request()->routeIs('data.entry') || request()->routeIs('lplpo.input') ? 'bg-white/20 text-white' : 'bg-amber-500/20 text-amber-300' }}">4 Modul</span>
                     </a>
                     <a href="{{ route('procurement') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('procurement') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
                         <i class="fa-solid fa-cart-flatbed-suitcase w-6 text-center text-base {{ request()->routeIs('procurement') ? 'text-white' : 'text-emerald-400' }}"></i>

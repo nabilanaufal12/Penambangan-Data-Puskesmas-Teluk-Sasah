@@ -176,10 +176,48 @@ class DashboardController extends Controller
         return view('dashboard.print_lplpo', compact('medicines', 'paracetamol', 'totalAlokasi'));
     }
 
-    public function inputLplpo()
+    public function inputLplpo(Request $request)
     {
-        $medicines = Medicine::orderBy('nama_obat')->get(['id', 'nama_obat', 'satuan', 'sisa_stok', 'prediksi_P5', 'safety_stock', 'rekomendasi_total']);
-        return view('dashboard.input_lplpo', compact('medicines'));
+        return $this->dataEntry($request);
+    }
+
+    public function dataEntry(Request $request)
+    {
+        $tab = $request->get('tab', 'lplpo');
+
+        $medicines = Medicine::orderBy('nama_obat')->get();
+        $recentDiseases = DiseaseRecord::orderBy('tahun', 'desc')
+            ->orderBy('bulan_angka', 'desc')
+            ->take(15)
+            ->get();
+        
+        $recentExpired = ExpiredMedicine::orderBy('tahun', 'desc')
+            ->orderBy('id', 'desc')
+            ->take(15)
+            ->get();
+
+        $totalExpiredLoss = ExpiredMedicine::sum('sub_total_kerugian');
+        $totalExpiredItems = ExpiredMedicine::count();
+        $totalDiseaseRecords = DiseaseRecord::count();
+
+        // Common ICD-10 list for quick select in Puskesmas
+        $commonDiseases = [
+            ['kode' => 'J00', 'nama' => 'Acute nasopharyngitis [common cold] (ISPA)', 'klaster' => 'Penyakit Sistem Pernapasan'],
+            ['kode' => 'I10', 'nama' => 'Essential (primary) hypertension (Hipertensi)', 'klaster' => 'Penyakit Sistem Sirkulasi'],
+            ['kode' => 'K30', 'nama' => 'Dyspepsia (Gangguan Asam Lambung / Maag)', 'klaster' => 'Penyakit Sistem Pencernaan'],
+            ['kode' => 'E11', 'nama' => 'Non-insulin-dependent diabetes mellitus (Diabetes Tipe 2)', 'klaster' => 'Penyakit Endokrin, Nutrisi & Metabolik'],
+            ['kode' => 'M79.1', 'nama' => 'Myalgia (Nyeri Otot)', 'klaster' => 'Penyakit Sistem Muskuloskeletal'],
+            ['kode' => 'J02', 'nama' => 'Acute pharyngitis (Radang Tenggorokan)', 'klaster' => 'Penyakit Sistem Pernapasan'],
+            ['kode' => 'R50.9', 'nama' => 'Fever, unspecified (Demam)', 'klaster' => 'Gejala, Tanda & Kelainan Klinis'],
+            ['kode' => 'A09', 'nama' => 'Infectious gastroenteritis and colitis (Diare Akut)', 'klaster' => 'Penyakit Infeksi & Parasit'],
+            ['kode' => 'L20', 'nama' => 'Atopic dermatitis (Alergi / Gatal Kulit)', 'klaster' => 'Penyakit Kulit & Jaringan Subkutan'],
+            ['kode' => 'K02', 'nama' => 'Dental caries (Gigi Berlubang)', 'klaster' => 'Penyakit Rongga Mulut & Gigi'],
+        ];
+
+        return view('dashboard.data_entry', compact(
+            'tab', 'medicines', 'recentDiseases', 'recentExpired', 
+            'totalExpiredLoss', 'totalExpiredItems', 'totalDiseaseRecords', 'commonDiseases'
+        ));
     }
 
     public function storeLplpo(Request $request)
@@ -193,11 +231,9 @@ class DashboardController extends Controller
 
         $med = Medicine::findOrFail($validated['medicine_id']);
         
-        // Recalculate based on WMA / moving average
         $stokAkhir = (float) $validated['sisa_stok_terbaru'];
         $pemakaian = (float) $validated['pemakaian_terbaru'];
         
-        // Update stock & re-evaluate order recommendation
         $newPred = round(($med->prediksi_P5 * 0.5) + ($pemakaian * 0.5));
         $safetyStock = $med->safety_stock;
         $order = max(0, ($newPred + $safetyStock) - $stokAkhir);
@@ -209,6 +245,115 @@ class DashboardController extends Controller
             'keterangan' => $validated['keterangan_tambahan'] ? $validated['keterangan_tambahan'] . ' (Input Mandiri Petugas Farmasi)' : $med->keterangan,
         ]);
 
-        return redirect()->route('lplpo.input')->with('success', "Stok obat '{$med->nama_obat}' berhasil diperbarui! Rekomendasi order baru: " . number_format($order, 0, ',', '.') . " {$med->satuan}.");
+        return redirect()->route('data.entry', ['tab' => 'lplpo'])->with('success', "Stok obat '{$med->nama_obat}' berhasil diperbarui! Rekomendasi order baru: " . number_format($order, 0, ',', '.') . " {$med->satuan}.");
+    }
+
+    public function storeDisease(Request $request)
+    {
+        $validated = $request->validate([
+            'tahun' => 'required|integer|min:2020|max:2030',
+            'bulan_angka' => 'required|integer|min:1|max:12',
+            'kode_icd' => 'required|string|max:10',
+            'nama_penyakit' => 'required|string|max:255',
+            'klaster_icd' => 'nullable|string',
+            'pasien_laki' => 'required|numeric|min:0',
+            'pasien_perempuan' => 'required|numeric|min:0',
+        ]);
+
+        $bulanNamaMap = [
+            1 => 'JANUARI', 2 => 'FEBRUARI', 3 => 'MARET', 4 => 'APRIL',
+            5 => 'MEI', 6 => 'JUNI', 7 => 'JULI', 8 => 'AGUSTUS',
+            9 => 'SEPTEMBER', 10 => 'OKTOBER', 11 => 'NOVEMBER', 12 => 'DESEMBER'
+        ];
+
+        $tahun = (int) $validated['tahun'];
+        $bulanAngka = (int) $validated['bulan_angka'];
+        $bulanNama = $bulanNamaMap[$bulanAngka] ?? 'BULAN';
+        $pNum = (int) ceil($bulanAngka / 2);
+        $periodeId = "{$tahun}-P{$pNum}";
+        
+        $laki = (float) $validated['pasien_laki'];
+        $perempuan = (float) $validated['pasien_perempuan'];
+        $total = $laki + $perempuan;
+
+        DiseaseRecord::create([
+            'tahun' => $tahun,
+            'bulan_angka' => $bulanAngka,
+            'bulan' => $bulanNama,
+            'periode_bimonthly_id' => $periodeId,
+            'kode_icd' => strtoupper(trim($validated['kode_icd'])),
+            'nama_penyakit' => trim($validated['nama_penyakit']),
+            'klaster_icd' => $validated['klaster_icd'] ?? 'Penyakit Umum',
+            'pasien_laki' => $laki,
+            'pasien_perempuan' => $perempuan,
+            'total_pasien' => $total,
+        ]);
+
+        return redirect()->route('data.entry', ['tab' => 'penyakit'])->with('success', "Rekam morbiditas '{$validated['kode_icd']} - {$validated['nama_penyakit']}' ({$total} pasien, {$bulanNama} {$tahun}) berhasil ditambahkan ke SIMPUS!");
+    }
+
+    public function storeExpired(Request $request)
+    {
+        $validated = $request->validate([
+            'tahun' => 'required|integer|min:2020|max:2030',
+            'nama_obat' => 'required|string|max:255',
+            'satuan' => 'required|string|max:50',
+            'jumlah_kadaluarsa' => 'required|numeric|min:0.01',
+            'harga_satuan' => 'required|numeric|min:0',
+            'sumber_anggaran' => 'nullable|string',
+        ]);
+
+        $jumlah = (float) $validated['jumlah_kadaluarsa'];
+        $harga = (float) $validated['harga_satuan'];
+        $subtotal = $jumlah * $harga;
+
+        ExpiredMedicine::create([
+            'tahun' => (int) $validated['tahun'],
+            'nama_obat' => strtoupper(trim($validated['nama_obat'])),
+            'satuan' => trim($validated['satuan']),
+            'harga_satuan' => $harga,
+            'jumlah_kadaluarsa' => $jumlah,
+            'sub_total_kerugian' => $subtotal,
+            'sumber_anggaran' => $validated['sumber_anggaran'] ?? 'APBD / DAK Farmasi Bintan',
+        ]);
+
+        return redirect()->route('data.entry', ['tab' => 'kadaluarsa'])->with('success', "Berita Acara obat kadaluarsa '{$validated['nama_obat']}' ({$jumlah} {$validated['satuan']} senilai Rp " . number_format($subtotal, 0, ',', '.') . ") berhasil dicatat dalam audit fisik!");
+    }
+
+    public function storeNewMedicine(Request $request)
+    {
+        $validated = $request->validate([
+            'nama_obat' => 'required|string|max:255|unique:medicines,nama_obat',
+            'satuan' => 'required|string|max:50',
+            'prioritas_kategori' => 'required|string',
+            'stok_awal' => 'required|numeric|min:0',
+            'estimasi_kebutuhan' => 'required|numeric|min:0',
+        ]);
+
+        $est = (float) $validated['estimasi_kebutuhan'];
+        $stok = (float) $validated['stok_awal'];
+        $safetyStock = round($est * 0.25);
+        $order = max(0, ($est + $safetyStock) - $stok);
+
+        Medicine::create([
+            'nama_obat' => trim($validated['nama_obat']),
+            'satuan' => trim($validated['satuan']),
+            'model_terbaik' => 'WMA (k=3)',
+            'mape_terbaik' => 15.00,
+            'mae' => round($est * 0.15),
+            'rmse' => round($est * 0.18),
+            'prediksi_P5' => $est,
+            'safety_stock' => $safetyStock,
+            'sisa_stok' => $stok,
+            'rekomendasi_total' => $order,
+            'macd_value' => 0.0,
+            'signal_line' => 0.0,
+            'histogram' => 0.0,
+            'momentum_status' => '📈 Baru Terdaftar (Stabil)',
+            'prioritas_kategori' => $validated['prioritas_kategori'],
+            'keterangan' => 'Sediaan Baru Ditambahkan Petugas Farmasi',
+        ]);
+
+        return redirect()->route('data.entry', ['tab' => 'obat'])->with('success', "Sediaan obat baru '{$validated['nama_obat']}' berhasil didaftarkan ke katalog aktif dengan estimasi kebutuhan " . number_format($est, 0, ',', '.') . " {$validated['satuan']}!");
     }
 }

@@ -13,5 +13,12 @@ Route::get('/benchmarking-ml', [DashboardController::class, 'mlBenchmark'])->nam
 Route::get('/audit-stok', [DashboardController::class, 'stockAudit'])->name('audit.stock');
 Route::get('/tentang', [DashboardController::class, 'about'])->name('about');
 Route::get('/cetak-lplpo', [DashboardController::class, 'printLplpo'])->name('lplpo.print');
-Route::get('/input-lplpo', [DashboardController::class, 'inputLplpo'])->name('lplpo.input');
+Route::get('/input-lplpo', [DashboardController::class, 'dataEntry'])->name('lplpo.input');
 Route::post('/input-lplpo', [DashboardController::class, 'storeLplpo'])->name('lplpo.store');
+
+// Pusat Entri Data Faskes Terpadu (4 Modul: LPLPO, Morbiditas SIMPUS, Berita Acara ED, Registrasi Obat)
+Route::get('/entri-data', [DashboardController::class, 'dataEntry'])->name('data.entry');
+Route::post('/entri-data/lplpo', [DashboardController::class, 'storeLplpo'])->name('data.entry.lplpo');
+Route::post('/entri-data/penyakit', [DashboardController::class, 'storeDisease'])->name('data.entry.disease');
+Route::post('/entri-data/kadaluarsa', [DashboardController::class, 'storeExpired'])->name('data.entry.expired');
+Route::post('/entri-data/obat', [DashboardController::class, 'storeNewMedicine'])->name('data.entry.medicine');
