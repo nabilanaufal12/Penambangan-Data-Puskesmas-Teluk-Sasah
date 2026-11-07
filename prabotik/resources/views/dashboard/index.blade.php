@@ -40,9 +40,13 @@
                         <i class="fa-solid fa-cart-shopping mr-2.5"></i>
                         <span>Lihat Rekomendasi 2026-P5</span>
                     </a>
-                    <a href="{{ route('diseases') }}" class="inline-flex items-center justify-center px-6 py-3 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-sm border border-slate-200 shadow-sm transition-all hover:border-slate-300">
-                        <span>Prediksi Morbiditas Penyakit</span>
-                        <i class="fa-solid fa-arrow-right ml-2.5 text-medical-600 text-xs"></i>
+                    <a href="{{ route('lplpo.input') }}" class="inline-flex items-center justify-center px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all">
+                        <i class="fa-solid fa-pen-to-square mr-2"></i>
+                        <span>Input / Tutup Buku LPLPO</span>
+                    </a>
+                    <a href="{{ route('lplpo.print') }}" target="_blank" class="inline-flex items-center justify-center px-5 py-3 rounded-2xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-sm border border-slate-200 shadow-sm transition-all hover:border-slate-300">
+                        <i class="fa-solid fa-print mr-2 text-slate-500"></i>
+                        <span>Cetak LPLPO Resmi</span>
                     </a>
                 </div>
 
@@ -507,46 +511,46 @@
     </div>
 </section>
 
-<!-- SECTION 6: TIM PENELITI & DOSEN PEMBIMBING (Meet Our Team Sesuai Desain) -->
+<!-- SECTION 6: STRUKTUR PENGELOLA FASKES & TIM PENGEMBANG -->
 <section class="py-16 bg-slate-50 border-b border-slate-200/60">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="text-center max-w-3xl mx-auto mb-12">
-            <span class="text-xs font-bold text-medical-600 uppercase tracking-widest bg-medical-50 px-3 py-1 rounded-full border border-medical-200">Tim Pengembang Akademik</span>
-            <h2 class="text-3xl font-extrabold text-navy-950 mt-3 tracking-tight">Dosen Pembimbing & Tim Kelompok 23</h2>
-            <p class="text-sm text-slate-500 mt-2">Program Studi S1 Teknik Informatika, Fakultas Teknik dan Teknologi Kemaritiman, Universitas Maritim Raja Ali Haji (UMRAH).</p>
+            <span class="text-xs font-bold text-medical-600 uppercase tracking-widest bg-medical-50 px-3 py-1 rounded-full border border-medical-200">Tata Kelola & Penanggung Jawab</span>
+            <h2 class="text-3xl font-extrabold text-navy-950 mt-3 tracking-tight">Pimpinan Puskesmas, Tim Farmasi & Pengembang</h2>
+            <p class="text-sm text-slate-500 mt-2">Kolaborasi tata kelola pelayanan kefarmasian UPTD Puskesmas Teluk Sasah dengan rekayasa sistem informasi logistik farmasi.</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            <!-- Card 1: Dosen Pembimbing I -->
+            <!-- Card 1: Kepala Puskesmas -->
             <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm text-center">
                 <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-medical-600 to-sky-400 text-white flex items-center justify-center text-3xl font-extrabold shadow-md mb-4">
-                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <i class="fa-solid fa-user-doctor"></i>
                 </div>
-                <h4 class="font-bold text-slate-900 text-sm">Tekad Matulatan, S.Sos., S.Kom., M.Info.Tech.</h4>
-                <p class="text-xs text-medical-600 font-semibold mt-0.5">Dosen Pengampu Utama</p>
-                <p class="text-[11px] text-slate-500 mt-2">Memberikan 3 arahan strategis: perbandingan 1 vs 2 bulanan, MA & MACD, serta peramalan 4 penyakit & stok obat.</p>
+                <h4 class="font-bold text-slate-900 text-sm">dr. H. Kurniawan</h4>
+                <p class="text-xs text-medical-600 font-semibold mt-0.5">Kepala UPTD Puskesmas Teluk Sasah</p>
+                <p class="text-[11px] text-slate-500 mt-2">Penanggung jawab kebijakan faskes, validasi kebutuhan pelayanan, serta pengesahan usulan resmi LPLPO ke Dinas Kesehatan Kabupaten Bintan.</p>
             </div>
 
-            <!-- Card 2: Dosen Pembimbing II -->
+            <!-- Card 2: Pengelola Obat / Apoteker -->
             <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm text-center">
-                <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-cyan-600 to-teal-400 text-white flex items-center justify-center text-3xl font-extrabold shadow-md mb-4">
-                    <i class="fa-solid fa-graduation-cap"></i>
+                <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-emerald-600 to-teal-400 text-white flex items-center justify-center text-3xl font-extrabold shadow-md mb-4">
+                    <i class="fa-solid fa-mortar-pestle"></i>
                 </div>
-                <h4 class="font-bold text-slate-900 text-sm">Muhamad Fadli, S.Kom., M.Kom.</h4>
-                <p class="text-xs text-teal-600 font-semibold mt-0.5">Dosen Pengampu Pendamping</p>
-                <p class="text-[11px] text-slate-500 mt-2">Membimbing evaluasi komparatif metrik galat deret waktu (MAPE, MAE, RMSE) dan validasi ilmiah.</p>
+                <h4 class="font-bold text-slate-900 text-sm">Apoteker Penanggung Jawab</h4>
+                <p class="text-xs text-emerald-600 font-semibold mt-0.5">Instalasi Farmasi & Gudang Obat</p>
+                <p class="text-[11px] text-slate-500 mt-2">Pengelola stok fisik harian, penanggung jawab verifikasi stock opname, peracikan resep rawat jalan, dan pengawasan tanggal kadaluarsa (FEFO).</p>
             </div>
 
-            <!-- Card 3: Lead Developer / Peneliti -->
+            <!-- Card 3: Tim Pengembang Sistem PRABOTIK -->
             <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm text-center">
                 <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-indigo-600 to-purple-500 text-white flex items-center justify-center text-3xl font-extrabold shadow-md mb-4">
-                    <i class="fa-solid fa-user-gear"></i>
+                    <i class="fa-solid fa-laptop-medical"></i>
                 </div>
-                <h4 class="font-bold text-slate-900 text-sm">Nabil (2401020073)</h4>
-                <p class="text-xs text-indigo-600 font-semibold mt-0.5">Ketua Tim / Machine Learning Engineer</p>
-                <p class="text-[11px] text-slate-500 mt-2">Arsitek pipeline data mining, formula Safety Stock 95%, dan sistem web PRABOTIK.</p>
+                <h4 class="font-bold text-slate-900 text-sm">Tim Pengembang Sistem PRABOTIK</h4>
+                <p class="text-xs text-indigo-600 font-semibold mt-0.5">Dukungan Kerjasama Akademik UMRAH</p>
+                <p class="text-[11px] text-slate-500 mt-2">Kelompok 23 Program Studi Teknik Informatika UMRAH (Nabil & Tim) dibimbing oleh Tekad Matulatan, M.Info.Tech. & Muhamad Fadli, M.Kom.</p>
             </div>
 
         </div>

@@ -12,3 +12,6 @@ Route::get('/korelasi-morbiditas', [DashboardController::class, 'correlation'])-
 Route::get('/benchmarking-ml', [DashboardController::class, 'mlBenchmark'])->name('ml.benchmark');
 Route::get('/audit-stok', [DashboardController::class, 'stockAudit'])->name('audit.stock');
 Route::get('/tentang', [DashboardController::class, 'about'])->name('about');
+Route::get('/cetak-lplpo', [DashboardController::class, 'printLplpo'])->name('lplpo.print');
+Route::get('/input-lplpo', [DashboardController::class, 'inputLplpo'])->name('lplpo.input');
+Route::post('/input-lplpo', [DashboardController::class, 'storeLplpo'])->name('lplpo.store');

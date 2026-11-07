@@ -155,4 +155,60 @@ class DashboardController extends Controller
     {
         return view('dashboard.about');
     }
+
+    public function printLplpo(Request $request)
+    {
+        $query = Medicine::query();
+        
+        // Default show priority 1 & 2 medicines for official LPLPO request sheet, or all
+        if ($request->get('scope') === 'all') {
+            $medicines = $query->orderBy('prioritas_kategori')->orderBy('rekomendasi_total', 'desc')->get();
+        } else {
+            $medicines = $query->where('prioritas_kategori', 'like', '%Prioritas 1%')
+                ->orWhere('prioritas_kategori', 'like', '%Prioritas 2%')
+                ->orderByRaw("CASE WHEN prioritas_kategori LIKE '%Prioritas 1%' THEN 1 ELSE 2 END, rekomendasi_total DESC")
+                ->get();
+        }
+
+        $paracetamol = Medicine::where('nama_obat', 'like', '%Parasetamol 500%')->first();
+        $totalAlokasi = $medicines->sum('rekomendasi_total');
+
+        return view('dashboard.print_lplpo', compact('medicines', 'paracetamol', 'totalAlokasi'));
+    }
+
+    public function inputLplpo()
+    {
+        $medicines = Medicine::orderBy('nama_obat')->get(['id', 'nama_obat', 'satuan', 'sisa_stok', 'prediksi_P5', 'safety_stock', 'rekomendasi_total']);
+        return view('dashboard.input_lplpo', compact('medicines'));
+    }
+
+    public function storeLplpo(Request $request)
+    {
+        $validated = $request->validate([
+            'medicine_id' => 'required|exists:medicines,id',
+            'pemakaian_terbaru' => 'required|numeric|min:0',
+            'sisa_stok_terbaru' => 'required|numeric|min:0',
+            'keterangan_tambahan' => 'nullable|string',
+        ]);
+
+        $med = Medicine::findOrFail($validated['medicine_id']);
+        
+        // Recalculate based on WMA / moving average
+        $stokAkhir = (float) $validated['sisa_stok_terbaru'];
+        $pemakaian = (float) $validated['pemakaian_terbaru'];
+        
+        // Update stock & re-evaluate order recommendation
+        $newPred = round(($med->prediksi_P5 * 0.5) + ($pemakaian * 0.5));
+        $safetyStock = $med->safety_stock;
+        $order = max(0, ($newPred + $safetyStock) - $stokAkhir);
+
+        $med->update([
+            'sisa_stok' => $stokAkhir,
+            'prediksi_P5' => $newPred,
+            'rekomendasi_total' => $order,
+            'keterangan' => $validated['keterangan_tambahan'] ? $validated['keterangan_tambahan'] . ' (Input Mandiri Petugas Farmasi)' : $med->keterangan,
+        ]);
+
+        return redirect()->route('lplpo.input')->with('success', "Stok obat '{$med->nama_obat}' berhasil diperbarui! Rekomendasi order baru: " . number_format($order, 0, ',', '.') . " {$med->satuan}.");
+    }
 }

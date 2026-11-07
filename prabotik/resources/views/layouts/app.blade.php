@@ -113,63 +113,68 @@
         <!-- Sidebar Navigation Links -->
         <nav class="flex-1 px-4 py-5 space-y-6 overflow-y-auto">
             
-            <!-- Group 1: Navigasi Utama -->
+            <!-- Group 1: Navigasi Operasional Puskesmas -->
             <div>
-                <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Panel Utama</p>
+                <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Menu Operasional Puskesmas</p>
                 <div class="mt-2 space-y-1">
                     <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('dashboard') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
                         <i class="fa-solid fa-house-chimney-medical w-6 text-center text-base {{ request()->routeIs('dashboard') ? 'text-white' : 'text-medical-400' }}"></i>
-                        <span class="ml-2.5">Beranda & Profil</span>
+                        <span class="ml-2.5">Beranda & Monitoring</span>
+                    </a>
+                    <a href="{{ route('lplpo.input') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('lplpo.input') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
+                        <i class="fa-solid fa-pen-to-square w-6 text-center text-base {{ request()->routeIs('lplpo.input') ? 'text-white' : 'text-amber-400' }}"></i>
+                        <span class="ml-2.5">Input / Tutup Buku LPLPO</span>
+                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded font-bold {{ request()->routeIs('lplpo.input') ? 'bg-white/20 text-white' : 'bg-amber-500/20 text-amber-300' }}">Entry</span>
                     </a>
                     <a href="{{ route('procurement') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('procurement') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
                         <i class="fa-solid fa-cart-flatbed-suitcase w-6 text-center text-base {{ request()->routeIs('procurement') ? 'text-white' : 'text-emerald-400' }}"></i>
-                        <span class="ml-2.5">Rekomendasi 2026-P5</span>
-                        <span class="ml-auto text-[10px] px-2 py-0.5 rounded-full font-bold {{ request()->routeIs('procurement') ? 'bg-white/20 text-white' : 'bg-emerald-500/20 text-emerald-300' }}">95% SS</span>
+                        <span class="ml-2.5 truncate">Rekomendasi P5 (2026)</span>
+                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded font-bold shrink-0 {{ request()->routeIs('procurement') ? 'bg-white/20 text-white' : 'bg-emerald-500/20 text-emerald-300' }}">95% SS</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Group 2: Analisis & Penambangan Data -->
+            <!-- Group 2: Perencanaan & Analisis Logistik Terpadu -->
             <div>
-                <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Peramalan & Analisis (Saran Dosen)</p>
+                <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Perencanaan & Analisis Kebutuhan</p>
                 <div class="mt-2 space-y-1">
                     <a href="{{ route('medicines') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('medicines') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
                         <i class="fa-solid fa-pills w-6 text-center text-base {{ request()->routeIs('medicines') ? 'text-white' : 'text-cyan-400' }}"></i>
-                        <span class="ml-2.5">Katalog 150 Obat (MA)</span>
+                        <span class="ml-2.5">Katalog Obat & Evaluasi MA</span>
                     </a>
                     <a href="{{ route('diseases') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('diseases') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
                         <i class="fa-solid fa-stethoscope w-6 text-center text-base {{ request()->routeIs('diseases') ? 'text-white' : 'text-rose-400' }}"></i>
-                        <span class="ml-2.5">Prediksi 4 Morbiditas</span>
-                        <span class="ml-auto text-[10px] px-2 py-0.5 rounded-full font-bold {{ request()->routeIs('diseases') ? 'bg-white/20 text-white' : 'bg-rose-500/20 text-rose-300' }}">ISPA+3</span>
+                        <span class="ml-2.5">Analisis Morbiditas (SIMPUS)</span>
+                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded font-bold shrink-0 {{ request()->routeIs('diseases') ? 'bg-white/20 text-white' : 'bg-rose-500/20 text-rose-300' }}">Top-4</span>
                     </a>
                     <a href="{{ route('macd') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('macd') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
                         <i class="fa-solid fa-chart-line w-6 text-center text-base {{ request()->routeIs('macd') ? 'text-white' : 'text-amber-400' }}"></i>
-                        <span class="ml-2.5">Indikator MACD Farmasi</span>
-                        <span class="ml-auto text-[10px] px-2 py-0.5 rounded-full font-bold {{ request()->routeIs('macd') ? 'bg-white/20 text-white' : 'bg-amber-500/20 text-amber-300' }}">Momentum</span>
+                        <span class="ml-2.5">Deteksi Momentum Permintaan</span>
+                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded font-bold shrink-0 {{ request()->routeIs('macd') ? 'bg-white/20 text-white' : 'bg-amber-500/20 text-amber-300' }}">MACD</span>
                     </a>
                     <a href="{{ route('correlation') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('correlation') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
                         <i class="fa-solid fa-dna w-6 text-center text-base {{ request()->routeIs('correlation') ? 'text-white' : 'text-indigo-400' }}"></i>
-                        <span class="ml-2.5">Korelasi Klinis & Dosis</span>
+                        <span class="ml-2.5">Standar Terapi & Rasio Resep</span>
                     </a>
                     <a href="{{ route('ml.benchmark') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('ml.benchmark') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
                         <i class="fa-solid fa-microchip w-6 text-center text-base {{ request()->routeIs('ml.benchmark') ? 'text-white' : 'text-purple-400' }}"></i>
-                        <span class="ml-2.5">Benchmark Machine Learning</span>
-                        <span class="ml-auto text-[10px] px-2 py-0.5 rounded-full font-bold {{ request()->routeIs('ml.benchmark') ? 'bg-white/20 text-white' : 'bg-purple-500/20 text-purple-300' }}">10-Fold</span>
+                        <span class="ml-2.5">Validasi Metode & Akurasi</span>
+                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded font-bold shrink-0 {{ request()->routeIs('ml.benchmark') ? 'bg-white/20 text-white' : 'bg-purple-500/20 text-purple-300' }}">Akurasi</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Group 3: Pengawasan Logistik & Audit -->
+            <!-- Group 3: Pengawasan Logistik & Audit Faskes -->
             <div>
-                <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Pengawasan & Profil</p>
+                <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Pengawasan & Tata Kelola Faskes</p>
                 <div class="mt-2 space-y-1">
                     <a href="{{ route('audit.stock') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('audit.stock') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
                         <i class="fa-solid fa-triangle-exclamation w-6 text-center text-base {{ request()->routeIs('audit.stock') ? 'text-white' : 'text-amber-500' }}"></i>
-                        <span class="ml-2.5">Audit Stockout & Kadaluarsa</span>
+                        <span class="ml-2.5">Audit Kekosongan & Kadaluarsa</span>
                     </a>
                     <a href="{{ route('about') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('about') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
-                        <i class="fa-solid fa-user-doctor w-6 text-center text-base {{ request()->routeIs('about') ? 'text-white' : 'text-teal-400' }}"></i>
-                        <span class="ml-2.5">Tim Peneliti & Faskes</span>
+                        <i class="fa-solid fa-hospital-user w-6 text-center text-base {{ request()->routeIs('about') ? 'text-white' : 'text-teal-400' }}"></i>
+                        <span class="ml-2.5">Profil Puskesmas & Struktur</span>
                     </a>
                 </div>
             </div>
@@ -180,18 +185,18 @@
         <div class="p-4 border-t border-slate-800/80 bg-slate-950/40">
             <div class="flex items-center space-x-3">
                 <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-medical-400 text-xs">
-                    <i class="fa-solid fa-server"></i>
+                    <i class="fa-solid fa-shield-halved"></i>
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center space-x-1.5">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <p class="text-xs font-bold text-white truncate">SQLite Database</p>
+                        <p class="text-xs font-bold text-white truncate">Sistem Logistik Online</p>
                     </div>
-                    <p class="text-[10px] text-slate-400 truncate">Periode 2026-P5 Terpadu</p>
+                    <p class="text-[10px] text-slate-400 truncate">Database Terhubung & Sinkron</p>
                 </div>
             </div>
             <div class="mt-3 text-[10px] text-slate-500 text-center">
-                Kelompok 23 &bull; UMRAH &bull; Genap 2026
+                UPTD Puskesmas Teluk Sasah &bull; Kab. Bintan
             </div>
         </div>
 
@@ -221,21 +226,21 @@
                         <div class="hidden lg:flex items-center space-x-2.5 px-3 py-1.5 bg-sky-50 rounded-xl border border-sky-100 text-sky-800">
                             <i class="fa-solid fa-phone-volume text-medical-600 animate-bounce"></i>
                             <div class="text-left">
-                                <span class="block text-[10px] text-slate-500 leading-none">Hotline Siaga Bintan:</span>
-                                <span class="text-xs font-bold text-medical-700 leading-none">0812-7000-SASAH</span>
+                                <span class="block text-[10px] text-slate-500 leading-none">PSC 119 / UGD Teluk Sasah:</span>
+                                <span class="text-xs font-bold text-medical-700 leading-none">(0771) 482-123</span>
                             </div>
                         </div>
 
                         <!-- Current Active Cycle Badge -->
                         <div class="flex items-center space-x-2 px-3 py-1.5 bg-emerald-50 rounded-xl border border-emerald-200 text-emerald-800 text-xs font-bold">
                             <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                            <span>2026-P5 (Sep–Okt)</span>
+                            <span>Periode 2026-P5</span>
                         </div>
 
                         <!-- Quick Export / Action -->
-                        <a href="{{ route('procurement') }}" class="inline-flex items-center px-3.5 py-1.5 rounded-xl bg-medical-600 hover:bg-medical-700 text-white text-xs font-bold shadow-sm shadow-medical-600/30 transition">
-                            <i class="fa-solid fa-file-prescription mr-1.5"></i>
-                            <span>Draf LPLPO P5</span>
+                        <a href="{{ route('lplpo.print') }}" target="_blank" class="inline-flex items-center px-3.5 py-1.5 rounded-xl bg-medical-600 hover:bg-medical-700 text-white text-xs font-bold shadow-sm shadow-medical-600/30 transition">
+                            <i class="fa-solid fa-print mr-1.5"></i>
+                            <span>Cetak LPLPO P5</span>
                         </a>
 
                     </div>
