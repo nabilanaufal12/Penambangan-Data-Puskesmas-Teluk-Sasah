@@ -41,6 +41,8 @@
 | `04_simulasi_hitung_manual_step_by_step.csv/.xlsx` | Pembuktian matematis langkah demi langkah |
 | `05_indeks_musiman_4_penyakit_utama.csv/.xlsx` | **Baru**: Indeks musiman bulanan 4 penyakit (2023-2025) |
 | `06_validasi_prediksi_vs_aktual_2026_P5.csv/.xlsx` | **Baru**: Perbandingan prediksi vs aktual Sep 2026 |
+| `07_proyeksi_12_bulan_fero_sulfat.csv` | **Baru**: Rincian angka peramalan kebutuhan 12 bulan Fero Sulfat 300 mg |
+| `21_tren_dan_proyeksi_12_bulan_fero_sulfat.png` | **Baru**: Grafik kurva halus (Cubic Spline 300 DPI) tren & proyeksi 12 bulan Fero Sulfat |
 
 ---
 
