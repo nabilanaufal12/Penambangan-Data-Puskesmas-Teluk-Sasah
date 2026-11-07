@@ -1,6 +1,6 @@
 nama_obat,satuan,model_terbaik,mape_terbaik_persen,prediksi_2026_P5,safety_stock_95,rekomendasi_total_pengadaan,macd_value,histogram,momentum_status,prioritas_kategori
 Fero Sulfat tablet 300 mg (tablet tambah darah),tablet,SMA (k=3),404.36,15031.666666666666,42052.0,57084.0,7423.2,2801.55,📈 Tren Meningkat Kuat (Bullish Momentum),Prioritas 1 (Vital / Fast-Moving)
-Parasetamol tablet 500 mg,tablet,SMA (k=2),36.42,3222.0,3838.0,7060.0,-1869.94,-485.42,📉 Tren Menurun (Bearish / Permintaan Melambat),Prioritas 1 (Vital / Fast-Moving)
+Parasetamol tablet 500 mg,tablet,SMA (k=2),36.42,6147.0,1340.0,7487.0,-309.94,34.58,📈 Pemulihan Tren (Rebound Positif pasca-Stok Habis),Prioritas 1 (Vital / Fast-Moving)
 Amlodipin 10 mg tablet,tablet,SMA (k=3),73.54,5091.666666666667,8504.0,13596.0,813.0,236.02,📈 Tren Meningkat Kuat (Bullish Momentum),Prioritas 1 (Vital / Fast-Moving)
 Vitamin B-Kompleks tablet,tablet,WMA (k=3),27.32,0.0,3464.0,3464.0,-988.06,117.83,📈 Tren Meningkat Kuat (Bullish Momentum),Prioritas 1 (Vital / Fast-Moving)
 Asam Mefenamat kaplet 500 mg,kaplet,WMA (k=3),63.85,5854.5,3654.0,9508.0,1438.62,632.99,📈 Tren Meningkat Kuat (Bullish Momentum),Prioritas 1 (Vital / Fast-Moving)
@@ -27,5 +27,5 @@ Domperidon tablet 10 mg,tablet,WMA (k=3),34.94,1312.3333333333333,927.0,2239.0,-
 Tiamin HCl tablet 50 mg,tablet,WMA (k=3),161.01,39.16666666666666,1872.0,1911.0,-105.65,4.95,📈 Tren Meningkat Kuat (Bullish Momentum),Prioritas 3 (Buffer / Penunjang)
 Gliseril Guayakolat tablet 100 mg,tablet,WMA (k=3),83.76,122.5,1936.0,2058.0,63.35,22.76,📈 Tren Meningkat Kuat (Bullish Momentum),Prioritas 3 (Buffer / Penunjang)
 Simvastatin 20 mg tablet,tablet,WMA (k=3),62.61,672.1666666666666,860.0,1532.0,-234.38,-92.6,📉 Tren Menurun (Bearish / Permintaan Melambat),Prioritas 3 (Buffer / Penunjang)
-Ranitidine tablet 150 mg,tablet,SMA (k=3),395.05,223.33333333333331,1633.0,1856.0,-135.06,-33.91,📉 Tren Menurun (Bearish / Permintaan Melambat),Prioritas 3 (Buffer / Penunjang)
+Ranitidine tablet 150 mg,tablet,SMA (k=3),395.05,223.3333333333333,1633.0,1856.0,-135.06,-33.91,📉 Tren Menurun (Bearish / Permintaan Melambat),Prioritas 3 (Buffer / Penunjang)
 Asam Folat tablet 0.4 mg,tablet,WMA (k=3),63.73,366.3333333333333,695.0,1061.0,-77.21,-6.22,📉 Tren Menurun (Bearish / Permintaan Melambat),Prioritas 3 (Buffer / Penunjang)

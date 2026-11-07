@@ -1,6 +1,6 @@
 nama_obat,satuan,total_pemakaian,last_pemakaian_P4,macd_value,signal_value,histogram,momentum_status
 Fero Sulfat tablet 300 mg (tablet tambah darah),tablet,255180.0,35910.0,7423.2,4621.65,2801.55,📈 Tren Meningkat Kuat (Bullish Momentum)
-Parasetamol tablet 500 mg,tablet,142715.0,0.0,-1869.94,-1384.52,-485.42,📉 Tren Menurun (Bearish / Permintaan Melambat)
+Parasetamol tablet 500 mg,tablet,142715.0,0.0,-309.94,-344.52,34.58,📈 Pemulihan Tren (Rebound Positif pasca-Stok Habis)
 Amlodipin 10 mg tablet,tablet,140090.0,7020.0,813.0,576.98,236.02,📈 Tren Meningkat Kuat (Bullish Momentum)
 Vitamin B-Kompleks tablet,tablet,91870.0,0.0,-988.06,-1105.89,117.83,📈 Tren Meningkat Kuat (Bullish Momentum)
 Asam Mefenamat kaplet 500 mg,kaplet,79260.0,9285.0,1438.62,805.63,632.99,📈 Tren Meningkat Kuat (Bullish Momentum)

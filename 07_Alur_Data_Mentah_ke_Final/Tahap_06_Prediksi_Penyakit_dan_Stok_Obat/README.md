@@ -22,12 +22,12 @@
 
 #### 2. Rekomendasi Pengadaan Stok Obat 2026-P5 (Termasuk Safety Stock 95%)
 
-| Obat | Prediksi Titik | Safety Stock (Z=1.645) | Total Rekomendasi |
-|------|---------------|------------------------|-------------------|
-| Parasetamol 500 mg | 7.150 tablet | 1.340 tablet | **8.490 tablet** |
-| Amlodipin 5 mg | 5.820 tablet | 980 tablet | **6.800 tablet** |
-| Metformin 500 mg | 3.650 tablet | 650 tablet | **4.300 tablet** |
-| Antasida Doen | 2.450 tablet | 480 tablet | **2.930 tablet** |
+| Obat | Prediksi Titik | Safety Stock (Z=1.645) | Total Rekomendasi | Catatan Khusus |
+|------|---------------|------------------------|-------------------|----------------|
+| Parasetamol 500 mg | 6.147 tablet | 1.340 tablet | **7.487 tablet** | ⭐ *Disesuaikan dari Permintaan Tersensor (Stockout P4 = 5.850)* |
+| Amlodipin 5 mg | 5.820 tablet | 980 tablet | **6.800 tablet** | Stabil / Terapi Kronis |
+| Metformin 500 mg | 3.650 tablet | 650 tablet | **4.300 tablet** | Stabil / Prolanis |
+| Antasida Doen | 2.450 tablet | 480 tablet | **2.930 tablet** | Fast-Moving Musiman |
 
 ---
 
