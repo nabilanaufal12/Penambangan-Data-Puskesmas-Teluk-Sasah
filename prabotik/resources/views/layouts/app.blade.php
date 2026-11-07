@@ -113,18 +113,24 @@
         <!-- Sidebar Navigation Links -->
         <nav class="flex-1 px-4 py-5 space-y-6 overflow-y-auto">
             
-            <!-- Group 1: Navigasi Operasional Puskesmas -->
+            <!-- Group 1: Navigasi Operasional & Peran Faskes -->
             <div>
-                <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Menu Operasional Puskesmas</p>
+                <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Dashboard & Operasional</p>
                 <div class="mt-2 space-y-1">
-                    <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('dashboard') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
-                        <i class="fa-solid fa-house-chimney-medical w-6 text-center text-base {{ request()->routeIs('dashboard') ? 'text-white' : 'text-medical-400' }}"></i>
-                        <span class="ml-2.5">Beranda & Monitoring</span>
+                    <a href="{{ route('dashboard.pharmacy') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('dashboard.pharmacy') || (request()->routeIs('dashboard') && !request()->routeIs('dashboard.executive')) ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
+                        <i class="fa-solid fa-prescription-bottle-medical w-6 text-center text-base {{ request()->routeIs('dashboard.pharmacy') || (request()->routeIs('dashboard') && !request()->routeIs('dashboard.executive')) ? 'text-white' : 'text-medical-400' }}"></i>
+                        <span class="ml-2.5">Dashboard Farmasi</span>
+                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded font-bold shrink-0 {{ request()->routeIs('dashboard.pharmacy') ? 'bg-white/20 text-white' : 'bg-medical-500/20 text-medical-300' }}">Gudang</span>
+                    </a>
+                    <a href="{{ route('dashboard.executive') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('dashboard.executive') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
+                        <i class="fa-solid fa-user-doctor w-6 text-center text-base {{ request()->routeIs('dashboard.executive') ? 'text-white' : 'text-amber-400' }}"></i>
+                        <span class="ml-2.5">Dashboard Kepala / Admin</span>
+                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded font-bold shrink-0 {{ request()->routeIs('dashboard.executive') ? 'bg-white/20 text-white' : 'bg-amber-500/20 text-amber-300' }}">Eksekutif</span>
                     </a>
                     <a href="{{ route('data.entry') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('data.entry') || request()->routeIs('lplpo.input') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
-                        <i class="fa-solid fa-folder-open w-6 text-center text-base {{ request()->routeIs('data.entry') || request()->routeIs('lplpo.input') ? 'text-white' : 'text-amber-400' }}"></i>
+                        <i class="fa-solid fa-folder-open w-6 text-center text-base {{ request()->routeIs('data.entry') || request()->routeIs('lplpo.input') ? 'text-white' : 'text-teal-400' }}"></i>
                         <span class="ml-2.5">Pusat Entri Data Faskes</span>
-                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded font-bold {{ request()->routeIs('data.entry') || request()->routeIs('lplpo.input') ? 'bg-white/20 text-white' : 'bg-amber-500/20 text-amber-300' }}">4 Modul</span>
+                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded font-bold {{ request()->routeIs('data.entry') || request()->routeIs('lplpo.input') ? 'bg-white/20 text-white' : 'bg-teal-500/20 text-teal-300' }}">4 Modul</span>
                     </a>
                     <a href="{{ route('procurement') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('procurement') ? 'bg-medical-600 text-white shadow-md shadow-medical-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
                         <i class="fa-solid fa-cart-flatbed-suitcase w-6 text-center text-base {{ request()->routeIs('procurement') ? 'text-white' : 'text-emerald-400' }}"></i>

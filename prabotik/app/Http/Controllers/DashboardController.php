@@ -12,43 +12,114 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
+    {
+        return $this->pharmacyDashboard($request);
+    }
+
+    public function pharmacyDashboard(Request $request)
     {
         $stats = [
-            'total_transaksi' => '15.781',
-            'total_pasien' => '31.125',
-            'total_periode' => '22',
             'total_obat_aktif' => Medicine::count(),
-            'total_kerugian_ed' => 'Rp 43,35 Jt',
-            'obat_vital_count' => Medicine::where('prioritas_kategori', 'like', '%Vital%')->count(),
+            'stok_kosong_count' => Medicine::where('sisa_stok', 0)->count(),
+            'stok_kritis_count' => Medicine::where('sisa_stok', '>', 0)->whereColumn('sisa_stok', '<=', 'safety_stock')->count(),
+            'stok_aman_count' => Medicine::whereColumn('sisa_stok', '>', 'safety_stock')->count(),
+            'total_rekomendasi_unit' => Medicine::sum('rekomendasi_total'),
             'bullish_count' => Medicine::where('momentum_status', 'like', '%Bullish%')->orWhere('momentum_status', 'like', '%Rebound%')->count(),
+            'total_ed_items' => ExpiredMedicine::count(),
+            'total_ed_loss' => ExpiredMedicine::sum('sub_total_kerugian'),
+            'total_transaksi' => '15.781',
+            'total_periode' => '22 Periode',
         ];
 
-        // Top Priority Medicines for Procurement
-        $vitalMedicines = Medicine::where('prioritas_kategori', 'like', '%Vital%')
-            ->orderByRaw("CASE WHEN nama_obat LIKE '%Parasetamol%' THEN 1 WHEN nama_obat LIKE '%Metformin%' THEN 2 WHEN nama_obat LIKE '%Amlodipin 10%' THEN 3 ELSE 4 END")
+        // Critical Medicines (Stok = 0 atau Stok <= Safety Stock)
+        $criticalMedicines = Medicine::where('sisa_stok', 0)
+            ->orWhereColumn('sisa_stok', '<=', 'safety_stock')
+            ->orderByDesc('rekomendasi_total')
             ->take(8)
             ->get();
 
-        // Top 4 Diseases (ISPA, Hipertensi, Dispepsia, Diabetes)
-        $topDiseases = [
-            ['kode' => 'J00', 'nama' => 'ISPA / Acute Nasopharyngitis', 'model' => 'WMA (k=3)', 'mape' => '45.80%', 'prediksi' => 428.5, 'color' => '#EF4444'],
-            ['kode' => 'I10', 'nama' => 'Hipertensi Primer (Esensial)', 'model' => 'SMA (k=3)', 'mape' => '36.00%', 'prediksi' => 383.3, 'color' => '#3B82F6'],
-            ['kode' => 'K30', 'nama' => 'Dispepsia (Asam Lambung)', 'model' => 'SMA (k=3)', 'mape' => '36.88%', 'prediksi' => 165.7, 'color' => '#10B981'],
-            ['kode' => 'E11', 'nama' => 'Diabetes Melitus Tipe 2', 'model' => 'WMA (k=3)', 'mape' => '40.28%', 'prediksi' => 87.5, 'color' => '#F59E0B'],
+        // Top Procurement Order Items P5 (2026)
+        $procurementPreview = Medicine::orderByDesc('rekomendasi_total')
+            ->take(8)
+            ->get();
+
+        // Momentum MACD summary
+        $bullishMedicines = Medicine::where('momentum_status', 'like', '%Bullish%')
+            ->orWhere('momentum_status', 'like', '%Rebound%')
+            ->orderByDesc('rekomendasi_total')
+            ->take(6)
+            ->get();
+
+        // Recent Expired Medicines
+        $recentExpired = ExpiredMedicine::orderByDesc('tahun')
+            ->orderByDesc('id')
+            ->take(6)
+            ->get();
+
+        return view('dashboard.pharmacy', compact(
+            'stats', 'criticalMedicines', 'procurementPreview', 'bullishMedicines', 'recentExpired'
+        ));
+    }
+
+    public function executiveDashboard(Request $request)
+    {
+        $totalObat = Medicine::count();
+        $obatTersedia = Medicine::where('sisa_stok', '>', 0)->count();
+        $ketersediaanPct = round(($obatTersedia / max(1, $totalObat)) * 100, 1);
+
+        $totalPasien = DiseaseRecord::sum('total_pasien');
+        $totalEdLoss = ExpiredMedicine::sum('sub_total_kerugian');
+        $totalOrderUnit = Medicine::sum('rekomendasi_total');
+        
+        // Estimasi nilai pengadaan P5 (rata-rata harga Rp 1.350 per unit obat)
+        $estimasiAnggaran = $totalOrderUnit * 1350;
+
+        $kpis = [
+            'ketersediaan_pct' => $ketersediaanPct,
+            'obat_tersedia' => $obatTersedia,
+            'total_obat' => $totalObat,
+            'total_pasien' => $totalPasien,
+            'total_ed_loss' => $totalEdLoss,
+            'total_order_unit' => $totalOrderUnit,
+            'estimasi_anggaran' => $estimasiAnggaran,
+            'rasio_peresepan' => '94.6%',
+            'periode_aktif' => '2026-P5 (Sep-Okt)',
+            'status_disposisi' => 'Menunggu Pengesahan Akhir',
+            'kapus_nama' => 'dr. Bambang Utoyo, M.M.',
+            'kapus_nip' => 'NIP. 19780512 200604 1 008',
+            'pengelola_nama' => 'Apt. Siti Rahmawati, S.Farm',
+            'pengelola_sip' => 'SIP. 19890415/SIPA/2018/021',
         ];
 
-        // ML Benchmarking Data
-        $mlBenchmarks = MlBenchmark::all();
+        // Top 5 Diseases SIMPUS with percentage
+        $topDiseases = DiseaseRecord::select('kode_icd', 'nama_penyakit', DB::raw('sum(total_pasien) as total_pasien'))
+            ->groupBy('kode_icd', 'nama_penyakit')
+            ->orderByDesc('total_pasien')
+            ->take(5)
+            ->get()
+            ->map(function ($item) use ($totalPasien) {
+                $item->persentase = round(($item->total_pasien / max(1, $totalPasien)) * 100, 1);
+                return $item;
+            });
+
+        // Breakdown ED Loss by Year
+        $edLossByYear = ExpiredMedicine::select('tahun', DB::raw('sum(sub_total_kerugian) as total_loss'), DB::raw('count(*) as count'))
+            ->groupBy('tahun')
+            ->orderBy('tahun')
+            ->get();
+
+        // Top 6 High-Value Procurement Items for Executive Approval
+        $topProcurement = Medicine::orderByDesc('rekomendasi_total')
+            ->take(6)
+            ->get();
 
         // Clinical Correlations Top
-        $correlations = ClinicalCorrelation::take(6)->get();
+        $correlations = ClinicalCorrelation::take(5)->get();
 
-        // Expired summary
-        $expiredTotal = ExpiredMedicine::sum('sub_total_kerugian');
-        $expiredCount = ExpiredMedicine::count();
-
-        return view('dashboard.index', compact('stats', 'vitalMedicines', 'topDiseases', 'mlBenchmarks', 'correlations', 'expiredTotal', 'expiredCount'));
+        return view('dashboard.executive', compact(
+            'kpis', 'topDiseases', 'edLossByYear', 'topProcurement', 'correlations'
+        ));
     }
 
     public function medicines(Request $request)

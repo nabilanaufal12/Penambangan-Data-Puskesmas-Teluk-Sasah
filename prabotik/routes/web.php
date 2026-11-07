@@ -3,7 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+// Dashboard Berdasarkan Peran (Farmasi vs Kepala Puskesmas/Admin)
+Route::get('/', [DashboardController::class, 'pharmacyDashboard'])->name('dashboard');
+Route::get('/dashboard-farmasi', [DashboardController::class, 'pharmacyDashboard'])->name('dashboard.pharmacy');
+Route::get('/dashboard-kepala', [DashboardController::class, 'executiveDashboard'])->name('dashboard.executive');
 Route::get('/obat', [DashboardController::class, 'medicines'])->name('medicines');
 Route::get('/rekomendasi-pengadaan', [DashboardController::class, 'procurement'])->name('procurement');
 Route::get('/prediksi-penyakit', [DashboardController::class, 'diseases'])->name('diseases');
