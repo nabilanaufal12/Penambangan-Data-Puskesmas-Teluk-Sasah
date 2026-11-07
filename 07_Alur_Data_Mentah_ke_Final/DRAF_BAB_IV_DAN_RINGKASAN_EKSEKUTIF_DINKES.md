@@ -74,6 +74,52 @@ Secara epidemiologis dan matematis, parameterisasi $(2, 4, 2)$ memiliki rasional
 
 ---
 
+### 4.4 Analisis Korelasi Morbiditas SIMPUS dan Validasi Kebutuhan Kelas Terapi Obat
+
+Integrasi antara data logistik Laporan Pemakaian dan Lembar Permintaan Obat (LPLPO) dengan data epidemiologi Sistem Informasi Manajemen Puskesmas (SIMPUS) bertujuan menjembatani kesenjangan antara pendekatan perencanaan berbasis konsumsi historis dan pendekatan berbasis morbiditas penyakit. Pada UPTD Puskesmas Teluk Sasah, pemetaan dilakukan dengan menguji derajat asosiasi statistik antara fluktuasi kasus 10 penyakit terbesar (berdasarkan kode diagnosis *International Classification of Diseases* revisi ke-10 atau ICD-10) terhadap volume pengeluaran obat spesifik pada kelas terapi terkait sepanjang 22 periode dwibulanan.
+
+| Diagnosis ICD-10 | Item Obat Terkait | Korelasi Statistik | Rasio per Kasus | Proyeksi P5 |
+| --- | --- | --- | --- | --- |
+| **J00 ISPA (34,8%)** | Parasetamol 500 mg | $r = 0,5851$, $\rho = 0,5517$ | 13,43 tablet | 4.541 tablet |
+| **J00 ISPA (34,8%)** | Amoksisilin 500 mg | $r = 0,6351$, $\rho = 0,6702$ | 5,06 kaplet | 1.710 kaplet |
+| **J00 ISPA (34,8%)** | Ambroksol 30 mg | Monotonik positif | 3,30 tablet | 1.115 tablet |
+| **I10 Hipertensi (24,0%)** | Amlodipin 10 mg | Konsumsi rumatan | 19,08 tablet | 6.534 tablet |
+| **I10 Hipertensi (24,0%)** | Amlodipin 5 mg | Titrasi lini awal | 6,78 tablet | 2.323 tablet |
+| **I10 Hipertensi (24,0%)** | Kaptopril 25 mg | $r = 0,1751$ | 2,96 tablet | 1.015 tablet |
+| **E11 DM Tipe 2** | Metformin 500 mg | $r = 0,5942$, $\rho = 0,7753$ | 40,95 tablet | 2.826 tablet |
+| **E11 DM Tipe 2** | Glibenklamid 5 mg | $r = 0,3028$, $\rho = 0,3533$ | 6,53 tablet | 450 tablet |
+| **K30 Dispepsia** | Antasida DOEN I | Terapi lini pertama | 5,59 tablet | 814 tablet |
+| **K30 Dispepsia** | Ranitidine 150 mg | $\rho = 0,2417$ | 4,48 tablet | 653 tablet |
+
+#### 4.4.1 Evaluasi Korelasi Parametrik (Pearson) dan Non-Parametrik (Spearman)
+
+Pengujian asosiasi bivariat menggunakan dua metrik komplementer, yaitu koefisien korelasi linier Pearson ($r$) untuk mengukur proporsionalitas langsung, serta koefisien korelasi peringkat Spearman ($\rho$) untuk menangkap hubungan monotonik non-linier yang tahan terhadap pencilan (*outlier*) lonjakan musim ekstrem.
+
+1. **Sensitivitas Epidemiologi ISPA (ICD-10: J00) terhadap Analgesik-Antipiretik dan Antibiotik:** Sebagai beban morbiditas tertinggi di Puskesmas Teluk Sasah (34,8% dari total kunjungan), insidensi ISPA menunjukkan korelasi positif yang kuat dan signifikan terhadap pengeluaran **Parasetamol 500 mg** ($r = 0,5851$; $\rho = 0,5517$) serta **Amoksisilin 500 mg** ($r = 0,6351$; $\rho = 0,6702$). Nilai $\rho$ Spearman pada Amoksisilin yang melampaui nilai Pearson mengindikasikan bahwa pada saat terjadi lonjakan ekstrem kasus ISPA akibat cuaca buruk dan angin utara, laju peresepan antibiotik meningkat secara eksponensial mengikuti eskalasi infeksi sekunder bakteri saluran pernapasan atas.
+2. **Konsistensi Terapi Lini Pertama pada Diabetes Melitus Tipe 2 (ICD-10: E11):** Korelasi klinis tertinggi di seluruh matriks ditemukan pada pasangan penyakit Diabetes Melitus Tipe 2 dengan **Metformin 500 mg** (golongan Biguanid), yang mencatatkan Pearson $r = 0,5942$ dan Spearman $\rho = 0,7753$. Korelasi peringkat yang sangat kuat ($\rho > 0,75$) ini membuktikan kepatuhan klinis (*clinical adherence*) dokter poli rawat jalan terhadap pedoman Formularium Nasional, di mana Metformin menjadi terapi tunggal lini pertama yang paling konsisten diresepkan dibandingkan golongan Sulfonilurea seperti **Glibenklamid 5 mg** ($r = 0,3028$; $\rho = 0,3533$).
+3. **Deteksi Pergeseran Pola Peresepan (*Drug Substitution*) pada Korelasi Rendah:** Pada kasus Hipertensi Primer (ICD-10: I10) dan Dispepsia (ICD-10: K30), ditemukan nilai korelasi yang rendah pada **Kaptopril 25 mg** ($r = 0,1751$) dan **Ranitidine 150 mg** ($\rho = 0,2417$). Secara informatika kesehatan, korelasi rendah pada obat lini alternatif ini bukan menunjukkan ketiadaan terapi, melainkan fenomena substitusi regimen klinis di mana dokter poli lebih memprioritaskan golongan *Calcium Channel Blocker* (Amlodipin) dibandingkan *ACE Inhibitor* (Kaptopril) karena profil kepatuhan dosis tunggal harian dan risiko efek samping batuk kering yang lebih rendah.
+
+#### 4.4.2 Rasio Dosis per Kasus (*Consumption per Episode*) sebagai Jembatan Metodologis
+
+Pedoman perencanaan kebutuhan obat Kementerian Kesehatan merekomendasikan penggabungan Metode Konsumsi dan Metode Morbiditas, namun sering kali terkendala oleh ketiadaan parameter konversi yang terukur di lapangan. Sistem PRABOTIK menyelesaikan masalah ini dengan memformulasikan **Rasio Dosis per Kasus** ($R_{i,j}$), yang mendefinisikan rata-rata empiris jumlah unit sediaan obat $i$ yang diserap oleh setiap satu episode kasus penyakit $j$ dalam satu siklus dwibulanan:
+
+$$R_{i,j} = \frac{\sum_{t=1}^{N} C_{i,j,t}}{\sum_{t=1}^{N} M_{j,t}} \implies \hat{D}_{i,\text{P5}}^{\text{morb}} = \hat{M}_{j,\text{P5}} \times R_{i,j}$$
+
+Di mana $C_{i,j,t}$ adalah volume konsumsi obat $i$ yang teralokasi pada diagnosis $j$ di periode $t$, $M_{j,t}$ adalah jumlah kasus SIMPUS untuk diagnosis $j$, dan $\hat{D}_{i,\text{P5}}^{\text{morb}}$ adalah proyeksi kebutuhan obat berbasis morbiditas pada periode 2026-P5.
+
+Parameter $R_{i,j}$ berfungsi sebagai instrumen validasi silang (*cross-validation sanity check*) terhadap hasil peramalan deret waktu LPLPO:
+* **Validasi Lintas-Poli (Kasus Parasetamol 500 mg):** Dengan proyeksi kasus ISPA pada 2026-P5 sebesar $\hat{M}_{\text{J00}} = 338$ kasus dan rasio $R = 13,43$ tablet/kasus, kebutuhan Parasetamol murni untuk menunjang poli ISPA adalah $338 \times 13,43 = 4.541$ tablet. Angka ini memvalidasi secara logis proyeksi titik $\text{WMA-3}$ terkoreksi sebesar $5.949$ tablet, karena selisih $1.408$ tablet ($\approx 23,7\%$) merupakan alokasi riil untuk indikasi febris dan analgesik non-ISPA di Poli Gigi, KIA/KB, serta tindakan pasca-imunisasi.
+* **Validasi Kebutuhan Spesifik Kelas Terapi:** Untuk terapi pendamping ISPA, proyeksi 338 kasus secara langsung menetapkan batas bawah pengadaan **Amoksisilin 500 mg** sebesar $1.710$ kaplet ($R = 5,06$) dan mukolitik **Ambroksol 30 mg** sebesar $1.115$ tablet ($R = 3,30$).
+
+#### 4.4.3 Karakteristik Farmakoepidemiologi Penyakit Akut vs. Penyakit Kronis
+
+Analisis matriks rasio peresepan mengungkap perbedaan struktural yang tajam antara pola penyerapan stok obat pada penyakit infeksi/akut dibandingkan penyakit degeneratif/kronis:
+1. **Pola Regimen Jangka Pendek pada Penyakit Akut:** Pada penyakit akut seperti ISPA (J00) dan Dispepsia (K30), intervensi farmakoterapi bersifat simtomatik dan kausal jangka pendek dengan durasi pemberian 3 hingga 5 hari per kunjungan (umumnya rejimen $3 \times 1$ tablet/hari, setara 9 hingga 15 tablet per episode). Hal ini tercermin secara presisi pada nilai rasio empiris PRABOTIK, yaitu **Parasetamol** ($13,43$ tablet/kasus), **Amoksisilin** ($5,06$ kaplet/kasus karena tidak seluruh kasus ISPA viral memerlukan antibiotik), **Ambroksol** ($3,30$ tablet/kasus), **Antasida DOEN I** ($5,59$ tablet/kasus), dan **Ranitidine** ($4,48$ tablet/kasus).
+2. **Pola Terapi Rumatan (*Maintenance Therapy*) pada Penyakit Kronis:** Sebaliknya, penyakit kronis seperti Hipertensi Primer (I10, menyumbang 24,0% beban penyakit) dan Diabetes Melitus Tipe 2 (E11) menuntut terapi rumatan berkelanjutan sepanjang siklus 60 hari (dwibulanan) guna menjaga stabilitas hemodinamik dan glikemik pasien.
+3. **Implikasi Dosis Rumatan terhadap Volume Stok:** Pasien hipertensi yang telah stabil pada dosis rumatan tinggi menggunakan **Amlodipin 10 mg** mencatatkan rasio sebesar **$19,08$ tablet/kasus**, hampir tiga kali lipat lebih tinggi dibandingkan pasien fase awal/titrasi pada **Amlodipin 5 mg** ($6,78$ tablet/kasus). Akibatnya, dengan proyeksi $342,5$ kasus hipertensi pada periode 2026-P5, Amlodipin 10 mg menyerap volume fisik tertinggi mencapai **$6.534$ tablet**. Fenomena serupa terlihat lebih ekstrem pada **Metformin 500 mg** yang mencapai rasio **$40,95$ tablet/kasus** (karena frekuensi dosis rumatan $2\text{--}3 \times 1$ tablet/hari selama 15 hingga 30 hari per siklus kontrol), sehingga hanya dari proyeksi 69 kasus DM Tipe 2 sudah membutuhkan pasokan sebesar **$2.826$ tablet**.
+
+---
+
 ## BAGIAN 2: DRAF RINGKASAN EKSEKUTIF (EXECUTIVE BRIEFING)
 
 **RINGKASAN EKSEKUTIF KEBIJAKAN & INOVASI SISTEM INFORMASI KESEHATAN**  
