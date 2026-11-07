@@ -45,3 +45,20 @@
 | `01_evaluasi_model_moving_average.csv/.xlsx` | Metrik MAPE, MAE, RMSE untuk 150 obat aktif |
 | `02_analisis_indikator_macd_obat.csv/.xlsx` | Nilai MACD, Signal, Histogram, klasifikasi momentum |
 | `03_ringkasan_sinyal_ma_dan_macd.csv/.xlsx` | Proyeksi MA + konfirmasi arah tren MACD |
+
+---
+
+### 🤖 Evaluasi Tambahan: Machine Learning Benchmarking (Walk-Forward Validation)
+
+Berdasarkan pengujian komparatif 10-Fold Expanding Window Walk-Forward (149 obat aktif):
+* **`04_benchmarking_machine_learning_vs_baseline.csv` & `.xlsx`**: Perbandingan WAPE dan Bias antara HistGradientBoosting (GBM), Ridge Regression, Quantile GBM 95%, dan Baseline Time-Series.
+* **`05_wape_per_fold_walk_forward_evaluation.csv`**: Rincian galat WAPE per periode uji (2025-P1 s/d 2026-P4).
+
+| Model / Algoritma | Kategori | WAPE | Bias Persentase | Interpretasi Klinis Farmasi |
+| :--- | :---: | :---: | :---: | :--- |
+| **HistGradientBoosting (GBM)** | Machine Learning | **0.536** | **-9.2%** | Galat terendah, namun bias negatif (under-forecast) berisiko memicu *stockout*. |
+| **Naive (Lag-1)** | Baseline | 0.559 | +1.8% | Sangat sederhana, nyaris menyaingi performa GBM. |
+| **WMA (k=3)** | Baseline | 0.595 | +4.3% | Model baseline resmi, bias positif bertindak sebagai buffer alami. |
+| **SMA (k=2)** | Baseline | 0.597 | +3.0% | Responsif terhadap dinamika jangka pendek. |
+| **Ridge Regression (L2)** | Machine Learning | 0.647 | +5.3% | Kurang optimal untuk data bervolatilitas tinggi. |
+| **GBM Quantile (alpha=0.95)** | Machine Learning | 1.209 | +101.3% | Batas atas persediaan pengaman 95% (*Safety Stock Ceiling*). |
