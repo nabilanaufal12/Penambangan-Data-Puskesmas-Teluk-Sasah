@@ -103,31 +103,130 @@
 <body class="min-h-full bg-sage text-ink antialiased overflow-x-hidden">
 
 @php
-    // Daftar menu navigasi utama
+    $isEntry = request()->routeIs('pharmacy.entry*');
+    $isMonitoring = request()->routeIs('pharmacy.medicines*') || request()->routeIs('pharmacy.macd*') || request()->routeIs('pharmacy.audit*');
+    $isProcurement = request()->routeIs('pharmacy.procurement*');
+    $isDashboard = request()->routeIs('pharmacy.dashboard*');
+    $currentTab = request()->query('tab', 'lplpo');
+
+    // 1. HEADER ATAS: 4 ALUR KERJA UTAMA (MACRO NAVIGATION)
     $navPills = [
-        ['route' => 'pharmacy.dashboard',   'label' => 'Beranda',           'icon' => 'fa-house'],
-        ['route' => 'pharmacy.entry',       'label' => 'Pencatatan LPLPO',  'icon' => 'fa-pen-to-square'],
-        ['route' => 'pharmacy.procurement', 'label' => 'Permintaan Obat',   'icon' => 'fa-clipboard-check'],
-        ['route' => 'pharmacy.medicines',   'label' => 'Daftar Obat',       'icon' => 'fa-pills'],
-        ['route' => 'pharmacy.macd',        'label' => 'Tren Kebutuhan',    'icon' => 'fa-chart-line'],
-        ['route' => 'pharmacy.audit',       'label' => 'Pemeriksaan Stok',  'icon' => 'fa-hourglass-end'],
+        ['route' => 'pharmacy.dashboard',   'label' => 'Beranda',            'icon' => 'fa-house',           'active' => $isDashboard],
+        ['route' => 'pharmacy.entry',       'label' => 'Pencatatan Data',    'icon' => 'fa-pen-to-square',   'active' => $isEntry],
+        ['route' => 'pharmacy.procurement', 'label' => 'Usulan Pengadaan',   'icon' => 'fa-clipboard-check', 'active' => $isProcurement],
+        ['route' => 'pharmacy.medicines',   'label' => 'Monitoring & Tren',  'icon' => 'fa-chart-line',      'active' => $isMonitoring],
     ];
 
-    $sidebarGroups = [
-        'Menu Utama' => [
-            ['route' => 'pharmacy.dashboard',   'icon' => 'fa-house',           'label' => 'Beranda Gudang'],
-        ],
-        'Operasional Faskes' => [
-            ['route' => 'pharmacy.entry',       'icon' => 'fa-pen-to-square',   'label' => 'Pencatatan LPLPO & Pasien', 'badge' => 'Input Riil'],
-            ['route' => 'pharmacy.procurement', 'icon' => 'fa-clipboard-check', 'label' => 'Lembar Permintaan Obat',   'badge' => 'Otomatis'],
-            ['route' => 'pharmacy.print',       'icon' => 'fa-print',           'label' => 'Cetak Lembar LPLPO',        'blank' => true],
-        ],
-        'Pemeriksaan & Tren' => [
-            ['route' => 'pharmacy.medicines',   'icon' => 'fa-pills',           'label' => 'Daftar Obat Puskesmas'],
-            ['route' => 'pharmacy.macd',        'icon' => 'fa-chart-line',      'label' => 'Tren Permintaan Obat'],
-            ['route' => 'pharmacy.audit',       'icon' => 'fa-hourglass-end',   'label' => 'Pemeriksaan Kadaluarsa'],
-        ],
-    ];
+    // 2. PANEL KIRI: SUB-MODUL & ALAT KERJA KONTEKSTUAL (MICRO UTILITIES)
+    if ($isEntry) {
+        $sidebarSectionTitle = 'Sub-Modul Entri Data';
+        $sidebarItems = [
+            [
+                'id' => 'sb-tab-lplpo',
+                'icon' => 'fa-boxes-packing',
+                'label' => '1. Stok LPLPO (Excel)',
+                'badge' => 'LPLPO',
+                'href' => route('pharmacy.entry', ['tab' => 'lplpo']),
+                'onclick' => "if(window.switchTab){ switchTab('lplpo'); return false; }",
+                'active' => ($currentTab === 'lplpo')
+            ],
+            [
+                'id' => 'sb-tab-penyakit',
+                'icon' => 'fa-stethoscope',
+                'label' => '2. Kunjungan SIMPUS',
+                'badge' => 'ICD-10',
+                'href' => route('pharmacy.entry', ['tab' => 'penyakit']),
+                'onclick' => "if(window.switchTab){ switchTab('penyakit'); return false; }",
+                'active' => ($currentTab === 'penyakit')
+            ],
+            [
+                'id' => 'sb-tab-kadaluarsa',
+                'icon' => 'fa-calendar-xmark',
+                'label' => '3. Berita Acara ED',
+                'badge' => 'Audit',
+                'href' => route('pharmacy.entry', ['tab' => 'kadaluarsa']),
+                'onclick' => "if(window.switchTab){ switchTab('kadaluarsa'); return false; }",
+                'active' => ($currentTab === 'kadaluarsa')
+            ],
+            [
+                'id' => 'sb-tab-obat',
+                'icon' => 'fa-pills',
+                'label' => '4. Registrasi Sediaan',
+                'badge' => 'Baru',
+                'href' => route('pharmacy.entry', ['tab' => 'obat']),
+                'onclick' => "if(window.switchTab){ switchTab('obat'); return false; }",
+                'active' => ($currentTab === 'obat')
+            ],
+        ];
+        $quickActions = [
+            ['route' => 'pharmacy.print', 'icon' => 'fa-print', 'label' => 'Cetak Lembar LPLPO', 'blank' => true],
+            ['route' => 'pharmacy.procurement', 'icon' => 'fa-clipboard-check', 'label' => 'Review Usulan P5'],
+        ];
+    } elseif ($isMonitoring) {
+        $sidebarSectionTitle = 'Pemantauan & Audit';
+        $sidebarItems = [
+            [
+                'route' => 'pharmacy.medicines',
+                'icon' => 'fa-pills',
+                'label' => 'Katalog 150 Obat',
+                'badge' => '150 Item',
+                'active' => request()->routeIs('pharmacy.medicines*')
+            ],
+            [
+                'route' => 'pharmacy.macd',
+                'icon' => 'fa-chart-line',
+                'label' => 'Tren Permintaan (MACD)',
+                'badge' => 'AI Momentum',
+                'active' => request()->routeIs('pharmacy.macd*')
+            ],
+            [
+                'route' => 'pharmacy.audit',
+                'icon' => 'fa-hourglass-end',
+                'label' => 'Audit Obat Kadaluarsa',
+                'badge' => 'Nilai ED',
+                'active' => request()->routeIs('pharmacy.audit*')
+            ],
+        ];
+        $quickActions = [
+            ['route' => 'pharmacy.entry', 'icon' => 'fa-pen-to-square', 'label' => 'Pencatatan LPLPO Baru'],
+            ['route' => 'pharmacy.print', 'icon' => 'fa-print', 'label' => 'Cetak Lembar LPLPO', 'blank' => true],
+        ];
+    } else {
+        $sidebarSectionTitle = 'Aksi Operasional Cepat';
+        $sidebarItems = [
+            [
+                'route' => 'pharmacy.entry',
+                'icon' => 'fa-pen-to-square',
+                'label' => 'Pencatatan LPLPO & Pasien',
+                'badge' => 'Input Riil',
+                'active' => false
+            ],
+            [
+                'route' => 'pharmacy.procurement',
+                'icon' => 'fa-clipboard-check',
+                'label' => 'Lembar Usulan Pengadaan',
+                'badge' => 'P5 Otomatis',
+                'active' => $isProcurement
+            ],
+            [
+                'route' => 'pharmacy.medicines',
+                'icon' => 'fa-boxes-stacked',
+                'label' => 'Daftar 150 Sediaan Obat',
+                'badge' => 'Gudang',
+                'active' => false
+            ],
+            [
+                'route' => 'pharmacy.audit',
+                'icon' => 'fa-triangle-exclamation',
+                'label' => 'Pemeriksaan Kadaluarsa',
+                'badge' => 'Audit ED',
+                'active' => false
+            ],
+        ];
+        $quickActions = [
+            ['route' => 'pharmacy.print', 'icon' => 'fa-print', 'label' => 'Cetak Lembar Kerja LPLPO', 'blank' => true],
+        ];
+    }
 @endphp
 
     <!-- Latar gelap saat menu mobile terbuka -->
@@ -136,7 +235,7 @@
     <!-- WRAPPER APLIKASI -->
     <div class="min-h-screen p-3 sm:p-5 lg:p-6 flex flex-col gap-5 max-w-[1720px] mx-auto">
 
-        <!-- FLOATING TOP HEADER (Sesuai Desain Modern Referensi Quixotic) -->
+        <!-- FLOATING TOP HEADER (4 ALUR UTAMA PUSKESMAS) -->
         <header class="w-full bg-white/95 backdrop-blur-md rounded-full shadow-float px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-3 border border-slate-200/70 sticky top-3 sm:top-4 z-40">
             
             <!-- Sisi Kiri: Brand Logo & Title -->
@@ -155,13 +254,13 @@
                 </a>
             </div>
 
-            <!-- Bagian Tengah: Pill Nav Segmented Tabs -->
-            <nav class="hidden lg:flex items-center bg-[#f1f4ee] rounded-full p-1 gap-1 text-xs font-semibold shadow-inner" aria-label="Navigasi Atas">
+            <!-- Bagian Tengah: 4 Menu Alur Utama Faskes (Tanpa Duplikasi) -->
+            <nav class="hidden lg:flex items-center bg-[#f1f4ee] rounded-full p-1 gap-1 text-xs font-semibold shadow-inner" aria-label="Navigasi Alur Utama">
                 @foreach($navPills as $pill)
-                    @php $isActive = request()->routeIs($pill['route']); @endphp
                     <a href="{{ route($pill['route']) }}" 
-                       class="px-4 py-2 rounded-full transition-all duration-150 whitespace-nowrap {{ $isActive ? 'bg-white text-ink shadow-sm font-bold' : 'text-slate-600 hover:text-ink hover:bg-white/50' }}">
-                        {{ $pill['label'] }}
+                       class="px-5 py-2 rounded-full transition-all duration-150 whitespace-nowrap flex items-center gap-2 {{ $pill['active'] ? 'bg-white text-ink shadow-sm font-bold' : 'text-slate-600 hover:text-ink hover:bg-white/50' }}">
+                        <i class="fa-solid {{ $pill['icon'] }} text-xs {{ $pill['active'] ? 'text-matcha-700' : 'text-slate-400' }}"></i>
+                        <span>{{ $pill['label'] }}</span>
                     </a>
                 @endforeach
             </nav>
@@ -210,24 +309,24 @@
             </div>
         </header>
 
-        <!-- AREA UTAMA: SIDEBAR DOCK + KONTEN HALAMAN -->
+        <!-- AREA UTAMA: SIDEBAR DOCK (SUB-MODUL) + KONTEN HALAMAN -->
         <div class="flex-1 flex gap-5 items-start relative">
 
-            <!-- SIDEBAR DOCK KIRI (Bisa Dikecilkan / Dilebarkan) -->
+            <!-- SIDEBAR DOCK KIRI (ALAT BANTU & SUB-MODUL KONTEKSTUAL) -->
             <aside id="sidebar"
                    class="is-compact fixed lg:sticky top-0 lg:top-[5.5rem] left-0 z-50 h-screen lg:h-[calc(100vh-7rem)]
                           bg-white rounded-r-[32px] lg:rounded-[32px] shadow-float-lg lg:shadow-float border border-slate-200/60
                           flex flex-col justify-between py-4 shrink-0 -translate-x-full lg:translate-x-0 select-none overflow-y-auto overflow-x-hidden">
 
-                <!-- Header Sidebar (Expanded Mode Only) -->
+                <!-- Header Sidebar -->
                 <div class="px-3 pb-3 border-b border-slate-100 flex items-center justify-between">
                     <div class="sidebar-brand-text flex items-center gap-2.5 px-2">
                         <div class="w-8 h-8 rounded-full bg-matcha-600 text-white flex items-center justify-center text-xs font-bold">
-                            <i class="fa-solid fa-prescription-bottle-medical"></i>
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
                         </div>
                         <div class="leading-tight">
-                            <span class="font-extrabold text-xs text-ink block">Bagian Farmasi</span>
-                            <span class="text-[10px] text-slate-400 block truncate">Puskesmas Teluk Sasah</span>
+                            <span class="font-extrabold text-xs text-ink block">{{ $sidebarSectionTitle }}</span>
+                            <span class="text-[10px] text-slate-400 block truncate">Instalasi Farmasi</span>
                         </div>
                     </div>
                     <!-- Mini Collapse Button di dalam sidebar -->
@@ -236,39 +335,59 @@
                     </button>
                 </div>
 
-                <!-- List Navigasi Vertikal -->
-                <nav class="flex-1 px-2 py-3 space-y-4" aria-label="Navigasi Ikon Dock">
-                    @foreach($sidebarGroups as $groupLabel => $items)
+                <!-- List Sub-Modul Kontekstual -->
+                <nav class="flex-1 px-2 py-3 space-y-4" aria-label="Navigasi Sub-Modul">
                     <div>
-                        <p class="sidebar-heading px-3 mb-1.5 text-[10px] font-bold tracking-[0.12em] text-slate-400 uppercase">{{ $groupLabel }}</p>
-                        <div class="space-y-1.5">
-                            @foreach($items as $item)
-                                @php $active = empty($item['blank']) && request()->routeIs($item['route']); @endphp
-                                <a href="{{ route($item['route']) }}"
+                        <p class="sidebar-heading px-3 mb-1.5 text-[10px] font-bold tracking-[0.12em] text-slate-400 uppercase">{{ $sidebarSectionTitle }}</p>
+                        <div class="space-y-1.5" id="sidebarItemsContainer">
+                            @foreach($sidebarItems as $item)
+                                @php 
+                                    $active = !empty($item['active']);
+                                    $linkId = $item['id'] ?? ('sb-link-' . \Illuminate\Support\Str::slug($item['label']));
+                                    $href = $item['href'] ?? (isset($item['route']) ? route($item['route']) : '#');
+                                @endphp
+                                <a href="{{ $href }}"
+                                   id="{{ $linkId }}"
                                    title="{{ $item['label'] }}"
-                                   @if(!empty($item['blank'])) target="_blank" rel="noopener" @endif
+                                   @if(!empty($item['onclick'])) onclick="{!! $item['onclick'] !!}" @endif
                                    @if($active) aria-current="page" @endif
-                                   class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150
-                                          {{ $active ? 'bg-matcha-700 text-white shadow-md shadow-matcha-700/25' : 'text-slate-600 hover:bg-matcha-50 hover:text-matcha-900' }}">
+                                   class="sidebar-nav-item sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150
+                                          {{ $active ? 'bg-matcha-700 text-white shadow-md shadow-matcha-700/25 active-dock-item' : 'text-slate-600 hover:bg-matcha-50 hover:text-matcha-900' }}">
                                     <i class="fa-solid {{ $item['icon'] }} text-center text-sm {{ $active ? 'text-white' : 'text-matcha-600' }}"></i>
                                     <span class="sidebar-text truncate">{{ $item['label'] }}</span>
                                     @if(!empty($item['badge']))
                                         <span class="sidebar-badge ml-auto shrink-0 text-[9px] px-2 py-0.5 rounded-full font-bold {{ $active ? 'bg-white/25 text-white' : 'bg-matcha-100 text-matcha-800' }}">{{ $item['badge'] }}</span>
-                                    @elseif(!empty($item['blank']))
+                                    @endif
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Bagian Aksi Cepat / Quick Actions -->
+                    <div>
+                        <p class="sidebar-heading px-3 mb-1.5 text-[10px] font-bold tracking-[0.12em] text-slate-400 uppercase">Aksi Cepat</p>
+                        <div class="space-y-1.5">
+                            @foreach($quickActions as $qa)
+                                <a href="{{ route($qa['route']) }}"
+                                   title="{{ $qa['label'] }}"
+                                   @if(!empty($qa['blank'])) target="_blank" rel="noopener" @endif
+                                   class="sidebar-link flex items-center gap-3 px-3.5 py-2 rounded-full text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-ink transition">
+                                    <i class="fa-solid {{ $qa['icon'] }} text-center text-sm text-slate-400"></i>
+                                    <span class="sidebar-text truncate">{{ $qa['label'] }}</span>
+                                    @if(!empty($qa['blank']))
                                         <i class="sidebar-badge fa-solid fa-arrow-up-right-from-square ml-auto text-[10px] text-slate-300"></i>
                                     @endif
                                 </a>
                             @endforeach
                         </div>
                     </div>
-                    @endforeach
                 </nav>
 
                 <!-- Footer Sidebar Profil -->
                 <div class="px-2 pt-2 border-t border-slate-100">
                     <div class="sidebar-profile-text p-2 rounded-2xl bg-matcha-50/70 mb-2 text-center text-[10px] text-slate-500">
                         <p class="font-bold text-matcha-900">SIPA 19890415/2018/021</p>
-                        <p>Format LPLPO Kemenkes RI</p>
+                        <p>Format Resmi LPLPO Kemenkes</p>
                     </div>
                     <a href="{{ route('logout') }}" title="Ganti Portal / Keluar"
                        class="sidebar-link flex items-center gap-3 px-3.5 py-2 rounded-full text-xs font-bold text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition">

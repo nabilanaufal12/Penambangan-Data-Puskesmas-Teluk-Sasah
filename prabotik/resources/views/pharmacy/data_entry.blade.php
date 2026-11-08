@@ -88,24 +88,32 @@
     </div>
     @endif
 
-    <!-- 4 Tombol Pilihan Tab Operasional (Pill Segmented Control) -->
-    <div class="bg-white rounded-full p-2 border border-slate-200 shadow-float flex flex-wrap gap-2">
-        <button onclick="switchTab('lplpo')" id="btn-tab-lplpo" class="tab-btn flex-1 min-w-[180px] py-2.5 px-4 rounded-full font-bold text-xs transition flex items-center justify-center space-x-2 {{ $tab === 'lplpo' ? 'bg-matcha-700 text-white shadow-md shadow-matcha-700/20' : 'bg-slate-50 text-slate-600 hover:bg-slate-100' }}">
-            <i class="fa-solid fa-boxes-packing text-sm"></i>
-            <span>1. Stok &amp; Pemakaian LPLPO</span>
-        </button>
-        <button onclick="switchTab('penyakit')" id="btn-tab-penyakit" class="tab-btn flex-1 min-w-[180px] py-2.5 px-4 rounded-full font-bold text-xs transition flex items-center justify-center space-x-2 {{ $tab === 'penyakit' ? 'bg-matcha-700 text-white shadow-md shadow-matcha-700/20' : 'bg-slate-50 text-slate-600 hover:bg-slate-100' }}">
-            <i class="fa-solid fa-stethoscope text-sm"></i>
-            <span>2. Kunjungan SIMPUS (ICD-10)</span>
-        </button>
-        <button onclick="switchTab('kadaluarsa')" id="btn-tab-kadaluarsa" class="tab-btn flex-1 min-w-[180px] py-2.5 px-4 rounded-full font-bold text-xs transition flex items-center justify-center space-x-2 {{ $tab === 'kadaluarsa' ? 'bg-matcha-700 text-white shadow-md shadow-matcha-700/20' : 'bg-slate-50 text-slate-600 hover:bg-slate-100' }}">
-            <i class="fa-solid fa-calendar-xmark text-sm"></i>
-            <span>3. Berita Acara ED / Kadaluarsa</span>
-        </button>
-        <button onclick="switchTab('obat')" id="btn-tab-obat" class="tab-btn flex-1 min-w-[180px] py-2.5 px-4 rounded-full font-bold text-xs transition flex items-center justify-center space-x-2 {{ $tab === 'obat' ? 'bg-matcha-700 text-white shadow-md shadow-matcha-700/20' : 'bg-slate-50 text-slate-600 hover:bg-slate-100' }}">
-            <i class="fa-solid fa-pills text-sm"></i>
-            <span>4. Registrasi Sediaan Baru</span>
-        </button>
+    <!-- Indikator Sub-Modul Aktif & Pengalih Cepat Mobile -->
+    <div class="bg-white rounded-2xl px-5 py-3.5 border border-slate-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5">
+            <span class="text-xs font-semibold text-slate-500">Sub-Modul Aktif:</span>
+            <span id="activeModuleBadge" class="px-3.5 py-1 rounded-full bg-matcha-100 text-matcha-900 text-xs font-black border border-matcha-200/70 flex items-center gap-2">
+                <i id="activeModuleIcon" class="fa-solid fa-boxes-packing text-matcha-700"></i>
+                <span id="activeModuleText">1. Stok &amp; Pemakaian LPLPO (Format Lembar Kerja Kemenkes)</span>
+            </span>
+        </div>
+        
+        <!-- Quick Switcher Chips (Tampil di layar untuk kemudahan beralih langsung) -->
+        <div class="flex items-center gap-1.5 overflow-x-auto py-0.5 text-xs">
+            <span class="hidden md:inline text-[11px] text-slate-400 mr-1">Beralih Cepat:</span>
+            <button type="button" onclick="switchTab('lplpo')" id="chip-tab-lplpo" class="tab-chip px-3 py-1 rounded-full font-bold text-[11px] transition {{ $tab === 'lplpo' ? 'bg-matcha-700 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
+                1. LPLPO
+            </button>
+            <button type="button" onclick="switchTab('penyakit')" id="chip-tab-penyakit" class="tab-chip px-3 py-1 rounded-full font-bold text-[11px] transition {{ $tab === 'penyakit' ? 'bg-matcha-700 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
+                2. SIMPUS
+            </button>
+            <button type="button" onclick="switchTab('kadaluarsa')" id="chip-tab-kadaluarsa" class="tab-chip px-3 py-1 rounded-full font-bold text-[11px] transition {{ $tab === 'kadaluarsa' ? 'bg-matcha-700 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
+                3. Berita ED
+            </button>
+            <button type="button" onclick="switchTab('obat')" id="chip-tab-obat" class="tab-chip px-3 py-1 rounded-full font-bold text-[11px] transition {{ $tab === 'obat' ? 'bg-matcha-700 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
+                4. Registrasi Baru
+            </button>
+        </div>
     </div>
 
     <!-- ========================================================================= -->
@@ -789,26 +797,78 @@
 
 @section('scripts')
 <script>
-    // Tab Switching Functionality
+    // Tab Switching Functionality & Sinkronisasi dengan Panel Kiri
+    const moduleMeta = {
+        'lplpo': {
+            icon: 'fa-solid fa-boxes-packing text-matcha-700',
+            text: '1. Stok & Pemakaian LPLPO (Format Lembar Kerja Kemenkes)'
+        },
+        'penyakit': {
+            icon: 'fa-solid fa-stethoscope text-matcha-700',
+            text: '2. Kunjungan SIMPUS (Kasus Diagnosis ICD-10 Bulanan)'
+        },
+        'kadaluarsa': {
+            icon: 'fa-solid fa-calendar-xmark text-matcha-700',
+            text: '3. Berita Acara Kerusakan / Kadaluarsa Obat (ED)'
+        },
+        'obat': {
+            icon: 'fa-solid fa-pills text-matcha-700',
+            text: '4. Registrasi Sediaan Obat Baru ke Katalog Aktif'
+        }
+    };
+
     function switchTab(tabName) {
+        // 1. Sembunyikan semua tab konten
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.add('hidden');
         });
 
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.className = 'tab-btn flex-1 min-w-[180px] py-2.5 px-4 rounded-full font-bold text-xs transition flex items-center justify-center space-x-2 bg-slate-50 text-slate-600 hover:bg-slate-100';
-        });
-
+        // 2. Tampilkan tab konten target
         const targetContent = document.getElementById('content-tab-' + tabName);
         if (targetContent) {
             targetContent.classList.remove('hidden');
         }
 
-        const targetBtn = document.getElementById('btn-tab-' + tabName);
-        if (targetBtn) {
-            targetBtn.className = 'tab-btn flex-1 min-w-[180px] py-2.5 px-4 rounded-full font-bold text-xs transition flex items-center justify-center space-x-2 bg-matcha-700 text-white shadow-md shadow-matcha-700/20';
+        // 3. Sinkronisasi Chip di Halaman
+        document.querySelectorAll('.tab-chip').forEach(chip => {
+            chip.className = 'tab-chip px-3 py-1 rounded-full font-bold text-[11px] transition bg-slate-100 text-slate-600 hover:bg-slate-200';
+        });
+        const activeChip = document.getElementById('chip-tab-' + tabName);
+        if (activeChip) {
+            activeChip.className = 'tab-chip px-3 py-1 rounded-full font-bold text-[11px] transition bg-matcha-700 text-white shadow-xs';
         }
 
+        // 4. Sinkronisasi Item di Sidebar Kiri (Sub-Modul Dock)
+        const sidebarTabMap = {
+            'lplpo': 'sb-tab-lplpo',
+            'penyakit': 'sb-tab-penyakit',
+            'kadaluarsa': 'sb-tab-kadaluarsa',
+            'obat': 'sb-tab-obat'
+        };
+        Object.keys(sidebarTabMap).forEach(key => {
+            const el = document.getElementById(sidebarTabMap[key]);
+            if (el) {
+                if (key === tabName) {
+                    el.className = 'sidebar-nav-item sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150 bg-matcha-700 text-white shadow-md shadow-matcha-700/25 active-dock-item';
+                    const icon = el.querySelector('i');
+                    if (icon) icon.className = icon.className.replace('text-matcha-600', 'text-white');
+                } else {
+                    el.className = 'sidebar-nav-item sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150 text-slate-600 hover:bg-matcha-50 hover:text-matcha-900';
+                    const icon = el.querySelector('i');
+                    if (icon) icon.className = icon.className.replace('text-white', 'text-matcha-600');
+                }
+            }
+        });
+
+        // 5. Update Badge Teks dan Ikon Aktif di Halaman
+        if (moduleMeta[tabName]) {
+            const iconEl = document.getElementById('activeModuleIcon');
+            const textEl = document.getElementById('activeModuleText');
+            if (iconEl) iconEl.className = moduleMeta[tabName].icon;
+            if (textEl) textEl.textContent = moduleMeta[tabName].text;
+        }
+
+        // 6. Update URL parameter tanpa reload
         const url = new URL(window.location);
         url.searchParams.set('tab', tabName);
         window.history.pushState({}, '', url);

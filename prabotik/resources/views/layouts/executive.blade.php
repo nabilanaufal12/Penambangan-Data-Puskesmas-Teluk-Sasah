@@ -104,31 +104,78 @@
 
 @php
     $approved = (bool) session('p5_procurement_approved');
+    $isReport = request()->routeIs('executive.diseases*') || request()->routeIs('executive.financial*') || request()->routeIs('executive.correlations*');
+    $isProfile = request()->routeIs('executive.profile*');
+    $isDisposition = request()->routeIs('executive.disposition*');
+    $isDashboard = request()->routeIs('executive.dashboard*');
+
+    // 1. HEADER ATAS: 4 ALUR UTAMA PIMPINAN (MACRO NAVIGATION)
     $navPills = [
-        ['route' => 'executive.dashboard',    'label' => 'Ringkasan Pimpinan', 'icon' => 'fa-building-columns'],
-        ['route' => 'executive.disposition',  'label' => 'Persetujuan Obat',   'icon' => 'fa-stamp'],
-        ['route' => 'executive.diseases',     'label' => 'Morbiditas SIMPUS',  'icon' => 'fa-heart-pulse'],
-        ['route' => 'executive.financial',    'label' => 'Audit Kadaluarsa',   'icon' => 'fa-sack-dollar'],
-        ['route' => 'executive.correlations', 'label' => 'Kesesuaian Obat',    'icon' => 'fa-notes-medical'],
-        ['route' => 'executive.print',        'label' => 'Dokumen LPLPO',      'icon' => 'fa-print', 'blank' => true],
+        ['route' => 'executive.dashboard',    'label' => 'Ringkasan Pimpinan', 'icon' => 'fa-building-columns', 'active' => $isDashboard],
+        ['route' => 'executive.disposition',  'label' => 'Persetujuan Obat',   'icon' => 'fa-stamp',            'active' => $isDisposition],
+        ['route' => 'executive.diseases',     'label' => 'Laporan Puskesmas',  'icon' => 'fa-heart-pulse',      'active' => $isReport],
+        ['route' => 'executive.profile',      'label' => 'Profil & Wilayah',   'icon' => 'fa-hospital-user',    'active' => $isProfile],
     ];
 
-    $sidebarGroups = [
-        'Menu Utama' => [
-            ['route' => 'executive.dashboard',    'icon' => 'fa-building-columns', 'label' => 'Ringkasan Pimpinan & SPM'],
-            ['route' => 'executive.disposition',  'icon' => 'fa-stamp',            'label' => 'Persetujuan Permintaan',
-                'badge' => $approved ? 'Disahkan' : 'Perlu TTD', 'tone' => $approved ? 'ok' : 'warn'],
-        ],
-        'Laporan Puskesmas' => [
-            ['route' => 'executive.diseases',     'icon' => 'fa-heart-pulse',      'label' => 'Kunjungan Pasien (SIMPUS)', 'badge' => '10 Terbesar'],
-            ['route' => 'executive.financial',    'icon' => 'fa-sack-dollar',      'label' => 'Laporan Obat Kadaluarsa'],
-            ['route' => 'executive.correlations', 'icon' => 'fa-notes-medical',    'label' => 'Kesesuaian Obat & Penyakit'],
-        ],
-        'Dokumen & Wilayah' => [
-            ['route' => 'executive.print',        'icon' => 'fa-print',            'label' => 'Cetak Dokumen LPLPO Resmi', 'blank' => true],
-            ['route' => 'executive.profile',      'icon' => 'fa-hospital-user',    'label' => 'Profil & Wilayah Kerja'],
-        ],
-    ];
+    // 2. PANEL KIRI: SUB-MODUL & ALAT KERJA KONTEKSTUAL (MICRO UTILITIES)
+    if ($isReport) {
+        $sidebarSectionTitle = 'Sub-Modul Laporan';
+        $sidebarItems = [
+            [
+                'route' => 'executive.diseases',
+                'icon' => 'fa-heart-pulse',
+                'label' => 'Kunjungan Pasien SIMPUS',
+                'badge' => '10 Terbesar',
+                'active' => request()->routeIs('executive.diseases*')
+            ],
+            [
+                'route' => 'executive.financial',
+                'icon' => 'fa-sack-dollar',
+                'label' => 'Laporan Obat Kadaluarsa',
+                'badge' => 'Audit ED',
+                'active' => request()->routeIs('executive.financial*')
+            ],
+            [
+                'route' => 'executive.correlations',
+                'icon' => 'fa-notes-medical',
+                'label' => 'Kesesuaian Terapi Obat',
+                'badge' => 'Korelasi',
+                'active' => request()->routeIs('executive.correlations*')
+            ],
+        ];
+        $quickActions = [
+            ['route' => 'executive.disposition', 'icon' => 'fa-stamp', 'label' => 'Persetujuan Usulan P5'],
+            ['route' => 'executive.print', 'icon' => 'fa-print', 'label' => 'Cetak LPLPO Resmi', 'blank' => true],
+        ];
+    } else {
+        $sidebarSectionTitle = 'Otoritas & Pengesahan';
+        $sidebarItems = [
+            [
+                'route' => 'executive.dashboard',
+                'icon' => 'fa-building-columns',
+                'label' => 'Ringkasan SPM & Stok',
+                'badge' => 'Gudang',
+                'active' => $isDashboard
+            ],
+            [
+                'route' => 'executive.disposition',
+                'icon' => 'fa-stamp',
+                'label' => 'Persetujuan Pengadaan',
+                'badge' => $approved ? 'Disahkan' : 'Perlu TTD',
+                'active' => $isDisposition
+            ],
+            [
+                'route' => 'executive.diseases',
+                'icon' => 'fa-heart-pulse',
+                'label' => 'Laporan Morbiditas SIMPUS',
+                'badge' => 'SIMPUS',
+                'active' => false
+            ],
+        ];
+        $quickActions = [
+            ['route' => 'executive.print', 'icon' => 'fa-print', 'label' => 'Cetak Dokumen LPLPO Resmi', 'blank' => true],
+        ];
+    }
 @endphp
 
     <!-- Latar gelap saat menu mobile terbuka -->
@@ -156,14 +203,13 @@
                 </a>
             </div>
 
-            <!-- Bagian Tengah: Pill Nav Segmented Tabs -->
+            <!-- Bagian Tengah: 4 Menu Alur Utama Pimpinan (Tanpa Duplikasi) -->
             <nav class="hidden lg:flex items-center bg-[#f1f4ee] rounded-full p-1 gap-1 text-xs font-semibold shadow-inner" aria-label="Navigasi Atas Eksekutif">
                 @foreach($navPills as $pill)
-                    @php $isActive = empty($pill['blank']) && request()->routeIs($pill['route']); @endphp
                     <a href="{{ route($pill['route']) }}"
-                       @if(!empty($pill['blank'])) target="_blank" rel="noopener" @endif
-                       class="px-4 py-2 rounded-full transition-all duration-150 whitespace-nowrap {{ $isActive ? 'bg-white text-ink shadow-sm font-bold' : 'text-slate-600 hover:text-ink hover:bg-white/50' }}">
-                        {{ $pill['label'] }}
+                       class="px-5 py-2 rounded-full transition-all duration-150 whitespace-nowrap flex items-center gap-2 {{ $pill['active'] ? 'bg-white text-ink shadow-sm font-bold' : 'text-slate-600 hover:text-ink hover:bg-white/50' }}">
+                        <i class="fa-solid {{ $pill['icon'] }} text-xs {{ $pill['active'] ? 'text-matcha-700' : 'text-slate-400' }}"></i>
+                        <span>{{ $pill['label'] }}</span>
                     </a>
                 @endforeach
             </nav>
@@ -214,7 +260,7 @@
             </div>
         </header>
 
-        <!-- AREA UTAMA: SIDEBAR DOCK + KONTEN HALAMAN -->
+        <!-- AREA UTAMA: SIDEBAR DOCK (SUB-MODUL) + KONTEN HALAMAN -->
         <div class="flex-1 flex gap-5 items-start relative">
 
             <!-- SIDEBAR DOCK KIRI -->
@@ -223,14 +269,14 @@
                           bg-white rounded-r-[32px] lg:rounded-[32px] shadow-float-lg lg:shadow-float border border-slate-200/60
                           flex flex-col justify-between py-4 shrink-0 -translate-x-full lg:translate-x-0 select-none overflow-y-auto overflow-x-hidden">
 
-                <!-- Header Sidebar (Expanded Mode Only) -->
+                <!-- Header Sidebar -->
                 <div class="px-3 pb-3 border-b border-slate-100 flex items-center justify-between">
                     <div class="sidebar-brand-text flex items-center gap-2.5 px-2">
                         <div class="w-8 h-8 rounded-full bg-matcha-600 text-white flex items-center justify-center text-xs font-bold">
                             <i class="fa-solid fa-user-doctor"></i>
                         </div>
                         <div class="leading-tight">
-                            <span class="font-extrabold text-xs text-ink block">Kepala Faskes</span>
+                            <span class="font-extrabold text-xs text-ink block">{{ $sidebarSectionTitle }}</span>
                             <span class="text-[10px] text-slate-400 block truncate">Puskesmas Teluk Sasah</span>
                         </div>
                     </div>
@@ -240,32 +286,46 @@
                     </button>
                 </div>
 
-                <!-- List Navigasi Vertikal -->
-                <nav class="flex-1 px-2 py-3 space-y-4" aria-label="Navigasi Ikon Dock Eksekutif">
-                    @foreach($sidebarGroups as $groupLabel => $items)
+                <!-- List Navigasi Vertikal Sub-Modul -->
+                <nav class="flex-1 px-2 py-3 space-y-4" aria-label="Navigasi Sub-Modul Eksekutif">
                     <div>
-                        <p class="sidebar-heading px-3 mb-1.5 text-[10px] font-bold tracking-[0.12em] text-slate-400 uppercase">{{ $groupLabel }}</p>
+                        <p class="sidebar-heading px-3 mb-1.5 text-[10px] font-bold tracking-[0.12em] text-slate-400 uppercase">{{ $sidebarSectionTitle }}</p>
                         <div class="space-y-1.5">
-                            @foreach($items as $item)
-                                @php $active = empty($item['blank']) && request()->routeIs($item['route']); @endphp
+                            @foreach($sidebarItems as $item)
+                                @php $active = !empty($item['active']); @endphp
                                 <a href="{{ route($item['route']) }}"
                                    title="{{ $item['label'] }}"
-                                   @if(!empty($item['blank'])) target="_blank" rel="noopener" @endif
                                    @if($active) aria-current="page" @endif
                                    class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150
-                                          {{ $active ? 'bg-matcha-700 text-white shadow-md shadow-matcha-700/25' : 'text-slate-600 hover:bg-matcha-50 hover:text-matcha-900' }}">
+                                          {{ $active ? 'bg-matcha-700 text-white shadow-md shadow-matcha-700/25 active-dock-item' : 'text-slate-600 hover:bg-matcha-50 hover:text-matcha-900' }}">
                                     <i class="fa-solid {{ $item['icon'] }} text-center text-sm {{ $active ? 'text-white' : 'text-matcha-600' }}"></i>
                                     <span class="sidebar-text truncate">{{ $item['label'] }}</span>
                                     @if(!empty($item['badge']))
                                         <span class="sidebar-badge ml-auto shrink-0 text-[9px] px-2 py-0.5 rounded-full font-bold {{ $active ? 'bg-white/25 text-white' : 'bg-matcha-100 text-matcha-800' }}">{{ $item['badge'] }}</span>
-                                    @elseif(!empty($item['blank']))
+                                    @endif
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Bagian Aksi Cepat / Quick Actions -->
+                    <div>
+                        <p class="sidebar-heading px-3 mb-1.5 text-[10px] font-bold tracking-[0.12em] text-slate-400 uppercase">Aksi Cepat</p>
+                        <div class="space-y-1.5">
+                            @foreach($quickActions as $qa)
+                                <a href="{{ route($qa['route']) }}"
+                                   title="{{ $qa['label'] }}"
+                                   @if(!empty($qa['blank'])) target="_blank" rel="noopener" @endif
+                                   class="sidebar-link flex items-center gap-3 px-3.5 py-2 rounded-full text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-ink transition">
+                                    <i class="fa-solid {{ $qa['icon'] }} text-center text-sm text-slate-400"></i>
+                                    <span class="sidebar-text truncate">{{ $qa['label'] }}</span>
+                                    @if(!empty($qa['blank']))
                                         <i class="sidebar-badge fa-solid fa-arrow-up-right-from-square ml-auto text-[10px] text-slate-300"></i>
                                     @endif
                                 </a>
                             @endforeach
                         </div>
                     </div>
-                    @endforeach
                 </nav>
 
                 <!-- Footer Sidebar Profil -->
