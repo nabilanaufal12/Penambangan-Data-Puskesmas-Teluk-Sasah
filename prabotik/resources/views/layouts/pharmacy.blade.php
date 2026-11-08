@@ -221,27 +221,41 @@
     } elseif ($isProcurement) {
         // KHUSUS MENU 3: USULAN PENGADAAN (PERENCANAAN PERIODIK)
         $sidebarSectionTitle = 'Perencanaan Pengadaan';
+        $currentFilter = request()->query('filter', '');
+        $currentPrioritas = request()->query('prioritas', '');
+
         $sidebarItems = [
             [
+                'id' => 'sb-p-semua',
                 'icon' => 'fa-clipboard-list',
                 'label' => 'Daftar Usulan Order P5',
                 'badge' => '150 Item',
-                'href' => '#procurement-table',
-                'active' => true
+                'href' => route('pharmacy.procurement'),
+                'active' => (empty($currentFilter) && empty($currentPrioritas))
             ],
             [
+                'id' => 'sb-p-kritis',
                 'icon' => 'fa-filter-circle-dollar',
                 'label' => 'Filter Prioritas Restock',
-                'badge' => 'Kritis',
-                'href' => '#kritis-section',
-                'active' => false
+                'badge' => '96 Order',
+                'href' => route('pharmacy.procurement', ['filter' => 'kritis']),
+                'active' => ($currentFilter === 'kritis')
             ],
             [
-                'icon' => 'fa-shield-halved',
-                'label' => 'Cadangan Pengaman 25%',
-                'badge' => 'Buffer SS',
-                'href' => '#buffer-section',
-                'active' => false
+                'id' => 'sb-p-vital',
+                'icon' => 'fa-bolt',
+                'label' => 'Sediaan Vital (Fast-Moving)',
+                'badge' => 'Vital P1',
+                'href' => route('pharmacy.procurement', ['filter' => 'vital']),
+                'active' => ($currentFilter === 'vital')
+            ],
+            [
+                'id' => 'sb-p-koreksi',
+                'icon' => 'fa-clock-rotate-left',
+                'label' => 'Penyesuaian Stok Kosong',
+                'badge' => 'Koreksi',
+                'href' => route('pharmacy.procurement', ['filter' => 'koreksi']),
+                'active' => ($currentFilter === 'koreksi')
             ],
         ];
         $quickActions = [

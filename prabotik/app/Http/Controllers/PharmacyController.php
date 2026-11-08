@@ -323,15 +323,45 @@ class PharmacyController extends Controller
             $query->where('nama_obat', 'like', "%{$request->q}%");
         }
 
+        // Filter dari Sub-Modul Sidebar atau Quick Filter Pills
+        $filter = $request->query('filter', '');
+        if ($filter === 'kritis' || $filter === 'restock') {
+            // Sediaan yang membutuhkan alokasi order pengadaan (Alokasi > 0)
+            $query->where('rekomendasi_total', '>', 0);
+        } elseif ($filter === 'vital' || $filter === 'prioritas1') {
+            // Sediaan Vital / Fast-Moving (Prioritas 1)
+            $query->where('prioritas_kategori', 'like', '%Prioritas 1%');
+        } elseif ($filter === 'buffer') {
+            // Sisa stok di bawah atau sama dengan cadangan pengaman (safety stock)
+            $query->whereColumn('sisa_stok', '<=', 'safety_stock');
+        } elseif ($filter === 'koreksi') {
+            // Sediaan dengan penyesuaian permintaan tersensor (stockout)
+            $query->where('is_censored_adjusted', true);
+        }
+
         if ($request->filled('prioritas')) {
             $query->where('prioritas_kategori', 'like', "%{$request->prioritas}%");
         }
+
+        $totalCount = Medicine::count();
+        $kritisCount = Medicine::where('rekomendasi_total', '>', 0)->count();
+        $vitalCount = Medicine::where('prioritas_kategori', 'like', '%Prioritas 1%')->count();
+        $koreksiCount = Medicine::where('is_censored_adjusted', true)->count();
 
         $medicines = $query->orderByDesc('rekomendasi_total')->paginate(25)->withQueryString();
         $paracetamol = Medicine::where('nama_obat', 'like', '%Parasetamol%')->first();
         $isApproved = session('p5_procurement_approved', false);
 
-        return view('pharmacy.procurement', compact('medicines', 'paracetamol', 'isApproved'));
+        return view('pharmacy.procurement', compact(
+            'medicines',
+            'paracetamol',
+            'isApproved',
+            'totalCount',
+            'kritisCount',
+            'vitalCount',
+            'koreksiCount',
+            'filter'
+        ));
     }
 
     public function medicines(Request $request)

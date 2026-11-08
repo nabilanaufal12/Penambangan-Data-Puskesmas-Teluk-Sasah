@@ -31,7 +31,7 @@
 
     <!-- Paracetamol Special Alert Card -->
     @if($paracetamol)
-    <div id="kritis-section" class="bg-amber-50 border border-amber-300/80 rounded-2xl p-5 shadow-xs scroll-mt-24">
+    <div id="koreksi-section" class="bg-amber-50 border border-amber-300/80 rounded-2xl p-5 shadow-xs scroll-mt-28 {{ request('filter') === 'koreksi' ? 'ring-2 ring-amber-500' : '' }}">
         <div class="flex items-start space-x-3.5">
             <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg shrink-0">
                 <i class="fa-solid fa-triangle-exclamation"></i>
@@ -49,45 +49,90 @@
                     Pada periode Juli–Agustus 2026, pemakaian tercatat 0 butir karena obat sempat habis total di gudang. Jika dihitung mentah tanpa koreksi, usulan permintaan akan anjlok terlalu rendah (hanya 3.222 butir) dan dapat memicu kekosongan obat kembali. Sistem telah menyesuaikan perkiraan kebutuhan menjadi <strong>{{ number_format($paracetamol->prediksi_P5, 0, ',', '.') }} tablet</strong> dengan cadangan pengaman sebesar <strong>{{ number_format($paracetamol->safety_stock, 0, ',', '.') }} tablet</strong>.
                 </p>
                 <div class="mt-3 flex items-center space-x-4 text-xs font-bold text-amber-950">
-                    <span>Total Rekomendasi Pengadaan: <span class="text-base text-emerald-700 font-extrabold">{{ number_format($paracetamol->rekomendasi_total, 0, ',', '.') }} tablet</span></span>
+                    <span>Total Rekomendasi Pengadaan: <span class="text-base text-matcha-700 font-extrabold">{{ number_format($paracetamol->rekomendasi_total, 0, ',', '.') }} tablet</span></span>
                     <span>&bull;</span>
-                    <span class="text-emerald-700">Status: Aman dari Resiko Kehabisan Obat ISPA</span>
+                    <span class="text-matcha-700">Status: Aman dari Resiko Kehabisan Obat ISPA</span>
                 </div>
             </div>
         </div>
     </div>
     @endif
 
-    <!-- Filter & Search Toolbar -->
-    <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
-        <form method="GET" action="{{ route('pharmacy.procurement') }}" class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
-            <div class="sm:col-span-6">
-                <div class="relative">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
-                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama obat (misal: Parasetamol, Metformin)..." class="w-full pl-9 pr-4 py-2 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+    <!-- Toolbar Filter Cepat Sub-Modul & Pencarian -->
+    <div class="space-y-3">
+        <!-- Quick Filter Pills -->
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+            <span class="text-xs font-bold text-slate-500 mr-1"><i class="fa-solid fa-filter text-matcha-600 mr-1"></i>Filter Cepat:</span>
+            <a href="{{ route('pharmacy.procurement') }}" class="px-3.5 py-1.5 rounded-full font-bold text-xs transition {{ empty(request('filter')) && empty(request('prioritas')) ? 'bg-matcha-700 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-matcha-50 border border-slate-200' }}">
+                Semua Usulan ({{ $totalCount ?? 150 }})
+            </a>
+            <a href="{{ route('pharmacy.procurement', ['filter' => 'kritis']) }}" class="px-3.5 py-1.5 rounded-full font-bold text-xs transition {{ request('filter') === 'kritis' ? 'bg-matcha-700 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-matcha-50 border border-slate-200' }}">
+                <i class="fa-solid fa-triangle-exclamation mr-1 text-amber-500"></i>Perlu Usulan P5 ({{ $kritisCount ?? 96 }})
+            </a>
+            <a href="{{ route('pharmacy.procurement', ['filter' => 'vital']) }}" class="px-3.5 py-1.5 rounded-full font-bold text-xs transition {{ request('filter') === 'vital' ? 'bg-matcha-700 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-matcha-50 border border-slate-200' }}">
+                <i class="fa-solid fa-bolt mr-1 text-rose-500"></i>Vital P1 ({{ $vitalCount ?? 10 }})
+            </a>
+            <a href="{{ route('pharmacy.procurement', ['filter' => 'koreksi']) }}" class="px-3.5 py-1.5 rounded-full font-bold text-xs transition {{ request('filter') === 'koreksi' ? 'bg-matcha-700 text-white shadow-xs' : 'bg-white text-slate-700 hover:bg-matcha-50 border border-slate-200' }}">
+                <i class="fa-solid fa-clock-rotate-left mr-1 text-matcha-600"></i>Terkoreksi Stockout ({{ $koreksiCount ?? 1 }})
+            </a>
+        </div>
+
+        <!-- Filter & Search Toolbar Form -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+            <form method="GET" action="{{ route('pharmacy.procurement') }}" class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                @if(request('filter'))
+                <input type="hidden" name="filter" value="{{ request('filter') }}">
+                @endif
+
+                <div class="sm:col-span-6">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                        <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama obat (misal: Parasetamol, Metformin)..." class="w-full pl-9 pr-4 py-2 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-matcha-600 transition">
+                    </div>
                 </div>
-            </div>
 
-            <div class="sm:col-span-4">
-                <select name="prioritas" class="w-full py-2 px-3 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
-                    <option value="">Semua Kategori Prioritas</option>
-                    <option value="Prioritas Tinggi" {{ request('prioritas') == 'Prioritas Tinggi' ? 'selected' : '' }}>Prioritas Tinggi (Fast-Moving)</option>
-                    <option value="Prioritas Sedang" {{ request('prioritas') == 'Prioritas Sedang' ? 'selected' : '' }}>Prioritas Sedang (Stabil)</option>
-                    <option value="Prioritas Rendah" {{ request('prioritas') == 'Prioritas Rendah' ? 'selected' : '' }}>Prioritas Rendah (Slow-Moving)</option>
-                </select>
-            </div>
+                <div class="sm:col-span-4">
+                    <select name="prioritas" class="w-full py-2 px-3 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-matcha-600 transition">
+                        <option value="">Semua Kategori Prioritas</option>
+                        <option value="Prioritas 1" {{ request('prioritas') == 'Prioritas 1' || request('filter') == 'vital' ? 'selected' : '' }}>Prioritas 1 (Vital / Fast-Moving)</option>
+                        <option value="Prioritas 2" {{ request('prioritas') == 'Prioritas 2' ? 'selected' : '' }}>Prioritas 2 (Esensial / Stabil)</option>
+                        <option value="Prioritas 3" {{ request('prioritas') == 'Prioritas 3' ? 'selected' : '' }}>Prioritas 3 (Buffer / Penunjang)</option>
+                    </select>
+                </div>
 
-            <div class="sm:col-span-2 flex space-x-2">
-                <button type="submit" class="flex-1 py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition shadow-xs">
-                    Filter
-                </button>
-                @if(request()->hasAny(['q', 'prioritas']))
-                <a href="{{ route('pharmacy.procurement') }}" class="py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition">
-                    Reset
-                </a>
+                <div class="sm:col-span-2 flex space-x-2">
+                    <button type="submit" class="flex-1 py-2 px-4 rounded-xl bg-matcha-700 hover:bg-matcha-800 text-white font-bold text-xs transition shadow-xs">
+                        Filter
+                    </button>
+                    @if(request()->hasAny(['q', 'prioritas', 'filter']))
+                    <a href="{{ route('pharmacy.procurement') }}" class="py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition" title="Reset Semua Filter">
+                        Reset
+                    </a>
+                    @endif
+                </div>
+            </form>
+        </div>
+
+        <!-- Banner Informasi Filter Aktif -->
+        @if(request()->hasAny(['filter', 'q', 'prioritas']))
+        <div class="p-3.5 bg-matcha-50 border border-matcha-200/80 rounded-2xl flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2 text-matcha-900 font-medium">
+                <i class="fa-solid fa-circle-check text-matcha-700"></i>
+                @if(request('filter') === 'kritis')
+                    <span>Filter Aktif: Menampilkan <strong>{{ $medicines->total() }} sediaan</strong> yang memerlukan alokasi order pengadaan P5 (Alokasi > 0 unit).</span>
+                @elseif(request('filter') === 'vital')
+                    <span>Filter Aktif: Menampilkan <strong>{{ $medicines->total() }} sediaan</strong> kategori Prioritas 1 (Vital &amp; Fast-Moving).</span>
+                @elseif(request('filter') === 'koreksi')
+                    <span>Filter Aktif: Menampilkan sediaan yang perhitungannya disesuaikan akibat kekosongan fisik (stockout).</span>
+                @else
+                    <span>Filter pencarian aktif. Ditemukan <strong>{{ $medicines->total() }} sediaan</strong> obat.</span>
                 @endif
             </div>
-        </form>
+            <a href="{{ route('pharmacy.procurement') }}" class="font-bold text-matcha-800 hover:text-matcha-900 underline text-[11px] shrink-0 ml-2">
+                Tampilkan Semua (150) &times;
+            </a>
+        </div>
+        @endif
     </div>
 
     <!-- Procurement Master Table -->
