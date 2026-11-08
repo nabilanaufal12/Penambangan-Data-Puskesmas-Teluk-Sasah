@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-full scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -123,35 +123,47 @@
     // 2. PANEL KIRI: SUB-MODUL & ALAT BANTU KHUSUS (TERPISAH MURNI SESUAI MENU AKTIF)
     // =========================================================================
     if ($isDashboard) {
-        // KHUSUS MENU 1: BERANDA GUDANG
+        // KHUSUS MENU 1: BERANDA GUDANG (Pintasan 4 Bagian Utama Dashboard)
         $sidebarSectionTitle = 'Pintasan Beranda';
         $sidebarItems = [
             [
+                'id' => 'sb-b-kpi',
+                'target' => 'kpi-section',
                 'icon' => 'fa-gauge-high',
                 'label' => 'Ringkasan Metrik (KPI)',
                 'badge' => 'Gudang',
                 'href' => '#kpi-section',
+                'onclick' => "if(window.scrollToBerandaSection){ window.scrollToBerandaSection('kpi-section', this); return false; }",
                 'active' => true
             ],
             [
-                'icon' => 'fa-triangle-exclamation',
-                'label' => 'Prioritas Restock Kritis',
-                'badge' => 'Restock',
-                'href' => '#restock-section',
-                'active' => false
-            ],
-            [
-                'icon' => 'fa-chart-pie',
-                'label' => 'Distribusi Kondisi Stok',
-                'badge' => 'Fisik',
-                'href' => '#stok-section',
-                'active' => false
-            ],
-            [
+                'id' => 'sb-b-usulan',
+                'target' => 'usulan-chart-section',
                 'icon' => 'fa-cart-flatbed',
                 'label' => 'Top 8 Usulan Order P5',
                 'badge' => 'Terbesar',
                 'href' => '#usulan-chart-section',
+                'onclick' => "if(window.scrollToBerandaSection){ window.scrollToBerandaSection('usulan-chart-section', this); return false; }",
+                'active' => false
+            ],
+            [
+                'id' => 'sb-b-stok',
+                'target' => 'kondisi-stok-section',
+                'icon' => 'fa-chart-pie',
+                'label' => 'Distribusi Kondisi Stok',
+                'badge' => 'Fisik',
+                'href' => '#kondisi-stok-section',
+                'onclick' => "if(window.scrollToBerandaSection){ window.scrollToBerandaSection('kondisi-stok-section', this); return false; }",
+                'active' => false
+            ],
+            [
+                'id' => 'sb-b-restock',
+                'target' => 'restock-section',
+                'icon' => 'fa-triangle-exclamation',
+                'label' => 'Prioritas Restock Kritis',
+                'badge' => 'Restock',
+                'href' => '#restock-section',
+                'onclick' => "if(window.scrollToBerandaSection){ window.scrollToBerandaSection('restock-section', this); return false; }",
                 'active' => false
             ],
         ];
@@ -386,13 +398,15 @@
                                     $active = !empty($item['active']);
                                     $linkId = $item['id'] ?? ('sb-link-' . \Illuminate\Support\Str::slug($item['label']));
                                     $href = $item['href'] ?? (isset($item['route']) ? route($item['route']) : '#');
+                                    $target = $item['target'] ?? '';
                                 @endphp
                                 <a href="{{ $href }}"
                                    id="{{ $linkId }}"
                                    title="{{ $item['label'] }}"
+                                   @if(!empty($target)) data-target="{{ $target }}" @endif
                                    @if(!empty($item['onclick'])) onclick="{!! $item['onclick'] !!}" @endif
                                    @if($active) aria-current="page" @endif
-                                   class="sidebar-nav-item sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150
+                                   class="sidebar-nav-item sidebar-link {{ $isDashboard ? 'beranda-pintasan-link' : '' }} flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150
                                           {{ $active ? 'bg-matcha-700 text-white shadow-md shadow-matcha-700/25 active-dock-item' : 'text-slate-600 hover:bg-matcha-50 hover:text-matcha-900' }}">
                                     <i class="fa-solid {{ $item['icon'] }} text-center text-sm {{ $active ? 'text-white' : 'text-matcha-600' }}"></i>
                                     <span class="sidebar-text truncate">{{ $item['label'] }}</span>
@@ -518,8 +532,121 @@
                     if (e.key === 'Escape') setMobileOpen(false);
                 });
             }
+            // Expose mobile drawer close helper
+            window.closeMobileSidebar = function () {
+                setMobileOpen(false);
+            };
+        })();
+
+        // Handler Navigasi Halus & Scroll Spy Khusus Beranda Farmasi
+        (function () {
+            window.setActiveBerandaLink = function (activeLink) {
+                if (!activeLink) return;
+                var allLinks = document.querySelectorAll('.beranda-pintasan-link');
+                allLinks.forEach(function (link) {
+                    link.classList.remove('bg-matcha-700', 'text-white', 'shadow-md', 'shadow-matcha-700/25', 'active-dock-item');
+                    link.classList.add('text-slate-600', 'hover:bg-matcha-50', 'hover:text-matcha-900');
+                    link.removeAttribute('aria-current');
+
+                    var icon = link.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('text-white');
+                        icon.classList.add('text-matcha-600');
+                    }
+
+                    var badge = link.querySelector('.sidebar-badge');
+                    if (badge) {
+                        badge.classList.remove('bg-white/25', 'text-white');
+                        badge.classList.add('bg-matcha-100', 'text-matcha-800');
+                    }
+                });
+
+                activeLink.classList.remove('text-slate-600', 'hover:bg-matcha-50', 'hover:text-matcha-900');
+                activeLink.classList.add('bg-matcha-700', 'text-white', 'shadow-md', 'shadow-matcha-700/25', 'active-dock-item');
+                activeLink.setAttribute('aria-current', 'page');
+
+                var actIcon = activeLink.querySelector('i');
+                if (actIcon) {
+                    actIcon.classList.remove('text-matcha-600');
+                    actIcon.classList.add('text-white');
+                }
+
+                var actBadge = activeLink.querySelector('.sidebar-badge');
+                if (actBadge) {
+                    actBadge.classList.remove('bg-matcha-100', 'text-matcha-800');
+                    actBadge.classList.add('bg-white/25', 'text-white');
+                }
+            };
+
+            window.scrollToBerandaSection = function (targetId, linkEl) {
+                var targetEl = document.getElementById(targetId);
+                if (!targetEl) return;
+
+                // Kompensasi floating header (~96px offset)
+                var headerOffset = 96;
+                var elementPosition = targetEl.getBoundingClientRect().top;
+                var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: Math.max(0, offsetPosition),
+                    behavior: 'smooth'
+                });
+
+                if (!linkEl) {
+                    linkEl = document.querySelector('.beranda-pintasan-link[data-target="' + targetId + '"]');
+                }
+                if (linkEl) {
+                    window.setActiveBerandaLink(linkEl);
+                }
+
+                if (window.closeMobileSidebar && window.innerWidth < 1024) {
+                    window.closeMobileSidebar();
+                }
+
+                if (window.history && window.history.replaceState) {
+                    window.history.replaceState(null, '', '#' + targetId);
+                }
+            };
+
+            // Scroll Spy Otomatis untuk Halaman Beranda
+            var berandaSections = ['kpi-section', 'usulan-chart-section', 'kondisi-stok-section', 'restock-section'];
+            var isTicking = false;
+
+            window.addEventListener('scroll', function () {
+                if (isTicking) return;
+                isTicking = true;
+                requestAnimationFrame(function () {
+                    var scrollPos = window.scrollY + 140;
+                    var current = berandaSections[0];
+
+                    for (var i = 0; i < berandaSections.length; i++) {
+                        var sec = document.getElementById(berandaSections[i]);
+                        if (sec && sec.offsetTop <= scrollPos) {
+                            current = berandaSections[i];
+                        }
+                    }
+
+                    var targetLink = document.querySelector('.beranda-pintasan-link[data-target="' + current + '"]');
+                    if (targetLink && !targetLink.classList.contains('active-dock-item')) {
+                        window.setActiveBerandaLink(targetLink);
+                    }
+                    isTicking = false;
+                });
+            }, { passive: true });
+
+            // Handle anchor hash saat halaman pertama kali dimuat
+            if (window.location.hash) {
+                var hashId = window.location.hash.substring(1);
+                if (berandaSections.indexOf(hashId) !== -1) {
+                    setTimeout(function () {
+                        var initialLink = document.querySelector('.beranda-pintasan-link[data-target="' + hashId + '"]');
+                        window.scrollToBerandaSection(hashId, initialLink);
+                    }, 200);
+                }
+            }
         })();
     </script>
     @stack('scripts')
+    @yield('scripts')
 </body>
 </html>

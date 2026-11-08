@@ -822,7 +822,7 @@
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
 <script>
     // Tab Switching Functionality & Sinkronisasi dengan Panel Kiri
     const moduleMeta = {
@@ -877,12 +877,30 @@
             if (el) {
                 if (key === tabName) {
                     el.className = 'sidebar-nav-item sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150 bg-matcha-700 text-white shadow-md shadow-matcha-700/25 active-dock-item';
+                    el.setAttribute('aria-current', 'page');
                     const icon = el.querySelector('i');
-                    if (icon) icon.className = icon.className.replace('text-matcha-600', 'text-white');
+                    if (icon) {
+                        icon.classList.remove('text-matcha-600');
+                        icon.classList.add('text-white');
+                    }
+                    const badge = el.querySelector('.sidebar-badge');
+                    if (badge) {
+                        badge.classList.remove('bg-matcha-100', 'text-matcha-800');
+                        badge.classList.add('bg-white/25', 'text-white');
+                    }
                 } else {
                     el.className = 'sidebar-nav-item sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150 text-slate-600 hover:bg-matcha-50 hover:text-matcha-900';
+                    el.removeAttribute('aria-current');
                     const icon = el.querySelector('i');
-                    if (icon) icon.className = icon.className.replace('text-white', 'text-matcha-600');
+                    if (icon) {
+                        icon.classList.remove('text-white');
+                        icon.classList.add('text-matcha-600');
+                    }
+                    const badge = el.querySelector('.sidebar-badge');
+                    if (badge) {
+                        badge.classList.remove('bg-white/25', 'text-white');
+                        badge.classList.add('bg-matcha-100', 'text-matcha-800');
+                    }
                 }
             }
         });
@@ -896,10 +914,13 @@
         }
 
         // 6. Update URL parameter tanpa reload
-        const url = new URL(window.location);
-        url.searchParams.set('tab', tabName);
-        window.history.pushState({}, '', url);
+        if (window.history && window.history.pushState) {
+            const url = new URL(window.location);
+            url.searchParams.set('tab', tabName);
+            window.history.pushState({}, '', url);
+        }
     }
+    window.switchTab = switchTab;
 
     // Dynamic Medicine Selector & LPLPO Calculation Preview
     const medSelect = document.getElementById('medSelect');
@@ -1044,6 +1065,7 @@
 
         applyLplpoFiltering();
     }
+    window.filterLplpoTable = filterLplpoTable;
 
     function applyLplpoFiltering() {
         const query = (lplpoSearchInput ? lplpoSearchInput.value : '').toLowerCase().trim();
@@ -1153,4 +1175,4 @@
         regEstimasi.addEventListener('input', calculateNewMed);
     }
 </script>
-@endsection
+@endpush
