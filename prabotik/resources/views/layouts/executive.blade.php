@@ -8,9 +8,6 @@
     <!-- Tailwind CSS (CDN) + palet Matcha & Sage -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        // Skala Matcha & Sage (Uxintace). Skala yang sama dipakai untuk "emerald"
-        // agar halaman lama (entri data, katalog, MACD, audit, dll.) otomatis
-        // ikut berwarna matcha tanpa perlu diubah.
         const matcha = {
             50:  '#F3F8EE',
             100: '#E7F5DC',
@@ -66,18 +63,60 @@
         ::-webkit-scrollbar-thumb { background: #CFE1B9; border-radius: 9999px; }
         ::-webkit-scrollbar-thumb:hover { background: #98A77C; }
         a:focus-visible, button:focus-visible { outline: 2px solid #728156; outline-offset: 2px; }
+
+        /* Transisi & Mode Ringkas (Compact Dock) Sidebar Kiri */
+        #sidebar {
+            transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #sidebar.is-compact {
+            width: 76px !important;
+            padding-left: 0.625rem !important;
+            padding-right: 0.625rem !important;
+        }
+        #sidebar.is-compact .sidebar-text,
+        #sidebar.is-compact .sidebar-heading,
+        #sidebar.is-compact .sidebar-badge,
+        #sidebar.is-compact .sidebar-brand-text,
+        #sidebar.is-compact .sidebar-profile-text {
+            display: none !important;
+        }
+        #sidebar.is-compact .sidebar-link {
+            width: 48px !important;
+            height: 48px !important;
+            padding: 0 !important;
+            justify-content: center !important;
+            border-radius: 9999px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+        #sidebar.is-compact .sidebar-link i {
+            margin: 0 !important;
+            font-size: 16px !important;
+            width: auto !important;
+        }
+        #sidebar:not(.is-compact) {
+            width: 17.5rem !important;
+        }
     </style>
     @stack('styles')
 </head>
 <body class="min-h-full bg-sage text-ink antialiased overflow-x-hidden">
 
 @php
-    // Menu navigasi Portal Eksekutif (nama rute tidak diubah)
     $approved = (bool) session('p5_procurement_approved');
-    $navGroups = [
+    $navPills = [
+        ['route' => 'executive.dashboard',    'label' => 'Ringkasan Pimpinan', 'icon' => 'fa-building-columns'],
+        ['route' => 'executive.disposition',  'label' => 'Persetujuan Obat',   'icon' => 'fa-stamp'],
+        ['route' => 'executive.diseases',     'label' => 'Morbiditas SIMPUS',  'icon' => 'fa-heart-pulse'],
+        ['route' => 'executive.financial',    'label' => 'Audit Kadaluarsa',   'icon' => 'fa-sack-dollar'],
+        ['route' => 'executive.correlations', 'label' => 'Kesesuaian Obat',    'icon' => 'fa-notes-medical'],
+        ['route' => 'executive.print',        'label' => 'Dokumen LPLPO',      'icon' => 'fa-print', 'blank' => true],
+    ];
+
+    $sidebarGroups = [
         'Menu Utama' => [
             ['route' => 'executive.dashboard',    'icon' => 'fa-building-columns', 'label' => 'Ringkasan Pimpinan & SPM'],
-            ['route' => 'executive.disposition',  'icon' => 'fa-stamp',            'label' => 'Persetujuan Permintaan Obat',
+            ['route' => 'executive.disposition',  'icon' => 'fa-stamp',            'label' => 'Persetujuan Permintaan',
                 'badge' => $approved ? 'Disahkan' : 'Perlu TTD', 'tone' => $approved ? 'ok' : 'warn'],
         ],
         'Laporan Puskesmas' => [
@@ -92,154 +131,234 @@
     ];
 @endphp
 
-    <!-- Header mobile -->
-    <div class="lg:hidden sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-matcha-100 px-4 py-3 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-matcha-600 text-white flex items-center justify-center">
-                <i class="fa-solid fa-user-doctor"></i>
-            </div>
-            <div class="leading-tight">
-                <span class="block font-extrabold text-sm text-ink tracking-wide">PRABOTIK <span class="text-matcha-600">EKSEKUTIF</span></span>
-                <span class="block text-[11px] text-slate-500">Kepala Puskesmas Teluk Sasah</span>
-            </div>
-        </div>
-        <button id="mobileMenuBtn" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="Buka menu navigasi"
-                class="w-10 h-10 rounded-full bg-matcha-50 text-matcha-800 hover:bg-matcha-100 transition flex items-center justify-center">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-    </div>
-
     <!-- Latar gelap saat menu mobile terbuka -->
     <div id="sidebarBackdrop" class="hidden fixed inset-0 z-40 bg-ink/40 backdrop-blur-[2px] lg:hidden" aria-hidden="true"></div>
 
-    <div class="lg:flex">
+    <!-- WRAPPER APLIKASI -->
+    <div class="min-h-screen p-3 sm:p-5 lg:p-6 flex flex-col gap-5 max-w-[1720px] mx-auto">
 
-        <!-- SIDEBAR KIRI -->
-        <aside id="sidebar"
-               class="fixed lg:sticky top-0 left-0 z-50 w-[19rem] h-screen lg:h-[calc(100vh-2rem)] lg:m-4 lg:shrink-0
-                      bg-white rounded-r-[28px] lg:rounded-[28px] shadow-float-lg lg:shadow-float
-                      flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-300 select-none">
-
-            <!-- Brand -->
-            <div class="px-6 pt-7 pb-5">
-                <a href="{{ route('executive.dashboard') }}" class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-2xl bg-matcha-600 text-white flex items-center justify-center shadow-md shadow-matcha-600/25">
-                        <i class="fa-solid fa-user-doctor text-lg"></i>
+        <!-- FLOATING TOP HEADER -->
+        <header class="w-full bg-white/95 backdrop-blur-md rounded-full shadow-float px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-3 border border-slate-200/70 sticky top-3 sm:top-4 z-40">
+            
+            <!-- Sisi Kiri: Brand Logo & Title -->
+            <div class="flex items-center gap-3 shrink-0">
+                <a href="{{ route('executive.dashboard') }}" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-full bg-matcha-700 text-white flex items-center justify-center shadow-md shadow-matcha-700/25 group-hover:scale-105 transition transform">
+                        <i class="fa-solid fa-hospital-user text-base"></i>
                     </div>
                     <div class="leading-tight">
-                        <h1 class="text-lg font-extrabold tracking-wide text-ink">PRA<span class="text-matcha-600">BOTIK</span></h1>
-                        <span class="text-[11px] font-semibold text-slate-500">Portal Eksekutif Kepala Faskes</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-base font-black tracking-tight text-ink">PRA<span class="text-matcha-700">BOTIK</span></span>
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        </div>
+                        <span class="hidden sm:block text-[11px] font-semibold text-slate-500">Kepala UPTD Puskesmas</span>
                     </div>
                 </a>
-                <div class="mt-4 px-3.5 py-2 rounded-2xl bg-matcha-50 flex items-center justify-between text-[11px]">
-                    <span class="text-slate-500 font-medium">Satker</span>
-                    <span class="font-bold text-matcha-800 truncate ml-2">UPTD Puskesmas Teluk Sasah</span>
-                </div>
             </div>
 
-            <!-- Navigasi -->
-            <nav class="flex-1 px-4 pb-4 space-y-5 overflow-y-auto" aria-label="Navigasi Portal Eksekutif">
-                @foreach($navGroups as $groupLabel => $items)
-                <div>
-                    <p class="px-3 mb-1.5 text-[10px] font-bold tracking-[0.14em] text-slate-400 uppercase">{{ $groupLabel }}</p>
-                    <div class="space-y-1">
-                        @foreach($items as $item)
-                            @php $active = empty($item['blank']) && request()->routeIs($item['route']); @endphp
-                            <a href="{{ route($item['route']) }}"
-                               @if(!empty($item['blank'])) target="_blank" rel="noopener" @endif
-                               @if($active) aria-current="page" @endif
-                               class="flex items-center gap-3 px-4 py-2.5 rounded-full text-[13px] font-semibold transition-all duration-150
-                                      {{ $active ? 'bg-matcha-600 text-white shadow-md shadow-matcha-600/25' : 'text-slate-600 hover:bg-matcha-50 hover:text-matcha-800' }}">
-                                <i class="fa-solid {{ $item['icon'] }} w-5 text-center text-[15px] {{ $active ? 'text-white' : 'text-matcha-500' }}"></i>
-                                <span class="truncate">{{ $item['label'] }}</span>
-                                @if(!empty($item['badge']))
-                                    <span class="ml-auto shrink-0 text-[9px] px-2 py-0.5 rounded-full font-bold {{ $active ? 'bg-white/25 text-white' : (($item['tone'] ?? 'ok') === 'warn' ? 'bg-amber-100 text-amber-800' : 'bg-matcha-100 text-matcha-800') }}">{{ $item['badge'] }}</span>
-                                @elseif(!empty($item['blank']))
-                                    <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-[10px] text-slate-300"></i>
-                                @endif
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
+            <!-- Bagian Tengah: Pill Nav Segmented Tabs -->
+            <nav class="hidden lg:flex items-center bg-[#f1f4ee] rounded-full p-1 gap-1 text-xs font-semibold shadow-inner" aria-label="Navigasi Atas Eksekutif">
+                @foreach($navPills as $pill)
+                    @php $isActive = empty($pill['blank']) && request()->routeIs($pill['route']); @endphp
+                    <a href="{{ route($pill['route']) }}"
+                       @if(!empty($pill['blank'])) target="_blank" rel="noopener" @endif
+                       class="px-4 py-2 rounded-full transition-all duration-150 whitespace-nowrap {{ $isActive ? 'bg-white text-ink shadow-sm font-bold' : 'text-slate-600 hover:text-ink hover:bg-white/50' }}">
+                        {{ $pill['label'] }}
+                    </a>
                 @endforeach
             </nav>
 
-            <!-- Kartu profil pengguna -->
-            <div class="p-4">
-                <div class="rounded-3xl bg-matcha-50 p-3.5 flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-2xl bg-matcha-600 text-white flex items-center justify-center font-extrabold text-sm shrink-0">BU</div>
-                    <div class="flex-1 min-w-0 leading-tight">
-                        <p class="text-xs font-bold text-ink truncate">dr. Bambang Utoyo, M.M.</p>
-                        <p class="text-[11px] text-slate-500 truncate">Kepala UPTD Puskesmas</p>
-                        <p class="text-[9px] text-matcha-700 font-mono truncate">NIP. 19780512 200604 1 008</p>
+            <!-- Sisi Kanan: Sidebar Toggle, Approval Status, Profil Kepala & Mobile Hamburger -->
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <!-- Tombol Ciutkan / Lebarkan Sidebar Kiri -->
+                <button id="sidebarToggleBtn" type="button" title="Ciutkan / Lebarkan Panel Kiri" aria-label="Toggle Panel Kiri"
+                        class="hidden lg:flex w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-matcha-50 text-slate-600 hover:text-matcha-800 transition items-center justify-center shadow-xs">
+                    <i id="sidebarToggleIcon" class="fa-solid fa-angles-left text-xs transition transform"></i>
+                </button>
+
+                <!-- Status Pengesahan -->
+                <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border {{ $approved ? 'bg-matcha-100 text-matcha-900 border-matcha-300' : 'bg-amber-50 text-amber-900 border-amber-200' }}">
+                    <i class="fa-solid {{ $approved ? 'fa-circle-check text-matcha-600' : 'fa-hourglass-half text-amber-600' }} text-[11px]"></i>
+                    <span>{{ $approved ? 'Disposisi Sah' : 'Menunggu TTD' }}</span>
+                </div>
+
+                <!-- Notifikasi Bell -->
+                <a href="{{ route('executive.disposition') }}" title="Notifikasi Persetujuan"
+                   class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100 hover:bg-matcha-50 text-slate-600 hover:text-matcha-800 relative transition flex items-center justify-center shadow-xs">
+                    <i class="fa-regular fa-bell text-sm"></i>
+                    @if(!$approved)
+                    <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                    @endif
+                </a>
+
+                <!-- Profil Kapsul Kepala Puskesmas -->
+                <div class="flex items-center gap-2 pl-1.5 pr-2.5 py-1 bg-slate-100/90 rounded-full border border-slate-200/60">
+                    <div class="w-8 h-8 rounded-full bg-matcha-700 text-white font-extrabold text-xs flex items-center justify-center shadow-xs">
+                        DM
                     </div>
-                    <a href="{{ route('logout') }}" title="Kunci & Keluar Portal" aria-label="Kunci & Keluar Portal"
-                       class="w-9 h-9 rounded-full bg-white text-matcha-700 hover:bg-matcha-600 hover:text-white shadow-sm transition flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-right-from-bracket text-sm"></i>
+                    <div class="hidden md:block text-left leading-none pr-1">
+                        <span class="block text-xs font-bold text-ink">dr. Maya Safitri</span>
+                        <span class="block text-[10px] text-slate-500 mt-0.5">Kepala Puskesmas</span>
+                    </div>
+                    <a href="{{ route('logout') }}" title="Ganti Portal / Keluar" aria-label="Keluar" 
+                       class="w-7 h-7 rounded-full bg-white text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition flex items-center justify-center ml-0.5 shadow-2xs">
+                        <i class="fa-solid fa-right-from-bracket text-xs"></i>
                     </a>
                 </div>
+
+                <!-- Tombol Menu Mobile -->
+                <button id="mobileMenuBtn" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="Buka menu navigasi"
+                        class="lg:hidden w-9 h-9 rounded-full bg-matcha-50 text-matcha-800 hover:bg-matcha-100 transition flex items-center justify-center">
+                    <i class="fa-solid fa-bars text-sm"></i>
+                </button>
             </div>
-        </aside>
+        </header>
 
-        <!-- AREA UTAMA -->
-        <div class="flex-1 min-w-0 flex flex-col min-h-screen">
+        <!-- AREA UTAMA: SIDEBAR DOCK + KONTEN HALAMAN -->
+        <div class="flex-1 flex gap-5 items-start relative">
 
-            <!-- Topbar -->
-            <header class="px-4 sm:px-6 lg:px-8 pt-5 lg:pt-6">
-                <div class="max-w-7xl mx-auto flex items-center justify-between gap-3 bg-white rounded-full shadow-float px-3 sm:px-4 py-2.5">
-                    <div class="flex items-center gap-2.5 min-w-0 pl-1">
-                        <span class="hidden sm:inline-flex px-3 py-1 rounded-full bg-matcha-100 text-matcha-800 text-[10px] font-extrabold uppercase tracking-wider">Aplikasi Eksekutif</span>
-                        <div class="flex items-center gap-2 text-xs font-medium text-slate-500 min-w-0">
-                            <span class="hidden md:inline text-slate-400 whitespace-nowrap">UPTD Puskesmas Teluk Sasah</span>
-                            <i class="hidden md:inline fa-solid fa-chevron-right text-[9px] text-slate-300"></i>
-                            <span class="text-matcha-800 font-bold truncate">@yield('page_title', 'Ringkasan Eksekutif & Pengawasan')</span>
+            <!-- SIDEBAR DOCK KIRI -->
+            <aside id="sidebar"
+                   class="is-compact fixed lg:sticky top-0 lg:top-[5.5rem] left-0 z-50 h-screen lg:h-[calc(100vh-7rem)]
+                          bg-white rounded-r-[32px] lg:rounded-[32px] shadow-float-lg lg:shadow-float border border-slate-200/60
+                          flex flex-col justify-between py-4 shrink-0 -translate-x-full lg:translate-x-0 select-none overflow-y-auto overflow-x-hidden">
+
+                <!-- Header Sidebar (Expanded Mode Only) -->
+                <div class="px-3 pb-3 border-b border-slate-100 flex items-center justify-between">
+                    <div class="sidebar-brand-text flex items-center gap-2.5 px-2">
+                        <div class="w-8 h-8 rounded-full bg-matcha-600 text-white flex items-center justify-center text-xs font-bold">
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </div>
+                        <div class="leading-tight">
+                            <span class="font-extrabold text-xs text-ink block">Kepala Faskes</span>
+                            <span class="text-[10px] text-slate-400 block truncate">Puskesmas Teluk Sasah</span>
                         </div>
                     </div>
-
-                    <div class="flex items-center gap-2 shrink-0">
-                        <div class="hidden sm:flex items-center gap-2 px-3.5 py-1.5 bg-matcha-50 rounded-full text-matcha-800 text-xs font-bold">
-                            <span class="w-2 h-2 rounded-full bg-matcha-600 animate-pulse"></span>
-                            <span>Periode 2026-P5</span>
-                        </div>
-                        <a href="{{ route('logout') }}"
-                           class="px-3.5 py-1.5 rounded-full bg-matcha-600 hover:bg-matcha-700 text-white text-xs font-bold transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-lock text-[11px]"></i>
-                            <span class="hidden sm:inline">Kunci & Ganti Portal</span>
-                        </a>
-                    </div>
+                    <!-- Mini Collapse Button di dalam sidebar -->
+                    <button id="sidebarInnerToggle" type="button" title="Ciutkan Panel" class="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-400 hover:text-ink transition flex items-center justify-center mx-auto">
+                        <i id="sidebarInnerToggleIcon" class="fa-solid fa-chevron-left text-xs"></i>
+                    </button>
                 </div>
-            </header>
 
-            <main class="flex-1">
+                <!-- List Navigasi Vertikal -->
+                <nav class="flex-1 px-2 py-3 space-y-4" aria-label="Navigasi Ikon Dock Eksekutif">
+                    @foreach($sidebarGroups as $groupLabel => $items)
+                    <div>
+                        <p class="sidebar-heading px-3 mb-1.5 text-[10px] font-bold tracking-[0.12em] text-slate-400 uppercase">{{ $groupLabel }}</p>
+                        <div class="space-y-1.5">
+                            @foreach($items as $item)
+                                @php $active = empty($item['blank']) && request()->routeIs($item['route']); @endphp
+                                <a href="{{ route($item['route']) }}"
+                                   title="{{ $item['label'] }}"
+                                   @if(!empty($item['blank'])) target="_blank" rel="noopener" @endif
+                                   @if($active) aria-current="page" @endif
+                                   class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150
+                                          {{ $active ? 'bg-matcha-700 text-white shadow-md shadow-matcha-700/25' : 'text-slate-600 hover:bg-matcha-50 hover:text-matcha-900' }}">
+                                    <i class="fa-solid {{ $item['icon'] }} text-center text-sm {{ $active ? 'text-white' : 'text-matcha-600' }}"></i>
+                                    <span class="sidebar-text truncate">{{ $item['label'] }}</span>
+                                    @if(!empty($item['badge']))
+                                        <span class="sidebar-badge ml-auto shrink-0 text-[9px] px-2 py-0.5 rounded-full font-bold {{ $active ? 'bg-white/25 text-white' : 'bg-matcha-100 text-matcha-800' }}">{{ $item['badge'] }}</span>
+                                    @elseif(!empty($item['blank']))
+                                        <i class="sidebar-badge fa-solid fa-arrow-up-right-from-square ml-auto text-[10px] text-slate-300"></i>
+                                    @endif
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endforeach
+                </nav>
+
+                <!-- Footer Sidebar Profil -->
+                <div class="px-2 pt-2 border-t border-slate-100">
+                    <div class="sidebar-profile-text p-2 rounded-2xl bg-matcha-50/70 mb-2 text-center text-[10px] text-slate-500">
+                        <p class="font-bold text-matcha-900">NIP 197808122005012008</p>
+                        <p>Otoritas Pengesahan LPLPO</p>
+                    </div>
+                    <a href="{{ route('logout') }}" title="Ganti Portal / Keluar"
+                       class="sidebar-link flex items-center gap-3 px-3.5 py-2 rounded-full text-xs font-bold text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition">
+                        <i class="fa-solid fa-right-from-bracket text-center text-sm"></i>
+                        <span class="sidebar-text">Ganti Portal</span>
+                    </a>
+                </div>
+            </aside>
+
+            <!-- KONTEN UTAMA -->
+            <main class="flex-1 min-w-0">
                 @yield('content')
-            </main>
 
-            <footer class="px-4 sm:px-6 lg:px-8 pb-6 pt-2 text-xs text-slate-500">
-                <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-matcha-200/60 pt-5">
-                    <p>&copy; 2026 PRABOTIK Eksekutif &bull; UPTD Puskesmas Teluk Sasah, Kabupaten Bintan.</p>
-                    <p class="text-center sm:text-right">Pengesah: dr. Bambang Utoyo, M.M. (NIP. 19780512 200604 1 008) &bull; Format Standar LPLPO Dinkes Bintan</p>
-                </div>
-            </footer>
+                <!-- Footer Halaman -->
+                <footer class="pt-8 pb-4 text-xs text-slate-500">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-matcha-200/60 pt-5">
+                        <p>&copy; 2026 PRABOTIK Eksekutif &bull; UPTD Puskesmas Teluk Sasah, Kabupaten Bintan.</p>
+                        <p class="text-center sm:text-right">Kepala Faskes: dr. Maya Safitri &bull; SPM Pelayanan Kesehatan Dasar</p>
+                    </div>
+                </footer>
+            </main>
         </div>
     </div>
 
+    <!-- Script Pengendali Sidebar -->
     <script>
         (function () {
-            var btn = document.getElementById('mobileMenuBtn');
             var sidebar = document.getElementById('sidebar');
+            var toggleBtn = document.getElementById('sidebarToggleBtn');
+            var toggleIcon = document.getElementById('sidebarToggleIcon');
+            var innerToggle = document.getElementById('sidebarInnerToggle');
+            var innerToggleIcon = document.getElementById('sidebarInnerToggleIcon');
+            var mobileBtn = document.getElementById('mobileMenuBtn');
             var backdrop = document.getElementById('sidebarBackdrop');
-            if (!btn || !sidebar || !backdrop) return;
 
-            function setOpen(open) {
+            if (!sidebar) return;
+
+            var savedCompact = localStorage.getItem('prabotik_sidebar_compact');
+            var isCompact = savedCompact === null ? true : (savedCompact === '1');
+
+            function applyCompact(compact) {
+                isCompact = compact;
+                if (isCompact) {
+                    sidebar.classList.add('is-compact');
+                    if (toggleIcon) toggleIcon.className = 'fa-solid fa-angles-right text-xs transition transform';
+                    if (innerToggleIcon) innerToggleIcon.className = 'fa-solid fa-chevron-right text-xs';
+                    if (toggleBtn) toggleBtn.setAttribute('title', 'Lebarkan Panel Kiri');
+                } else {
+                    sidebar.classList.remove('is-compact');
+                    if (toggleIcon) toggleIcon.className = 'fa-solid fa-angles-left text-xs transition transform';
+                    if (innerToggleIcon) innerToggleIcon.className = 'fa-solid fa-chevron-left text-xs';
+                    if (toggleBtn) toggleBtn.setAttribute('title', 'Ciutkan Panel Kiri');
+                }
+                localStorage.setItem('prabotik_sidebar_compact', isCompact ? '1' : '0');
+            }
+
+            applyCompact(isCompact);
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function () {
+                    applyCompact(!isCompact);
+                });
+            }
+
+            if (innerToggle) {
+                innerToggle.addEventListener('click', function () {
+                    applyCompact(!isCompact);
+                });
+            }
+
+            function setMobileOpen(open) {
                 sidebar.classList.toggle('-translate-x-full', !open);
                 backdrop.classList.toggle('hidden', !open);
-                btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                if (mobileBtn) mobileBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
             }
-            btn.addEventListener('click', function () {
-                setOpen(sidebar.classList.contains('-translate-x-full'));
-            });
-            backdrop.addEventListener('click', function () { setOpen(false); });
-            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+
+            if (mobileBtn && backdrop) {
+                mobileBtn.addEventListener('click', function () {
+                    var isClosed = sidebar.classList.contains('-translate-x-full');
+                    setMobileOpen(isClosed);
+                });
+                backdrop.addEventListener('click', function () { setMobileOpen(false); });
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') setMobileOpen(false);
+                });
+            }
         })();
     </script>
     @stack('scripts')
