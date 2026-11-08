@@ -179,6 +179,12 @@
             </div>
         </div>
 
+        <!-- Watermark Jejak Audit Resmi Sistem PRABOTIK -->
+        <div class="mt-8 pt-3 border-t border-dashed border-slate-300 flex flex-col sm:flex-row items-center justify-between text-[9px] text-slate-500 font-mono">
+            <span>&bull; Dokumen sah dihitung otomatis oleh Sistem PRABOTIK (Model WMA-3, Koreksi Stok Kosong &amp; Buffer SS 25%)</span>
+            <span>Dicetak pada: {{ date('d-m-Y H:i:s') }} WIB &bull; UPTD Puskesmas Teluk Sasah, Kab. Bintan</span>
+        </div>
+
     </div>
 
 </body>

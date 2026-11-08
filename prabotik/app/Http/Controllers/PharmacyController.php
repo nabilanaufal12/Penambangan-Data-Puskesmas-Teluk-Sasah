@@ -101,7 +101,9 @@ class PharmacyController extends Controller
             'medicine_id' => 'required|exists:medicines,id',
             'stok_awal' => 'nullable|numeric|min:0',
             'penerimaan' => 'nullable|numeric|min:0',
-            'pemakaian_terbaru' => 'required|numeric|min:0',
+            'pemakaian' => 'nullable|numeric|min:0',
+            'pemakaian_terbaru' => 'nullable|numeric|min:0',
+            'sisa_stok_fisik' => 'nullable|numeric|min:0',
             'sisa_stok_terbaru' => 'nullable|numeric|min:0',
             'pernah_kosong' => 'nullable|boolean',
             'keterangan_tambahan' => 'nullable|string',
@@ -112,50 +114,88 @@ class PharmacyController extends Controller
         $stokAwal = isset($validated['stok_awal']) ? (float) $validated['stok_awal'] : (float) $med->stok_awal;
         $penerimaan = isset($validated['penerimaan']) ? (float) $validated['penerimaan'] : (float) $med->penerimaan;
         $persediaan = $stokAwal + $penerimaan;
-        $pemakaian = (float) $validated['pemakaian_terbaru'];
-        $stokAkhir = isset($validated['sisa_stok_terbaru']) ? (float) $validated['sisa_stok_terbaru'] : max(0, $persediaan - $pemakaian);
-        $pernahKosong = $request->boolean('pernah_kosong');
 
-        // Evaluasi Akurasi Model Berkelanjutan terhadap prediksi sebelumnya
-        $prediksiSebelumnya = (float) $med->prediksi_P5;
-        $deviasi = $pemakaian - $prediksiSebelumnya;
-        $maxDenominator = max($pemakaian, $prediksiSebelumnya, 1);
-        $akurasi = max(0, round((1 - (abs($deviasi) / $maxDenominator)) * 100, 1));
-
-        if ($akurasi >= 85) {
-            $catatanEvaluasi = 'Sangat Sesuai (Akurat)';
-        } elseif ($akurasi >= 70) {
-            $catatanEvaluasi = 'Cukup Sesuai (Toleransi Wajar)';
+        // Ambil nilai pemakaian (dukung kedua nama input pemakaian atau pemakaian_terbaru)
+        if (isset($validated['pemakaian'])) {
+            $pemakaian = (float) $validated['pemakaian'];
+        } elseif (isset($validated['pemakaian_terbaru'])) {
+            $pemakaian = (float) $validated['pemakaian_terbaru'];
         } else {
-            $catatanEvaluasi = 'Lonjakan Pasien / Pencilan (Model Disesuaikan)';
+            $pemakaian = 0;
+        }
+
+        // Edge-Case Guard: Pemakaian tidak boleh melebihi persediaan fisik
+        if ($pemakaian > $persediaan) {
+            return redirect()->back()->withInput()->withErrors([
+                'pemakaian' => "Jumlah pemakaian (" . number_format($pemakaian, 0, ',', '.') . ") tidak boleh melebihi total persediaan (" . number_format($persediaan, 0, ',', '.') . ")! Apotek tidak dapat mengeluarkan obat yang tidak tersedia secara fisik di gudang."
+            ]);
+        }
+
+        // Ambil sisa stok fisik
+        if (isset($validated['sisa_stok_fisik'])) {
+            $stokAkhir = (float) $validated['sisa_stok_fisik'];
+        } elseif (isset($validated['sisa_stok_terbaru'])) {
+            $stokAkhir = (float) $validated['sisa_stok_terbaru'];
+        } else {
+            $stokAkhir = max(0, $persediaan - $pemakaian);
+        }
+
+        $pernahKosong = $request->boolean('pernah_kosong');
+        $prediksiSebelumnya = (float) $med->prediksi_P5;
+        $basisPemakaian = $pemakaian;
+
+        // Penanganan Evaluasi Akurasi Berkelanjutan & Koreksi Data Tersensor
+        if ($pernahKosong) {
+            // Koreksi data tersensor apabila sempat terjadi kekosongan stok fisik (stok 0)
+            $basisPemakaian = round($pemakaian * 1.15);
+            $catatanEvaluasi = 'Terbatas Stok Fisik (Stockout) - Model Disesuaikan';
+            
+            // Evaluasi dihitung terhadap imputed demand agar model tidak dihukum salah karena stok kosong
+            $denominator = max($basisPemakaian, $prediksiSebelumnya, 1);
+            $deviasi = $basisPemakaian - $prediksiSebelumnya;
+            $deviasiAbsolut = abs($deviasi);
+            $persenGalat = ($deviasiAbsolut / $denominator) * 100;
+            $akurasi = round(max(0, 100 - $persenGalat), 1);
+        } else {
+            // Kasus normal (stok mencukupi seluruh resep)
+            $denominator = max($pemakaian, $prediksiSebelumnya, 1);
+            $deviasi = $pemakaian - $prediksiSebelumnya;
+            $deviasiAbsolut = abs($deviasi);
+            $persenGalat = ($deviasiAbsolut / $denominator) * 100;
+            $akurasi = round(max(0, 100 - $persenGalat), 1);
+
+            if ($akurasi >= 85) {
+                $catatanEvaluasi = 'Sangat Sesuai (Akurat)';
+            } elseif ($akurasi >= 70) {
+                $catatanEvaluasi = 'Cukup Sesuai (Toleransi Wajar)';
+            } else {
+                $catatanEvaluasi = 'Lonjakan Resep Pasien (Model Disesuaikan)';
+            }
         }
 
         // Kalkulasi Prediksi Periode Berikutnya (Moving Average Berbobot Terbaru)
-        $basisPemakaian = $pemakaian;
-        if ($pernahKosong) {
-            // Koreksi data tersensor apabila sempat terjadi kekosongan stok fisik
-            $basisPemakaian = round($pemakaian * 1.15);
-        }
-
         $newPred = round(($prediksiSebelumnya * 0.4) + ($basisPemakaian * 0.6));
         $safetyStock = round($newPred * 0.25);
         $rekomendasiTotal = max(0, ($newPred + $safetyStock) - $stokAkhir);
 
-        $med->update([
-            'stok_awal' => $stokAwal,
-            'penerimaan' => $penerimaan,
-            'persediaan' => $persediaan,
-            'pemakaian' => $pemakaian,
-            'sisa_stok' => $stokAkhir,
-            'pernah_kosong' => $pernahKosong,
-            'evaluasi_akurasi' => $akurasi,
-            'deviasi_evaluasi' => $deviasi,
-            'evaluasi_catatan' => $catatanEvaluasi,
-            'prediksi_P5' => $newPred,
-            'safety_stock' => $safetyStock,
-            'rekomendasi_total' => $rekomendasiTotal,
-            'keterangan' => $validated['keterangan_tambahan'] ? $validated['keterangan_tambahan'] . ' (Dicatat Petugas Farmasi)' : $med->keterangan,
-        ]);
+        // Eksekusi Pemutakhiran dalam DB Transaction Aman
+        DB::transaction(function () use ($med, $stokAwal, $penerimaan, $persediaan, $pemakaian, $stokAkhir, $pernahKosong, $akurasi, $deviasi, $catatanEvaluasi, $newPred, $safetyStock, $rekomendasiTotal, $validated) {
+            $med->update([
+                'stok_awal' => $stokAwal,
+                'penerimaan' => $penerimaan,
+                'persediaan' => $persediaan,
+                'pemakaian' => $pemakaian,
+                'sisa_stok' => $stokAkhir,
+                'pernah_kosong' => $pernahKosong,
+                'evaluasi_akurasi' => $akurasi,
+                'deviasi_evaluasi' => $deviasi,
+                'evaluasi_catatan' => $catatanEvaluasi,
+                'prediksi_P5' => $newPred,
+                'safety_stock' => $safetyStock,
+                'rekomendasi_total' => $rekomendasiTotal,
+                'keterangan' => !empty($validated['keterangan_tambahan']) ? $validated['keterangan_tambahan'] . ' (Dicatat Petugas Farmasi)' : $med->keterangan,
+            ]);
+        });
 
         $satuan = $med->satuan ?: 'unit';
         $msg = "Pencatatan LPLPO '{$med->nama_obat}' berhasil disimpan! " .

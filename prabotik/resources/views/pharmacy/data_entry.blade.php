@@ -247,7 +247,8 @@
                                 5. Pemakaian (Resep):
                             </label>
                             <input type="number" name="pemakaian" id="inputPemakaian" min="0" step="any" required placeholder="0" class="w-full py-2 px-3 rounded-xl text-xs bg-white border border-slate-300 focus:ring-2 focus:ring-matcha-600/30 font-mono font-bold text-slate-900">
-                            <span class="text-[10px] text-slate-400">Jumlah resep keluar</span>
+                            <span class="text-[10px] text-slate-400 block">Jumlah resep keluar</span>
+                            <div id="pemakaianAlert" class="hidden text-[10px] text-rose-600 font-bold mt-1">⚠️ Melebihi persediaan!</div>
                         </div>
 
                         <!-- Kolom 6: Sisa Stok Fisik Akhir -->
@@ -309,6 +310,28 @@
                 </div>
             </div>
 
+            <!-- Quick Filter Status Pills (Rekomendasi Auditor Gemini Argon) -->
+            <div class="px-6 py-2.5 bg-slate-50/90 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                <div class="flex flex-wrap items-center gap-1.5 text-xs">
+                    <span class="text-[11px] font-bold text-slate-500 mr-1">Filter Cepat:</span>
+                    <button type="button" onclick="filterLplpoTable('semua')" id="btn-flt-semua" class="lplpo-flt-btn px-3 py-1 rounded-full text-[11px] font-bold bg-matcha-700 text-white shadow-xs">
+                        Semua Obat ({{ $medicines->count() }})
+                    </button>
+                    <button type="button" onclick="filterLplpoTable('order')" id="btn-flt-order" class="lplpo-flt-btn px-3 py-1 rounded-full text-[11px] font-bold bg-white text-slate-700 hover:bg-matcha-50 border border-slate-200">
+                        Perlu Usulan P5 ({{ $medicines->where('rekomendasi_total', '>', 0)->count() }})
+                    </button>
+                    <button type="button" onclick="filterLplpoTable('kritis')" id="btn-flt-kritis" class="lplpo-flt-btn px-3 py-1 rounded-full text-[11px] font-bold bg-white text-amber-800 hover:bg-amber-50 border border-amber-200">
+                        Stok Menipis &le; SS ({{ $medicines->filter(fn($m) => $m->sisa_stok <= $m->safety_stock)->count() }})
+                    </button>
+                    <button type="button" onclick="filterLplpoTable('akurat')" id="btn-flt-akurat" class="lplpo-flt-btn px-3 py-1 rounded-full text-[11px] font-bold bg-white text-matcha-800 hover:bg-matcha-50 border border-matcha-200">
+                        Akurasi &ge;85% ({{ $medicines->filter(fn($m) => ($m->evaluasi_akurasi ?? 90) >= 85)->count() }})
+                    </button>
+                </div>
+                <div class="text-[11px] text-slate-500 font-medium">
+                    Ditampilkan: <span id="filteredLplpoCount" class="font-bold text-ink">{{ $medicines->count() }}</span> dari {{ $medicines->count() }} Obat
+                </div>
+            </div>
+
             <div class="overflow-x-auto max-h-[700px] overflow-y-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead class="bg-slate-100/90 text-slate-700 font-bold sticky top-0 uppercase tracking-wider text-[10px] border-b border-slate-200 z-10 backdrop-blur-xs">
@@ -325,7 +348,11 @@
                     </thead>
                     <tbody id="lplpoTableBody" class="divide-y divide-slate-100 font-medium text-slate-700">
                         @foreach($medicines as $m)
-                        <tr class="hover:bg-matcha-50/40 transition">
+                        <tr class="lplpo-row hover:bg-matcha-50/40 transition" 
+                            data-nama="{{ strtolower($m->nama_obat . ' ' . $m->satuan) }}" 
+                            data-order="{{ (float) $m->rekomendasi_total > 0 ? '1' : '0' }}" 
+                            data-kritis="{{ $m->sisa_stok <= $m->safety_stock ? '1' : '0' }}" 
+                            data-akurat="{{ ($m->evaluasi_akurasi ?? 90) >= 85 ? '1' : '0' }}">
                             <td class="py-3 px-4">
                                 <div class="font-bold text-slate-900 leading-tight">{{ $m->nama_obat }}</div>
                                 <div class="text-[10px] text-slate-400 font-mono">{{ $m->satuan }} &bull; {{ $m->kategori ?? 'Umum' }}</div>
@@ -904,33 +931,49 @@
             inputStokAkhir.value = stokAkhir;
         }
 
+        // Edge-Case Warning: Pemakaian melebihi persediaan
+        const alertEl = document.getElementById('pemakaianAlert');
+        if (pakai > persediaan) {
+            inputPemakaian.classList.add('border-rose-500', 'bg-rose-50', 'text-rose-900');
+            if (alertEl) alertEl.classList.remove('hidden');
+        } else {
+            inputPemakaian.classList.remove('border-rose-500', 'bg-rose-50', 'text-rose-900');
+            if (alertEl) alertEl.classList.add('hidden');
+        }
+
         // Evaluasi akurasi terhadap baseline prediksi model sebelumnya
         if (infoAkurasiPill && (currentBaselinePred > 0 || pakai > 0)) {
-            const diff = Math.abs(pakai - currentBaselinePred);
-            const maxVal = Math.max(pakai, currentBaselinePred, 1);
-            const acc = Math.max(0, Math.round((1 - (diff / maxVal)) * 1000) / 10);
-
+            let basis = pakai;
             let status = 'Sangat Sesuai';
             let pillClass = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-matcha-200 text-matcha-900';
-            if (acc >= 85) {
-                status = 'Sangat Sesuai (Akurat)';
-                pillClass = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-matcha-200 text-matcha-900';
-            } else if (acc >= 70) {
-                status = 'Cukup Sesuai';
+
+            if (checkPernahKosong && checkPernahKosong.checked) {
+                basis = Math.round(pakai * 1.15); // koreksi data tersensor
+                status = 'Terbatas Stok Fisik (Stockout) - Model Disesuaikan';
                 pillClass = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900';
-            } else {
-                status = 'Lonjakan Resep Pasien';
-                pillClass = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-900';
+            }
+
+            const denominator = Math.max(basis, currentBaselinePred, 1);
+            const diff = Math.abs(basis - currentBaselinePred);
+            const acc = Math.max(0, Math.round((1 - (diff / denominator)) * 1000) / 10);
+
+            if (!checkPernahKosong || !checkPernahKosong.checked) {
+                if (acc >= 85) {
+                    status = 'Sangat Sesuai (Akurat)';
+                    pillClass = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-matcha-200 text-matcha-900';
+                } else if (acc >= 70) {
+                    status = 'Cukup Sesuai';
+                    pillClass = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900';
+                } else {
+                    status = 'Lonjakan Resep Pasien';
+                    pillClass = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-900';
+                }
             }
 
             infoAkurasiPill.className = pillClass;
             infoAkurasiPill.textContent = 'Akurasi: ' + acc + '% (' + status + ')';
 
             // Hitungan baru untuk periode berikutnya
-            let basis = pakai;
-            if (checkPernahKosong && checkPernahKosong.checked) {
-                basis = Math.round(pakai * 1.15); // koreksi data tersensor
-            }
             const newPred = Math.round((currentBaselinePred * 0.4) + (basis * 0.6));
             const newSs = Math.round(newPred * 0.25);
             const currentFisik = parseFloat(inputStokAkhir.value) || stokAkhir;
@@ -984,17 +1027,56 @@
         }
     }
 
-    // Live Search Filter untuk 150 Baris Tabel LPLPO
+    // Live Search Filter & Quick Status Filter untuk 150 Baris Tabel LPLPO
     const lplpoSearchInput = document.getElementById('lplpoSearchInput');
-    if (lplpoSearchInput) {
-        lplpoSearchInput.addEventListener('input', function() {
-            const query = this.value.toLowerCase().trim();
-            const rows = document.querySelectorAll('#lplpoTableBody tr');
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(query) ? '' : 'none';
-            });
+    let currentLplpoFilter = 'semua';
+
+    function filterLplpoTable(type) {
+        currentLplpoFilter = type;
+
+        document.querySelectorAll('.lplpo-flt-btn').forEach(btn => {
+            btn.className = 'lplpo-flt-btn px-3 py-1 rounded-full text-[11px] font-bold bg-white text-slate-700 hover:bg-matcha-50 border border-slate-200 transition';
         });
+        const activeBtn = document.getElementById('btn-flt-' + type);
+        if (activeBtn) {
+            activeBtn.className = 'lplpo-flt-btn px-3 py-1 rounded-full text-[11px] font-bold bg-matcha-700 text-white shadow-xs transition';
+        }
+
+        applyLplpoFiltering();
+    }
+
+    function applyLplpoFiltering() {
+        const query = (lplpoSearchInput ? lplpoSearchInput.value : '').toLowerCase().trim();
+        const rows = document.querySelectorAll('#lplpoTableBody tr.lplpo-row');
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            const nama = row.getAttribute('data-nama') || '';
+            const matchQuery = query === '' || nama.includes(query);
+
+            let matchFilter = true;
+            if (currentLplpoFilter === 'order') {
+                matchFilter = row.getAttribute('data-order') === '1';
+            } else if (currentLplpoFilter === 'kritis') {
+                matchFilter = row.getAttribute('data-kritis') === '1';
+            } else if (currentLplpoFilter === 'akurat') {
+                matchFilter = row.getAttribute('data-akurat') === '1';
+            }
+
+            if (matchQuery && matchFilter) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        const counterEl = document.getElementById('filteredLplpoCount');
+        if (counterEl) counterEl.textContent = visibleCount;
+    }
+
+    if (lplpoSearchInput) {
+        lplpoSearchInput.addEventListener('input', applyLplpoFiltering);
     }
 
     // Dynamic SIMPUS Quick Preset Disease Selection
