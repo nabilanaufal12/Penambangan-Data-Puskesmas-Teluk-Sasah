@@ -46,7 +46,7 @@
     </div>
 
     <!-- 4 KPI -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+    <div id="kpi-section" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 scroll-mt-28">
 
         <!-- Featured Card: Skor SPM -->
         <div class="relative overflow-hidden rounded-3xl p-5 text-white shadow-float-lg"
@@ -115,7 +115,7 @@
         <!-- Kiri: Disposisi + tren kerugian ED -->
         <div class="lg:col-span-7 space-y-5">
 
-            <div class="bg-white rounded-3xl p-6 shadow-float space-y-5">
+            <div id="disposisi-section" class="bg-white rounded-3xl p-6 shadow-float space-y-5 scroll-mt-28">
                 <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                     <div>
                         <div class="flex items-center gap-2">
@@ -230,7 +230,7 @@
             </div>
 
             <!-- Tren kerugian ED -->
-            <div class="bg-white rounded-3xl p-6 shadow-float">
+            <div id="ed-loss-section" class="bg-white rounded-3xl p-6 shadow-float scroll-mt-28">
                 <div class="flex items-start justify-between gap-3">
                     <div>
                         <h3 class="font-extrabold text-ink text-base">Akuntabilitas Kerugian Obat ED</h3>
@@ -266,7 +266,7 @@
         <!-- Kanan: morbiditas + standar terapi -->
         <div class="lg:col-span-5 space-y-5">
 
-            <div class="bg-white rounded-3xl p-6 shadow-float">
+            <div id="morbiditas-section" class="bg-white rounded-3xl p-6 shadow-float scroll-mt-28">
                 <div class="flex items-start justify-between gap-3">
                     <div>
                         <h3 class="font-extrabold text-ink text-base">Profil Beban 5 Penyakit Terbanyak</h3>
@@ -305,7 +305,7 @@
                 @endif
             </div>
 
-            <div class="bg-white rounded-3xl p-6 shadow-float">
+            <div id="terapi-section" class="bg-white rounded-3xl p-6 shadow-float scroll-mt-28">
                 <div class="flex items-start justify-between gap-3">
                     <div>
                         <h3 class="font-extrabold text-ink text-base">Kepatuhan Standar Terapi</h3>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full">
+<html lang="id" class="h-full scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -117,8 +117,101 @@
         ['route' => 'executive.profile',      'label' => 'Profil & Wilayah',   'icon' => 'fa-hospital-user',    'active' => $isProfile],
     ];
 
-    // 2. PANEL KIRI: SUB-MODUL & ALAT KERJA KONTEKSTUAL (MICRO UTILITIES)
-    if ($isReport) {
+    // 2. PANEL KIRI: SUB-MODUL & ALAT KERJA KONTEKSTUAL (MICRO UTILITIES TANPA DUPLIKASI)
+    if ($isDashboard) {
+        // KHUSUS MENU 1: RINGKASAN PIMPINAN (PINTASAN 4 BAGIAN VERTIKAL DASHBOARD)
+        $sidebarSectionTitle = 'Pintasan Eksekutif';
+        $sidebarItems = [
+            [
+                'id' => 'sb-e-kpi',
+                'target' => 'kpi-section',
+                'icon' => 'fa-shield-halved',
+                'label' => 'Capaian SPM & KPI',
+                'badge' => 'SPM 80%',
+                'href' => '#kpi-section',
+                'onclick' => "if(window.scrollToExecutiveSection){ window.scrollToExecutiveSection('kpi-section', this); return false; }",
+                'active' => true
+            ],
+            [
+                'id' => 'sb-e-disposisi',
+                'target' => 'disposisi-section',
+                'icon' => 'fa-stamp',
+                'label' => 'Lembar Disposisi P5',
+                'badge' => $approved ? 'Disahkan' : 'Perlu TTD',
+                'href' => '#disposisi-section',
+                'onclick' => "if(window.scrollToExecutiveSection){ window.scrollToExecutiveSection('disposisi-section', this); return false; }",
+                'active' => false
+            ],
+            [
+                'id' => 'sb-e-ed',
+                'target' => 'ed-loss-section',
+                'icon' => 'fa-sack-xmark',
+                'label' => 'Tren Kerugian ED',
+                'badge' => 'APBD/DAK',
+                'href' => '#ed-loss-section',
+                'onclick' => "if(window.scrollToExecutiveSection){ window.scrollToExecutiveSection('ed-loss-section', this); return false; }",
+                'active' => false
+            ],
+            [
+                'id' => 'sb-e-morbiditas',
+                'target' => 'morbiditas-section',
+                'icon' => 'fa-heart-pulse',
+                'label' => 'Morbiditas & Terapi',
+                'badge' => 'SIMPUS',
+                'href' => '#morbiditas-section',
+                'onclick' => "if(window.scrollToExecutiveSection){ window.scrollToExecutiveSection('morbiditas-section', this); return false; }",
+                'active' => false
+            ],
+        ];
+        $quickActions = [
+            ['route' => 'executive.disposition', 'icon' => 'fa-stamp', 'label' => 'Persetujuan Usulan P5'],
+            ['route' => 'executive.print', 'icon' => 'fa-print', 'label' => 'Cetak Dokumen LPLPO Resmi', 'blank' => true],
+        ];
+
+    } elseif ($isDisposition) {
+        // KHUSUS MENU 2: PERSETUJUAN & DISPOSISI OBAT
+        $sidebarSectionTitle = 'Otoritas Pengadaan';
+        $sidebarItems = [
+            [
+                'id' => 'sb-d-status',
+                'icon' => 'fa-stamp',
+                'label' => 'Status Otorisasi Dokumen',
+                'badge' => $approved ? 'Disahkan' : 'Menunggu',
+                'href' => '#status-card',
+                'active' => true
+            ],
+            [
+                'id' => 'sb-d-metrics',
+                'icon' => 'fa-chart-pie',
+                'label' => 'Alokasi & Anggaran P5',
+                'badge' => '184rb Unit',
+                'href' => '#metrics-card',
+                'active' => false
+            ],
+            [
+                'id' => 'sb-d-signatures',
+                'icon' => 'fa-file-signature',
+                'label' => 'Verifikasi TTD Kapus',
+                'badge' => 'KPA',
+                'href' => '#signatures-box',
+                'active' => false
+            ],
+            [
+                'id' => 'sb-d-table',
+                'icon' => 'fa-table-list',
+                'label' => 'Daftar Usulan 150 Obat',
+                'badge' => 'Tabel P5',
+                'href' => '#disposition-table',
+                'active' => false
+            ],
+        ];
+        $quickActions = [
+            ['route' => 'executive.print', 'icon' => 'fa-print', 'label' => 'Cetak Lembar LPLPO Resmi', 'blank' => true],
+            ['route' => 'executive.diseases', 'icon' => 'fa-heart-pulse', 'label' => 'Cek Morbiditas Pasien'],
+        ];
+
+    } elseif ($isReport) {
+        // KHUSUS MENU 3: LAPORAN PUSKESMAS (3 SUB-MODUL ANALISIS)
         $sidebarSectionTitle = 'Sub-Modul Laporan';
         $sidebarItems = [
             [
@@ -147,33 +240,36 @@
             ['route' => 'executive.disposition', 'icon' => 'fa-stamp', 'label' => 'Persetujuan Usulan P5'],
             ['route' => 'executive.print', 'icon' => 'fa-print', 'label' => 'Cetak LPLPO Resmi', 'blank' => true],
         ];
+
     } else {
-        $sidebarSectionTitle = 'Otoritas & Pengesahan';
+        // KHUSUS MENU 4: PROFIL PUSKESMAS & WILAYAH
+        $sidebarSectionTitle = 'Informasi Faskes';
         $sidebarItems = [
             [
-                'route' => 'executive.dashboard',
-                'icon' => 'fa-building-columns',
-                'label' => 'Ringkasan SPM & Stok',
-                'badge' => 'Gudang',
-                'active' => $isDashboard
+                'icon' => 'fa-hospital',
+                'label' => 'Profil Puskesmas',
+                'badge' => 'FKTP',
+                'href' => '#profile-banner',
+                'active' => true
             ],
             [
-                'route' => 'executive.disposition',
-                'icon' => 'fa-stamp',
-                'label' => 'Persetujuan Pengadaan',
-                'badge' => $approved ? 'Disahkan' : 'Perlu TTD',
-                'active' => $isDisposition
+                'icon' => 'fa-user-doctor',
+                'label' => 'Pimpinan & KPA',
+                'badge' => 'Kapus',
+                'href' => '#leadership-card',
+                'active' => false
             ],
             [
-                'route' => 'executive.diseases',
-                'icon' => 'fa-heart-pulse',
-                'label' => 'Laporan Morbiditas SIMPUS',
-                'badge' => 'SIMPUS',
+                'icon' => 'fa-map-location-dot',
+                'label' => 'Wilayah & Akreditasi',
+                'badge' => 'Paripurna',
+                'href' => '#services-card',
                 'active' => false
             ],
         ];
         $quickActions = [
-            ['route' => 'executive.print', 'icon' => 'fa-print', 'label' => 'Cetak Dokumen LPLPO Resmi', 'blank' => true],
+            ['route' => 'executive.dashboard', 'icon' => 'fa-building-columns', 'label' => 'Ringkasan Pimpinan'],
+            ['route' => 'executive.print', 'icon' => 'fa-print', 'label' => 'Cetak LPLPO Resmi', 'blank' => true],
         ];
     }
 @endphp
@@ -240,11 +336,11 @@
                 <!-- Profil Kapsul Kepala Puskesmas -->
                 <div class="flex items-center gap-2 pl-1.5 pr-2.5 py-1 bg-slate-100/90 rounded-full border border-slate-200/60">
                     <div class="w-8 h-8 rounded-full bg-matcha-700 text-white font-extrabold text-xs flex items-center justify-center shadow-xs">
-                        DM
+                        BU
                     </div>
                     <div class="hidden md:block text-left leading-none pr-1">
-                        <span class="block text-xs font-bold text-ink">dr. Maya Safitri</span>
-                        <span class="block text-[10px] text-slate-500 mt-0.5">Kepala Puskesmas</span>
+                        <span class="block text-xs font-bold text-ink">dr. Bambang Utoyo, M.M.</span>
+                        <span class="block text-[10px] text-slate-500 mt-0.5">Kepala UPTD Puskesmas</span>
                     </div>
                     <a href="{{ route('logout') }}" title="Ganti Portal / Keluar" aria-label="Keluar" 
                        class="w-7 h-7 rounded-full bg-white text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition flex items-center justify-center ml-0.5 shadow-2xs">
@@ -290,13 +386,21 @@
                 <nav class="flex-1 px-2 py-3 space-y-4" aria-label="Navigasi Sub-Modul Eksekutif">
                     <div>
                         <p class="sidebar-heading px-3 mb-1.5 text-[10px] font-bold tracking-[0.12em] text-slate-400 uppercase">{{ $sidebarSectionTitle }}</p>
-                        <div class="space-y-1.5">
+                        <div class="space-y-1.5" id="sidebarItemsContainer">
                             @foreach($sidebarItems as $item)
-                                @php $active = !empty($item['active']); @endphp
-                                <a href="{{ route($item['route']) }}"
+                                @php 
+                                    $active = !empty($item['active']);
+                                    $linkId = $item['id'] ?? ('sb-e-link-' . \Illuminate\Support\Str::slug($item['label']));
+                                    $href = $item['href'] ?? (isset($item['route']) ? route($item['route']) : '#');
+                                    $target = $item['target'] ?? '';
+                                @endphp
+                                <a href="{{ $href }}"
+                                   id="{{ $linkId }}"
                                    title="{{ $item['label'] }}"
+                                   @if(!empty($target)) data-target="{{ $target }}" @endif
+                                   @if(!empty($item['onclick'])) onclick="{!! $item['onclick'] !!}" @endif
                                    @if($active) aria-current="page" @endif
-                                   class="sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150
+                                   class="sidebar-nav-item sidebar-link {{ $isDashboard ? 'executive-pintasan-link' : '' }} flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150
                                           {{ $active ? 'bg-matcha-700 text-white shadow-md shadow-matcha-700/25 active-dock-item' : 'text-slate-600 hover:bg-matcha-50 hover:text-matcha-900' }}">
                                     <i class="fa-solid {{ $item['icon'] }} text-center text-sm {{ $active ? 'text-white' : 'text-matcha-600' }}"></i>
                                     <span class="sidebar-text truncate">{{ $item['label'] }}</span>
@@ -331,7 +435,7 @@
                 <!-- Footer Sidebar Profil -->
                 <div class="px-2 pt-2 border-t border-slate-100">
                     <div class="sidebar-profile-text p-2 rounded-2xl bg-matcha-50/70 mb-2 text-center text-[10px] text-slate-500">
-                        <p class="font-bold text-matcha-900">NIP 197808122005012008</p>
+                        <p class="font-bold text-matcha-900">NIP 19680512 199803 1 004</p>
                         <p>Otoritas Pengesahan LPLPO</p>
                     </div>
                     <a href="{{ route('logout') }}" title="Ganti Portal / Keluar"
@@ -350,7 +454,7 @@
                 <footer class="pt-8 pb-4 text-xs text-slate-500">
                     <div class="flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-matcha-200/60 pt-5">
                         <p>&copy; 2026 PRABOTIK Eksekutif &bull; UPTD Puskesmas Teluk Sasah, Kabupaten Bintan.</p>
-                        <p class="text-center sm:text-right">Kepala Faskes: dr. Maya Safitri &bull; SPM Pelayanan Kesehatan Dasar</p>
+                        <p class="text-center sm:text-right">Kepala Faskes: dr. Bambang Utoyo, M.M. &bull; SPM Pelayanan Kesehatan Dasar</p>
                     </div>
                 </footer>
             </main>
@@ -419,8 +523,133 @@
                     if (e.key === 'Escape') setMobileOpen(false);
                 });
             }
+
+            window.closeMobileSidebar = function () {
+                setMobileOpen(false);
+            };
         })();
-    </script>
+
+        // Handler Navigasi Halus & Scroll Spy Khusus Ringkasan Eksekutif
+        (function () {
+            var isNavigating = false;
+            var navTimer = null;
+
+            window.setActiveExecutiveLink = function (activeLink) {
+                if (!activeLink) return;
+                var allLinks = document.querySelectorAll('.executive-pintasan-link');
+                allLinks.forEach(function (link) {
+                    link.classList.remove('bg-matcha-700', 'text-white', 'shadow-md', 'shadow-matcha-700/25', 'active-dock-item');
+                    link.classList.add('text-slate-600', 'hover:bg-matcha-50', 'hover:text-matcha-900');
+                    link.removeAttribute('aria-current');
+
+                    var icon = link.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('text-white');
+                        icon.classList.add('text-matcha-600');
+                    }
+
+                    var badge = link.querySelector('.sidebar-badge');
+                    if (badge) {
+                        badge.classList.remove('bg-white/25', 'text-white');
+                        badge.classList.add('bg-matcha-100', 'text-matcha-800');
+                    }
+                });
+
+                activeLink.classList.remove('text-slate-600', 'hover:bg-matcha-50', 'hover:text-matcha-900');
+                activeLink.classList.add('bg-matcha-700', 'text-white', 'shadow-md', 'shadow-matcha-700/25', 'active-dock-item');
+                activeLink.setAttribute('aria-current', 'page');
+
+                var actIcon = activeLink.querySelector('i');
+                if (actIcon) {
+                    actIcon.classList.remove('text-matcha-600');
+                    actIcon.classList.add('text-white');
+                }
+
+                var actBadge = activeLink.querySelector('.sidebar-badge');
+                if (actBadge) {
+                    actBadge.classList.remove('bg-matcha-100', 'text-matcha-800');
+                    actBadge.classList.add('bg-white/25', 'text-white');
+                }
+            };
+
+            window.scrollToExecutiveSection = function (targetId, linkEl) {
+                var targetEl = document.getElementById(targetId);
+                if (!targetEl) return;
+
+                isNavigating = true;
+                if (navTimer) clearTimeout(navTimer);
+                navTimer = setTimeout(function () {
+                    isNavigating = false;
+                }, 900);
+
+                var headerOffset = 96;
+                var elementPosition = targetEl.getBoundingClientRect().top;
+                var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: Math.max(0, offsetPosition),
+                    behavior: 'smooth'
+                });
+
+                if (!linkEl) {
+                    linkEl = document.querySelector('.executive-pintasan-link[data-target="' + targetId + '"]');
+                }
+                if (linkEl) {
+                    window.setActiveExecutiveLink(linkEl);
+                }
+
+                targetEl.classList.add('ring-2', 'ring-matcha-600/40', 'transition-all', 'duration-500');
+                setTimeout(function () {
+                    targetEl.classList.remove('ring-2', 'ring-matcha-600/40');
+                }, 1600);
+
+                if (window.closeMobileSidebar && window.innerWidth < 1024) {
+                    window.closeMobileSidebar();
+                }
+
+                if (window.history && window.history.replaceState) {
+                    window.history.replaceState(null, '', '#' + targetId);
+                }
+            };
+
+            // Scroll Spy Otomatis untuk 4 Bagian Vertikal Ringkasan Pimpinan
+            var executiveSections = ['kpi-section', 'disposisi-section', 'ed-loss-section', 'morbiditas-section'];
+            var isTicking = false;
+
+            window.addEventListener('scroll', function () {
+                if (isNavigating) return;
+
+                if (isTicking) return;
+                isTicking = true;
+                requestAnimationFrame(function () {
+                    var scrollPos = window.scrollY + 140;
+                    var current = executiveSections[0];
+
+                    for (var i = 0; i < executiveSections.length; i++) {
+                        var sec = document.getElementById(executiveSections[i]);
+                        if (sec && sec.offsetTop <= scrollPos) {
+                            current = executiveSections[i];
+                        }
+                    }
+
+                    var targetLink = document.querySelector('.executive-pintasan-link[data-target="' + current + '"]');
+                    if (targetLink && !targetLink.classList.contains('active-dock-item')) {
+                        window.setActiveExecutiveLink(targetLink);
+                    }
+                    isTicking = false;
+                });
+            }, { passive: true });
+
+            if (window.location.hash) {
+                var hashId = window.location.hash.substring(1);
+                if (executiveSections.indexOf(hashId) !== -1) {
+                    setTimeout(function () {
+                        var initialLink = document.querySelector('.executive-pintasan-link[data-target="' + hashId + '"]');
+                        window.scrollToExecutiveSection(hashId, initialLink);
+                    }, 200);
+                }
+            }
+        })();
     @stack('scripts')
     @yield('scripts')
 </body>

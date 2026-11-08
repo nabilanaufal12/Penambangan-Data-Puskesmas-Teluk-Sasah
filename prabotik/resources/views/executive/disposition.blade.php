@@ -41,7 +41,7 @@
     @endif
 
     <!-- Status Card & Approval Action -->
-    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
+    <div id="status-card" class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6 scroll-mt-28">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
             <div>
                 <span class="text-xs text-slate-400 font-mono">NOMOR DOKUMEN: LPLPO/TS/2026/P5</span>
@@ -63,7 +63,7 @@
         </div>
 
         <!-- 3 Summary Metrics -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div id="metrics-card" class="grid grid-cols-1 sm:grid-cols-3 gap-4 scroll-mt-28">
             <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200">
                 <span class="text-[11px] text-slate-400 font-bold uppercase">Total Unit Sediaan Obat</span>
                 <p class="text-2xl font-black text-slate-900 font-mono mt-1">{{ number_format($totalOrderUnit, 0, ',', '.') }}</p>
@@ -84,7 +84,7 @@
         </div>
 
         <!-- Official Signatures Box -->
-        <div class="p-5 bg-amber-50/50 rounded-2xl border border-amber-200/80 space-y-4">
+        <div id="signatures-box" class="p-5 bg-amber-50/50 rounded-2xl border border-amber-200/80 space-y-4 scroll-mt-28">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 <div class="p-4 bg-white rounded-xl border border-slate-200">
                     <span class="text-[10px] text-slate-400 uppercase font-bold">Penelaah / Pengelola Obat:</span>
@@ -98,7 +98,7 @@
                 <div class="p-4 bg-white rounded-xl border border-amber-300">
                     <span class="text-[10px] text-amber-600 uppercase font-bold">Pejabat Pengesah (Kepala Puskesmas):</span>
                     <p class="font-extrabold text-slate-900 text-sm mt-1">dr. Bambang Utoyo, M.M.</p>
-                    <p class="text-[11px] text-slate-500 font-mono mt-0.5">NIP. 19780512 200604 1 008</p>
+                    <p class="text-[11px] text-slate-500 font-mono mt-0.5">NIP. 19680512 199803 1 004</p>
                     @if($isApproved)
                     <span class="inline-block mt-2 px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-bold shadow-xs">
                         <i class="fa-solid fa-stamp mr-1"></i>Disahkan Digital pada {{ date('d F Y') }}
@@ -135,7 +135,7 @@
     </div>
 
     <!-- Table of 10 Highest Value Items for Scrutiny -->
-    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+    <div id="disposition-table" class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden scroll-mt-28">
         <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
             <div>
                 <h3 class="font-extrabold text-slate-900 text-sm">10 Alokasi Sediaan Terbesar yang Membutuhkan Otorisasi Belanja</h3>
