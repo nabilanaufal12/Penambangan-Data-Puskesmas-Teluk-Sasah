@@ -171,6 +171,10 @@
                                 <span class="text-slate-500 font-sans text-[11px]">Nomor SIP</span>
                                 <span class="text-matcha-700 font-semibold text-right">SIP. 19890415/SIPA/2018/021</span>
                             </div>
+                            <div class="flex items-center justify-between gap-3 text-[11px] pt-1.5 mt-1.5 border-t border-matcha-200/60">
+                                <span class="text-slate-500">Status Akses</span>
+                                <span class="inline-flex items-center gap-1.5 font-bold text-matcha-800"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Aktif &bull; Bebas Sandi</span>
+                            </div>
                         </div>
                     </div>
 
@@ -186,7 +190,7 @@
                     </div>
                 </div>
 
-                <div class="pt-8">
+                <div class="pt-8 space-y-2">
                     <form method="POST" action="{{ route('login.pharmacy') }}">
                         @csrf
                         <input type="hidden" name="password" value="farmasi123">
@@ -195,6 +199,10 @@
                             <span>Buka Aplikasi Farmasi</span><i class="fa-solid fa-arrow-right text-xs"></i>
                         </button>
                     </form>
+                    <p class="text-center text-[11px] text-slate-400 flex items-center justify-center gap-1.5 pt-1">
+                        <i class="fa-solid fa-circle-check text-[10px] text-matcha-500"></i>
+                        <span>Akses Operasional Tenaga Farmasi</span>
+                    </p>
                 </div>
             </section>
 
@@ -206,7 +214,7 @@
 
                 <div class="relative space-y-6">
                     <div class="flex items-center justify-between gap-3">
-                        <div class="w-14 h-14 rounded-2xl bg-white text-matcha-900 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">
+                        <div class="w-14 h-14 rounded-2xl bg-white text-matcha-900 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform shadow-md">
                             <i class="fa-solid fa-user-doctor"></i>
                         </div>
                         <span class="px-3.5 py-1.5 rounded-full text-[11px] font-bold bg-matcha-200 text-matcha-900">Akses Eksekutif &amp; Kebijakan</span>
@@ -242,10 +250,10 @@
                         <p class="font-bold text-matcha-200 text-[11px] uppercase tracking-[0.12em]">Fitur &amp; Wewenang Kerja</p>
                         <ul class="space-y-2 text-[12px] text-white/90">
                             <li class="flex items-start gap-2.5"><i class="fa-solid fa-stamp text-matcha-200 mt-0.5"></i><span>Disposisi &amp; pengesahan usulan LPLPO P5 (approval)</span></li>
-                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-shield-halved text-matcha-200 mt-0.5"></i><span>Evaluasi indeks ketersediaan obat dasar (SPM Kemenkes)</span></li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-shield-halved text-matcha-200 mt-0.5"></i><span>Evaluasi ketersediaan obat dasar (SPM Kemenkes)</span></li>
                             <li class="flex items-start gap-2.5"><i class="fa-solid fa-sack-dollar text-matcha-200 mt-0.5"></i><span>Audit akuntabilitas kerugian obat ED (APBD / DAK)</span></li>
                             <li class="flex items-start gap-2.5"><i class="fa-solid fa-chart-pie text-matcha-200 mt-0.5"></i><span>Analisis beban 10 besar morbiditas SIMPUS</span></li>
-                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-print text-matcha-200 mt-0.5"></i><span>Cetak dokumen legal LPLPO resmi ber-NIP ke Dinkes</span></li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-print text-matcha-200 mt-0.5"></i><span>Cetak dokumen legal LPLPO ber-NIP ke Dinkes</span></li>
                         </ul>
                     </div>
                 </div>
@@ -265,72 +273,70 @@
                 </div>
             </section>
 
-            <!-- KARTU 3: PORTAL LAB SAINS DATA (Terbuka untuk Sidang) -->
-            <section class="group relative overflow-hidden rounded-[32px] p-7 sm:p-8 shadow-float hover:shadow-float-lg transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between border-2"
-                     style="background: linear-gradient(150deg, #F3F8EE 0%, #E7F5DC 100%); border-color:#5C6A44;" aria-labelledby="judul-lab">
-                <div class="absolute inset-0 opacity-[0.07] pointer-events-none"
-                     style="background-image: radial-gradient(#1A3B22 1px, transparent 1px); background-size: 14px 14px;" aria-hidden="true"></div>
-
-                <div class="space-y-5 relative">
+            <!-- KARTU 3: PORTAL LAB SAINS DATA (CRISP-DM) -->
+            <section class="group relative bg-white rounded-[32px] p-7 sm:p-8 shadow-float hover:shadow-float-lg transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between border border-matcha-100/80" aria-labelledby="judul-lab">
+                <div class="space-y-6">
                     <div class="flex items-center justify-between gap-3">
-                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-105 transition-transform" style="background:#1A3B22;">
-                            <i class="fa-solid fa-flask-vial text-matcha-200"></i>
+                        <div class="w-14 h-14 rounded-2xl bg-matcha-100 text-matcha-700 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">
+                            <i class="fa-solid fa-flask-vial"></i>
                         </div>
-                        <span class="px-3.5 py-1.5 rounded-full text-[11px] font-bold" style="background:#CFE1B9; color:#1A3B22;">
-                            Terbuka · Sidang Akademik
-                        </span>
+                        <span class="px-3.5 py-1.5 rounded-full text-[11px] font-bold bg-matcha-100 text-matcha-800">Akses Sains Data &amp; Riset</span>
                     </div>
 
                     <div>
-                        <h2 id="judul-lab" class="text-2xl font-extrabold" style="color:#1A3B22;">Portal Sains Data</h2>
-                        <p class="text-sm mt-1" style="color:#5C6A44;">CRISP-DM Lab — Kelompok 23 · INF11121</p>
+                        <h2 id="judul-lab" class="text-2xl font-extrabold text-ink">Portal Sains Data</h2>
+                        <div class="mt-3 p-4 rounded-2xl bg-matcha-50 text-xs space-y-1.5">
+                            <div class="flex items-center justify-between gap-3">
+                                <span class="text-slate-500">Tim Peneliti</span>
+                                <span class="font-bold text-ink text-right">Kelompok 23 (INF11121)</span>
+                            </div>
+                            <div class="flex items-center justify-between gap-3 text-[11px]">
+                                <span class="text-slate-500">Program Studi</span>
+                                <span class="text-slate-700 text-right">S1 Teknik Informatika UMRAH</span>
+                            </div>
+                            <div class="flex items-center justify-between gap-3 text-[10px] font-mono">
+                                <span class="text-slate-500 font-sans text-[11px]">NIM Peneliti</span>
+                                <span class="text-matcha-700 font-semibold text-right">NIM. 2401020069</span>
+                            </div>
+                            <div class="flex items-center justify-between gap-3 text-[11px] pt-1.5 mt-1.5 border-t border-matcha-200/60">
+                                <span class="text-slate-500">Status Akses</span>
+                                <span class="inline-flex items-center gap-1.5 font-bold text-matcha-800"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Terbuka (Tanpa Sandi)</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <p class="text-sm leading-relaxed" style="color:#728156;">
-                        Validasi metodologi penambangan data end-to-end: Pipeline CRISP-DM, Censored Demand, Arena Model WMA-3 vs SMA vs SES, MACD Momentum, dan Korelasi ICD-10.
-                    </p>
-
-                    <ul class="space-y-1.5 text-xs" style="color:#3E4A2F;">
-                        <li class="flex items-center gap-2">
-                            <i class="fa-solid fa-check-circle text-xs" style="color:#1A3B22;"></i>
-                            Pipeline CRISP-DM 6 Fase Interaktif
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fa-solid fa-check-circle text-xs" style="color:#1A3B22;"></i>
-                            150 Obat · 31.125 Kunjungan · 138 BA Obat ED
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fa-solid fa-check-circle text-xs" style="color:#1A3B22;"></i>
-                            Drug Switcher Instan &lt;35ms · Chart.js 4.4.1
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fa-solid fa-graduation-cap text-xs" style="color:#1A3B22;"></i>
-                            Mode Sidang — Ringkasan Pembuktian
-                        </li>
-                    </ul>
+                    <div class="space-y-2.5">
+                        <p class="font-bold text-slate-400 text-[11px] uppercase tracking-[0.12em]">Fitur &amp; Pembuktian Metodologi</p>
+                        <ul class="space-y-2 text-[12px] text-slate-600">
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-matcha-500 mt-0.5"></i><span>Pipeline CRISP-DM 6 fase interaktif end-to-end</span></li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-matcha-500 mt-0.5"></i><span>Arena 4 model (WMA-3 vs SMA-3 vs SES vs EMA)</span></li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-matcha-500 mt-0.5"></i><span>Rekonstruksi censored demand &amp; safety stock</span></li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-matcha-500 mt-0.5"></i><span>Osilator momentum MACD &amp; korelasi ICD-10</span></li>
+                            <li class="flex items-start gap-2.5"><i class="fa-solid fa-circle-check text-matcha-500 mt-0.5"></i><span>Mode sidang ujian skripsi &amp; unduh dataset bersih</span></li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="relative mt-6">
+                <div class="pt-8 space-y-2">
                     <a href="{{ route('lab.eda') }}"
-                       class="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-2xl text-sm font-bold text-white transition-all hover:opacity-90 hover:scale-[1.02]"
-                       style="background:#1A3B22;">
-                        <i class="fa-solid fa-flask-vial"></i>
-                        Masuk Portal Sains Data
-                        <i class="fa-solid fa-arrow-right text-matcha-300 ml-auto"></i>
+                       class="w-full py-4 px-6 rounded-full bg-matcha-700 hover:bg-matcha-800 text-white font-extrabold text-sm shadow-lg shadow-matcha-700/20 transition flex items-center justify-center gap-2 cursor-pointer group-hover:scale-[1.01]">
+                        <i class="fa-solid fa-flask-vial text-white text-xs"></i>
+                        <span>Buka Lab Sains Data</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
                     </a>
-                    <p class="mt-3 flex items-center gap-1.5 text-xs" style="color:#728156;">
-                        <i class="fa-solid fa-unlock text-[10px]"></i>
-                        <span>Tanpa kata sandi · Akses verifikasi publik sidang</span>
+                    <p class="text-center text-[11px] text-slate-400 flex items-center justify-center gap-1.5 pt-1">
+                        <i class="fa-solid fa-unlock text-[10px] text-matcha-500"></i>
+                        <span>Akses Terbuka untuk Dosen &amp; Penguji</span>
                     </p>
                 </div>
             </section>
         </div>
 
         <!-- Ringkasan data -->
-        <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-float p-4 sm:p-5 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div class="max-w-6xl mx-auto bg-white rounded-3xl shadow-float p-4 sm:p-5 flex flex-col lg:flex-row items-center justify-between gap-4 text-xs text-slate-500 border border-matcha-100/80">
             <div class="flex items-center gap-2.5 text-center lg:text-left">
-                <i class="fa-solid fa-circle-info text-matcha-500"></i>
-                <span>Data kedua aplikasi tersinkronisasi otomatis melalui database SQLite faskes.</span>
+                <i class="fa-solid fa-circle-info text-matcha-500 text-sm"></i>
+                <span>Ketiga portal (Farmasi, Kepala, dan Sains Data) tersinkronisasi otomatis melalui basis data SQLite faskes.</span>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full lg:w-auto">
                 <div class="px-3.5 py-2 rounded-2xl bg-matcha-50 text-center">
