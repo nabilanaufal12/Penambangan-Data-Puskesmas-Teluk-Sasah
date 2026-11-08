@@ -103,13 +103,15 @@
 <body class="min-h-full bg-sage text-ink antialiased overflow-x-hidden">
 
 @php
-    $isEntry = request()->routeIs('pharmacy.entry*');
-    $isMonitoring = request()->routeIs('pharmacy.medicines*') || request()->routeIs('pharmacy.macd*') || request()->routeIs('pharmacy.audit*');
+    $isDashboard   = request()->routeIs('pharmacy.dashboard*');
+    $isEntry       = request()->routeIs('pharmacy.entry*');
     $isProcurement = request()->routeIs('pharmacy.procurement*');
-    $isDashboard = request()->routeIs('pharmacy.dashboard*');
-    $currentTab = request()->query('tab', 'lplpo');
+    $isMonitoring  = request()->routeIs('pharmacy.medicines*') || request()->routeIs('pharmacy.macd*') || request()->routeIs('pharmacy.audit*');
+    $currentTab    = request()->query('tab', 'lplpo');
 
-    // 1. HEADER ATAS: 4 ALUR KERJA UTAMA (MACRO NAVIGATION)
+    // =========================================================================
+    // 1. HEADER ATAS: 4 ALUR UTAMA PUSKESMAS (MACRO NAVIGATION - TIDAK ADA DUPLIKASI)
+    // =========================================================================
     $navPills = [
         ['route' => 'pharmacy.dashboard',   'label' => 'Beranda',            'icon' => 'fa-house',           'active' => $isDashboard],
         ['route' => 'pharmacy.entry',       'label' => 'Pencatatan Data',    'icon' => 'fa-pen-to-square',   'active' => $isEntry],
@@ -117,8 +119,49 @@
         ['route' => 'pharmacy.medicines',   'label' => 'Monitoring & Tren',  'icon' => 'fa-chart-line',      'active' => $isMonitoring],
     ];
 
-    // 2. PANEL KIRI: SUB-MODUL & ALAT KERJA KONTEKSTUAL (MICRO UTILITIES)
-    if ($isEntry) {
+    // =========================================================================
+    // 2. PANEL KIRI: SUB-MODUL & ALAT BANTU KHUSUS (TERPISAH MURNI SESUAI MENU AKTIF)
+    // =========================================================================
+    if ($isDashboard) {
+        // KHUSUS MENU 1: BERANDA GUDANG
+        $sidebarSectionTitle = 'Pintasan Beranda';
+        $sidebarItems = [
+            [
+                'icon' => 'fa-gauge-high',
+                'label' => 'Ringkasan Metrik (KPI)',
+                'badge' => 'Gudang',
+                'href' => '#kpi-section',
+                'active' => true
+            ],
+            [
+                'icon' => 'fa-triangle-exclamation',
+                'label' => 'Prioritas Restock Kritis',
+                'badge' => 'Restock',
+                'href' => '#restock-section',
+                'active' => false
+            ],
+            [
+                'icon' => 'fa-chart-pie',
+                'label' => 'Distribusi Kondisi Stok',
+                'badge' => 'Fisik',
+                'href' => '#stok-section',
+                'active' => false
+            ],
+            [
+                'icon' => 'fa-cart-flatbed',
+                'label' => 'Top 8 Usulan Order P5',
+                'badge' => 'Terbesar',
+                'href' => '#usulan-chart-section',
+                'active' => false
+            ],
+        ];
+        $quickActions = [
+            ['route' => 'pharmacy.entry', 'icon' => 'fa-pen-to-square', 'label' => 'Input LPLPO Baru'],
+            ['route' => 'pharmacy.print', 'icon' => 'fa-print', 'label' => 'Cetak Lembar LPLPO', 'blank' => true],
+        ];
+
+    } elseif ($isEntry) {
+        // KHUSUS MENU 2: PENCATATAN DATA (4 SUB-MODUL ENTRI RESMI)
         $sidebarSectionTitle = 'Sub-Modul Entri Data';
         $sidebarItems = [
             [
@@ -160,10 +203,43 @@
         ];
         $quickActions = [
             ['route' => 'pharmacy.print', 'icon' => 'fa-print', 'label' => 'Cetak Lembar LPLPO', 'blank' => true],
-            ['route' => 'pharmacy.procurement', 'icon' => 'fa-clipboard-check', 'label' => 'Review Usulan P5'],
+            ['route' => 'pharmacy.procurement', 'icon' => 'fa-clipboard-check', 'label' => 'Lihat Usulan Pengadaan P5'],
         ];
-    } elseif ($isMonitoring) {
-        $sidebarSectionTitle = 'Pemantauan & Audit';
+
+    } elseif ($isProcurement) {
+        // KHUSUS MENU 3: USULAN PENGADAAN (PERENCANAAN PERIODIK)
+        $sidebarSectionTitle = 'Perencanaan Pengadaan';
+        $sidebarItems = [
+            [
+                'icon' => 'fa-clipboard-list',
+                'label' => 'Daftar Usulan Order P5',
+                'badge' => '150 Item',
+                'href' => '#procurement-table',
+                'active' => true
+            ],
+            [
+                'icon' => 'fa-filter-circle-dollar',
+                'label' => 'Filter Prioritas Restock',
+                'badge' => 'Kritis',
+                'href' => '#kritis-section',
+                'active' => false
+            ],
+            [
+                'icon' => 'fa-shield-halved',
+                'label' => 'Cadangan Pengaman 25%',
+                'badge' => 'Buffer SS',
+                'href' => '#buffer-section',
+                'active' => false
+            ],
+        ];
+        $quickActions = [
+            ['route' => 'pharmacy.print', 'icon' => 'fa-print', 'label' => 'Cetak Lembar LPLPO Resmi', 'blank' => true],
+            ['route' => 'pharmacy.entry', 'icon' => 'fa-pen-to-square', 'label' => 'Koreksi Stok LPLPO'],
+        ];
+
+    } else {
+        // KHUSUS MENU 4: MONITORING & TREN (SAINS DATA, MACD & AUDIT)
+        $sidebarSectionTitle = 'Monitoring & Audit';
         $sidebarItems = [
             [
                 'route' => 'pharmacy.medicines',
@@ -190,41 +266,6 @@
         $quickActions = [
             ['route' => 'pharmacy.entry', 'icon' => 'fa-pen-to-square', 'label' => 'Pencatatan LPLPO Baru'],
             ['route' => 'pharmacy.print', 'icon' => 'fa-print', 'label' => 'Cetak Lembar LPLPO', 'blank' => true],
-        ];
-    } else {
-        $sidebarSectionTitle = 'Aksi Operasional Cepat';
-        $sidebarItems = [
-            [
-                'route' => 'pharmacy.entry',
-                'icon' => 'fa-pen-to-square',
-                'label' => 'Pencatatan LPLPO & Pasien',
-                'badge' => 'Input Riil',
-                'active' => false
-            ],
-            [
-                'route' => 'pharmacy.procurement',
-                'icon' => 'fa-clipboard-check',
-                'label' => 'Lembar Usulan Pengadaan',
-                'badge' => 'P5 Otomatis',
-                'active' => $isProcurement
-            ],
-            [
-                'route' => 'pharmacy.medicines',
-                'icon' => 'fa-boxes-stacked',
-                'label' => 'Daftar 150 Sediaan Obat',
-                'badge' => 'Gudang',
-                'active' => false
-            ],
-            [
-                'route' => 'pharmacy.audit',
-                'icon' => 'fa-triangle-exclamation',
-                'label' => 'Pemeriksaan Kadaluarsa',
-                'badge' => 'Audit ED',
-                'active' => false
-            ],
-        ];
-        $quickActions = [
-            ['route' => 'pharmacy.print', 'icon' => 'fa-print', 'label' => 'Cetak Lembar Kerja LPLPO', 'blank' => true],
         ];
     }
 @endphp
@@ -309,10 +350,10 @@
             </div>
         </header>
 
-        <!-- AREA UTAMA: SIDEBAR DOCK (SUB-MODUL) + KONTEN HALAMAN -->
+        <!-- AREA UTAMA: SIDEBAR DOCK (SUB-MODUL KHUSUS) + KONTEN HALAMAN -->
         <div class="flex-1 flex gap-5 items-start relative">
 
-            <!-- SIDEBAR DOCK KIRI (ALAT BANTU & SUB-MODUL KONTEKSTUAL) -->
+            <!-- SIDEBAR DOCK KIRI (SUB-MODUL & ALAT KERJA KONTEKSTUAL) -->
             <aside id="sidebar"
                    class="is-compact fixed lg:sticky top-0 lg:top-[5.5rem] left-0 z-50 h-screen lg:h-[calc(100vh-7rem)]
                           bg-white rounded-r-[32px] lg:rounded-[32px] shadow-float-lg lg:shadow-float border border-slate-200/60
@@ -326,7 +367,7 @@
                         </div>
                         <div class="leading-tight">
                             <span class="font-extrabold text-xs text-ink block">{{ $sidebarSectionTitle }}</span>
-                            <span class="text-[10px] text-slate-400 block truncate">Instalasi Farmasi</span>
+                            <span class="text-[10px] text-slate-400 block truncate">Puskesmas Teluk Sasah</span>
                         </div>
                     </div>
                     <!-- Mini Collapse Button di dalam sidebar -->

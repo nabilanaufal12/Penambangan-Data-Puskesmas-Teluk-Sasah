@@ -31,7 +31,7 @@
 
     <!-- Paracetamol Special Alert Card -->
     @if($paracetamol)
-    <div class="bg-amber-50 border border-amber-300/80 rounded-2xl p-5 shadow-xs">
+    <div id="kritis-section" class="bg-amber-50 border border-amber-300/80 rounded-2xl p-5 shadow-xs scroll-mt-24">
         <div class="flex items-start space-x-3.5">
             <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg shrink-0">
                 <i class="fa-solid fa-triangle-exclamation"></i>
@@ -91,7 +91,7 @@
     </div>
 
     <!-- Procurement Master Table -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    <div id="procurement-table" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden scroll-mt-24">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
                 <thead class="bg-slate-50 text-slate-600 font-bold uppercase tracking-wider text-[11px] border-b border-slate-200">

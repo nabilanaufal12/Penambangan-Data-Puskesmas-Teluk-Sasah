@@ -40,7 +40,7 @@
     </div>
 
     <!-- 4 KPI -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+    <div id="kpi-section" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 scroll-mt-24">
 
         <!-- Featured Card (aksen hijau tua) -->
         <div class="relative overflow-hidden rounded-3xl p-5 text-white shadow-float-lg"
@@ -135,9 +135,9 @@
     @endif
 
     <!-- GRAFIK: USULAN TERBESAR + KONDISI STOK -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+    <div id="stok-section" class="grid grid-cols-1 lg:grid-cols-12 gap-5 scroll-mt-24">
 
-        <div class="lg:col-span-8 bg-white rounded-3xl p-6 shadow-float">
+        <div id="usulan-chart-section" class="lg:col-span-8 bg-white rounded-3xl p-6 shadow-float scroll-mt-24">
             <div class="flex items-start justify-between gap-3">
                 <div>
                     <h3 class="font-extrabold text-ink text-base">Usulan Order Terbesar P5</h3>
@@ -185,7 +185,7 @@
     </div>
 
     <!-- TABEL + PANEL KANAN -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+    <div id="restock-section" class="grid grid-cols-1 lg:grid-cols-12 gap-5 scroll-mt-24">
 
         <!-- Kiri: Prioritas restock + MACD -->
         <div class="lg:col-span-8 space-y-5">
