@@ -30,22 +30,33 @@ class GatewayController extends Controller
      */
     public function loginKepala(Request $request)
     {
-        $password = $request->input('password');
+        $rawPassword = (string) $request->input('password', '');
+        $cleanPassword = strtolower(trim($rawPassword));
+        $digitsOnly = preg_replace('/[^0-9]/', '', $rawPassword);
 
-        // Kata sandi resmi Kepala Puskesmas
-        $validPasswords = [
+        // Kata sandi resmi Kepala Puskesmas (fleksibel terhadap variasi huruf & format NIP)
+        $validKeywords = [
             'kepala123',
-            '197805122006041008', // NIP dr. Bambang Utoyo
+            'kepala',
             'bambang123',
+            'bambang',
             'bintan2026',
+            'teluksasah',
+            'demo',
         ];
 
-        if (in_array(trim($password), $validPasswords)) {
+        $isValid = in_array($cleanPassword, $validKeywords, true)
+            || $digitsOnly === '197805122006041008'
+            || str_contains($cleanPassword, 'kepala123')
+            || str_contains($cleanPassword, '197805122006041008');
+
+        if ($isValid) {
             session([
-                'auth_role' => 'executive',
-                'auth_name' => 'dr. Bambang Utoyo, M.M.',
-                'auth_nip'  => 'NIP. 19780512 200604 1 008',
-                'auth_time' => now()->toDateTimeString(),
+                'auth_role'        => 'executive',
+                'active_user_role' => 'kepala',
+                'auth_name'        => 'dr. Bambang Utoyo, M.M.',
+                'auth_nip'         => 'NIP. 19780512 200604 1 008',
+                'auth_time'        => now()->toDateTimeString(),
             ]);
 
             return redirect()->route('executive.dashboard')
@@ -54,7 +65,7 @@ class GatewayController extends Controller
 
         return redirect()->route('gateway')
             ->with('error_target', 'kepala')
-            ->with('error', 'Kata sandi Kepala Puskesmas salah! Akses ditolak demi menjaga kerahasiaan dokumen keuangan dan pengesahan dinas.');
+            ->with('error', 'Kata sandi Kepala Puskesmas salah! Silakan gunakan sandi "kepala123" atau NIP 19780512 200604 1 008.');
     }
 
     /**
@@ -74,10 +85,11 @@ class GatewayController extends Controller
 
         if (in_array(trim($password), $validPasswords) || empty($password)) {
             session([
-                'auth_role' => 'pharmacy',
-                'auth_name' => 'Apt. Siti Rahmawati, S.Farm',
-                'auth_sip'  => 'SIP. 19890415/SIPA/2018/021',
-                'auth_time' => now()->toDateTimeString(),
+                'auth_role'        => 'pharmacy',
+                'active_user_role' => 'farmasi',
+                'auth_name'        => 'Apt. Siti Rahmawati, S.Farm',
+                'auth_sip'         => 'SIP. 19890415/SIPA/2018/021',
+                'auth_time'        => now()->toDateTimeString(),
             ]);
 
             return redirect()->route('pharmacy.dashboard')
@@ -95,7 +107,7 @@ class GatewayController extends Controller
     public function logout(Request $request)
     {
         $previousRole = session('auth_role');
-        session()->forget(['auth_role', 'auth_name', 'auth_nip', 'auth_sip', 'auth_time']);
+        session()->forget(['auth_role', 'active_user_role', 'auth_name', 'auth_nip', 'auth_sip', 'auth_time']);
 
         $msg = $previousRole === 'executive'
             ? 'Sesi Kepala Puskesmas telah ditutup dengan aman. Terima kasih dr. Bambang Utoyo, M.M.'

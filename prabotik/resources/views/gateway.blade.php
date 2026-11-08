@@ -331,7 +331,16 @@
                 </div>
 
                 <!-- Modal Body -->
-                <div class="p-6 space-y-4">
+                <div class="p-5 sm:p-6 space-y-4">
+                    @if(session('error') && session('error_target') === 'kepala')
+                    <div class="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-exclamation text-rose-600 mt-0.5 text-xs shrink-0"></i>
+                        <div class="flex-1 font-medium leading-relaxed">
+                            {{ session('error') }}
+                        </div>
+                    </div>
+                    @endif
+
                     <!-- Profil Pejabat -->
                     <div class="p-3.5 rounded-2xl bg-matcha-50 border border-matcha-200/70 flex items-center justify-between text-xs">
                         <div class="space-y-0.5">
@@ -352,7 +361,7 @@
                     </div>
 
                     <!-- Form Password -->
-                    <form method="POST" action="{{ route('login.kepala') }}" class="space-y-4 pt-1">
+                    <form method="POST" action="{{ route('login.kepala') }}" id="loginKepalaForm" class="space-y-4 pt-1">
                         @csrf
                         <div>
                             <label for="kepala_password" class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
@@ -372,25 +381,52 @@
                                        placeholder="Ketik kata sandi Kepala Puskesmas..."
                                        class="w-full pl-10 pr-10 py-3 rounded-2xl bg-slate-50 border border-slate-300 focus:border-matcha-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-matcha-600/20 text-sm font-medium transition text-ink">
                                 <button type="button"
-                                        onclick="togglePasswordVisibility('kepala_password', this)"
-                                        class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition">
+                                       onclick="togglePasswordVisibility('kepala_password', this)"
+                                       title="Lihat / Sembunyikan Sandi"
+                                       class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition">
                                     <i class="fa-solid fa-eye text-xs"></i>
                                 </button>
                             </div>
-                            <div class="mt-2 p-2 rounded-xl bg-slate-50 border border-slate-200/60 text-[11px] text-slate-500 flex items-center justify-between">
-                                <span>Petunjuk Pengujian:</span>
-                                <span class="font-mono font-bold text-matcha-800">kepala123</span>
+
+                            <!-- Petunjuk & Tombol Isi Cepat -->
+                            <div class="mt-2.5 p-2.5 rounded-2xl bg-matcha-50/70 border border-matcha-200/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                                <span class="text-[11px] font-medium text-slate-600 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-question text-matcha-600"></i>
+                                    <span>Pintasan Cepat:</span>
+                                </span>
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <button type="button"
+                                            onclick="fillPasswordAndSubmit('kepala123')"
+                                            title="Klik untuk langsung masuk menggunakan 'kepala123'"
+                                            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white hover:bg-matcha-100 text-matcha-900 border border-matcha-300 font-mono font-bold text-[11px] shadow-xs transition hover:scale-105 cursor-pointer">
+                                        <span>kepala123</span>
+                                        <i class="fa-solid fa-arrow-turn-down text-[9px] text-matcha-600"></i>
+                                    </button>
+                                    <button type="button"
+                                            onclick="fillPasswordAndSubmit('197805122006041008')"
+                                            title="Klik untuk langsung masuk menggunakan NIP Kapus"
+                                            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white hover:bg-matcha-100 text-matcha-900 border border-matcha-300 font-mono font-bold text-[11px] shadow-xs transition hover:scale-105 cursor-pointer">
+                                        <span>NIP Kapus</span>
+                                        <i class="fa-solid fa-arrow-turn-down text-[9px] text-matcha-600"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="pt-2 flex items-center justify-end gap-2.5">
+                        <div class="pt-2 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2">
                             <button type="button"
                                     onclick="closeLoginModal()"
-                                    class="px-4 py-2.5 rounded-full border border-slate-300 hover:bg-slate-100 text-slate-600 text-xs font-bold transition">
+                                    class="w-full sm:w-auto px-4 py-2.5 rounded-full border border-slate-300 hover:bg-slate-100 text-slate-600 text-xs font-bold transition text-center">
                                 Batal
                             </button>
+                            <button type="button"
+                                    onclick="fillPasswordAndSubmit('kepala123')"
+                                    class="w-full sm:w-auto px-4 py-2.5 rounded-full bg-matcha-100 hover:bg-matcha-200 text-matcha-900 text-xs font-extrabold border border-matcha-300 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                                <i class="fa-solid fa-bolt text-matcha-700 text-xs"></i>
+                                <span>Masuk Cepat Demo</span>
+                            </button>
                             <button type="submit"
-                                    class="px-6 py-2.5 rounded-full bg-matcha-600 hover:bg-matcha-700 text-white text-xs font-extrabold shadow-md shadow-matcha-600/30 transition flex items-center gap-2 cursor-pointer">
+                                    class="w-full sm:w-auto px-5 py-2.5 rounded-full bg-matcha-700 hover:bg-matcha-800 text-white text-xs font-extrabold shadow-md shadow-matcha-700/30 transition flex items-center justify-center gap-2 cursor-pointer">
                                 <i class="fa-solid fa-lock-open text-xs"></i>
                                 <span>Verifikasi &amp; Masuk</span>
                             </button>
@@ -408,7 +444,10 @@
             modal.classList.remove('hidden');
             setTimeout(() => {
                 const passInput = document.getElementById('kepala_password');
-                if (passInput) passInput.focus();
+                if (passInput) {
+                    passInput.focus();
+                    passInput.select();
+                }
             }, 100);
         }
 
@@ -416,6 +455,15 @@
             const modal = document.getElementById('loginKepalaModal');
             if (!modal) return;
             modal.classList.add('hidden');
+        }
+
+        function fillPasswordAndSubmit(pwd) {
+            const passInput = document.getElementById('kepala_password');
+            if (passInput) {
+                passInput.value = pwd;
+                const form = document.getElementById('loginKepalaForm');
+                if (form) form.submit();
+            }
         }
 
         function togglePasswordVisibility(inputId, btn) {
