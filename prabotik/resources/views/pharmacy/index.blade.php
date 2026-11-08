@@ -135,7 +135,7 @@
     @endif
 
     <!-- GRAFIK: USULAN TERBESAR + KONDISI STOK -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+    <div id="grafik-section" class="grid grid-cols-1 lg:grid-cols-12 gap-5 scroll-mt-28">
 
         <div id="usulan-chart-section" class="lg:col-span-8 bg-white rounded-3xl p-6 shadow-float scroll-mt-28">
             <div class="flex items-start justify-between gap-3">
@@ -255,7 +255,7 @@
             </div>
 
             <!-- Deteksi Tren Momentum MACD -->
-            <div class="bg-white rounded-3xl p-6 shadow-float">
+            <div id="tren-section" class="bg-white rounded-3xl p-6 shadow-float scroll-mt-28">
                 <div class="flex items-start justify-between gap-3">
                     <div>
                         <h3 class="font-extrabold text-ink text-base">Tren Kebutuhan Obat (Lonjakan Resep)</h3>

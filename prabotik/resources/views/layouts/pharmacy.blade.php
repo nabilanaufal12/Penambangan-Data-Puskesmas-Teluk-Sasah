@@ -123,7 +123,7 @@
     // 2. PANEL KIRI: SUB-MODUL & ALAT BANTU KHUSUS (TERPISAH MURNI SESUAI MENU AKTIF)
     // =========================================================================
     if ($isDashboard) {
-        // KHUSUS MENU 1: BERANDA GUDANG (Pintasan 4 Bagian Utama Dashboard)
+        // KHUSUS MENU 1: BERANDA GUDANG (Pintasan 4 Bagian Vertikal Utama Dashboard)
         $sidebarSectionTitle = 'Pintasan Beranda';
         $sidebarItems = [
             [
@@ -137,23 +137,13 @@
                 'active' => true
             ],
             [
-                'id' => 'sb-b-usulan',
-                'target' => 'usulan-chart-section',
-                'icon' => 'fa-cart-flatbed',
-                'label' => 'Top 8 Usulan Order P5',
-                'badge' => 'Terbesar',
-                'href' => '#usulan-chart-section',
-                'onclick' => "if(window.scrollToBerandaSection){ window.scrollToBerandaSection('usulan-chart-section', this); return false; }",
-                'active' => false
-            ],
-            [
-                'id' => 'sb-b-stok',
-                'target' => 'kondisi-stok-section',
+                'id' => 'sb-b-grafik',
+                'target' => 'grafik-section',
                 'icon' => 'fa-chart-pie',
-                'label' => 'Distribusi Kondisi Stok',
-                'badge' => 'Fisik',
-                'href' => '#kondisi-stok-section',
-                'onclick' => "if(window.scrollToBerandaSection){ window.scrollToBerandaSection('kondisi-stok-section', this); return false; }",
+                'label' => 'Top 8 Usulan & Stok',
+                'badge' => 'Grafik',
+                'href' => '#grafik-section',
+                'onclick' => "if(window.scrollToBerandaSection){ window.scrollToBerandaSection('grafik-section', this); return false; }",
                 'active' => false
             ],
             [
@@ -164,6 +154,16 @@
                 'badge' => 'Restock',
                 'href' => '#restock-section',
                 'onclick' => "if(window.scrollToBerandaSection){ window.scrollToBerandaSection('restock-section', this); return false; }",
+                'active' => false
+            ],
+            [
+                'id' => 'sb-b-tren',
+                'target' => 'tren-section',
+                'icon' => 'fa-chart-line',
+                'label' => 'Tren Resep & Audit ED',
+                'badge' => 'Monitoring',
+                'href' => '#tren-section',
+                'onclick' => "if(window.scrollToBerandaSection){ window.scrollToBerandaSection('tren-section', this); return false; }",
                 'active' => false
             ],
         ];
@@ -540,6 +540,9 @@
 
         // Handler Navigasi Halus & Scroll Spy Khusus Beranda Farmasi
         (function () {
+            var isNavigating = false;
+            var navTimer = null;
+
             window.setActiveBerandaLink = function (activeLink) {
                 if (!activeLink) return;
                 var allLinks = document.querySelectorAll('.beranda-pintasan-link');
@@ -579,8 +582,20 @@
             };
 
             window.scrollToBerandaSection = function (targetId, linkEl) {
+                // Kompatibilitas alias jika ada pemanggilan ke ID lama
+                if (targetId === 'usulan-chart-section' || targetId === 'kondisi-stok-section') {
+                    targetId = 'grafik-section';
+                }
+
                 var targetEl = document.getElementById(targetId);
                 if (!targetEl) return;
+
+                // Kunci scroll spy agar tidak menimpa status aktif selama animasi scroll
+                isNavigating = true;
+                if (navTimer) clearTimeout(navTimer);
+                navTimer = setTimeout(function () {
+                    isNavigating = false;
+                }, 900);
 
                 // Kompensasi floating header (~96px offset)
                 var headerOffset = 96;
@@ -599,6 +614,12 @@
                     window.setActiveBerandaLink(linkEl);
                 }
 
+                // Efek visual lembut (ring highlight) pada kartu target
+                targetEl.classList.add('ring-2', 'ring-matcha-600/40', 'transition-all', 'duration-500');
+                setTimeout(function () {
+                    targetEl.classList.remove('ring-2', 'ring-matcha-600/40');
+                }, 1600);
+
                 if (window.closeMobileSidebar && window.innerWidth < 1024) {
                     window.closeMobileSidebar();
                 }
@@ -608,11 +629,13 @@
                 }
             };
 
-            // Scroll Spy Otomatis untuk Halaman Beranda
-            var berandaSections = ['kpi-section', 'usulan-chart-section', 'kondisi-stok-section', 'restock-section'];
+            // Scroll Spy Otomatis untuk 4 Bagian Vertikal Halaman Beranda
+            var berandaSections = ['kpi-section', 'grafik-section', 'restock-section', 'tren-section'];
             var isTicking = false;
 
             window.addEventListener('scroll', function () {
+                if (isNavigating) return; // Kunci aktif: jangan timpa saat baru saja klik pintasan
+
                 if (isTicking) return;
                 isTicking = true;
                 requestAnimationFrame(function () {
@@ -637,6 +660,7 @@
             // Handle anchor hash saat halaman pertama kali dimuat
             if (window.location.hash) {
                 var hashId = window.location.hash.substring(1);
+                if (hashId === 'usulan-chart-section' || hashId === 'kondisi-stok-section') hashId = 'grafik-section';
                 if (berandaSections.indexOf(hashId) !== -1) {
                     setTimeout(function () {
                         var initialLink = document.querySelector('.beranda-pintasan-link[data-target="' + hashId + '"]');
