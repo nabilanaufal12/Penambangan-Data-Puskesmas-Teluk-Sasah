@@ -318,10 +318,10 @@
                     @foreach($correlations as $c)
                     <div class="p-3 bg-matcha-50 rounded-2xl flex items-center justify-between gap-3 text-xs">
                         <div class="min-w-0">
-                            <span class="font-bold text-ink block truncate">{{ $c->nama_obat }}</span>
-                            <span class="text-[10px] text-slate-500">{{ $c->nama_penyakit }} ({{ $c->kode_icd }})</span>
+                            <span class="font-bold text-ink block truncate">{{ $c->nama_obat_standar }}</span>
+                            <span class="text-[10px] text-slate-500 truncate block">{{ $c->nama_penyakit }} ({{ $c->kode_icd }}) &bull; {{ $c->indikasi_klinis }}</span>
                         </div>
-                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-matcha-100 text-matcha-800 shrink-0">Rasio {{ $c->rasio_resep_per_pasien }}</span>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-matcha-100 text-matcha-800 shrink-0">{{ number_format($c->rasio_dosis_per_pasien, 1, ',', '.') }} butir/pasien</span>
                     </div>
                     @endforeach
                 </div>

@@ -49,8 +49,8 @@
                         <td class="py-3 px-3 text-right font-mono text-slate-600">
                             {{ number_format($c->spearman_rho, 4, ',', '.') }}
                         </td>
-                        <td class="py-3 px-4 text-right font-mono font-black text-amber-700">
-                            {{ $c->rasio_resep_per_pasien }} butir/pasien
+                        <td class="py-3 px-4 text-right font-mono font-black text-matcha-800">
+                            {{ number_format($c->rasio_dosis_per_pasien, 2, ',', '.') }} butir/pasien
                         </td>
                     </tr>
                     @endforeach
