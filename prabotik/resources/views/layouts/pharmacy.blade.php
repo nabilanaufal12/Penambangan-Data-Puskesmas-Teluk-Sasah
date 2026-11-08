@@ -1,224 +1,244 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-slate-50">
+<html lang="id" class="h-full">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'PRABOTIK Farmasi') &bull; UPTD Puskesmas Teluk Sasah</title>
-    
-    <!-- Tailwind CSS -->
+
+    <!-- Tailwind CSS (CDN) + palet Matcha & Sage -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // Skala Matcha & Sage (Uxintace). Skala yang sama dipakai untuk "emerald"
+        // agar halaman lama (entri data, katalog, MACD, audit, dll.) otomatis
+        // ikut berwarna matcha tanpa perlu diubah.
+        const matcha = {
+            50:  '#F3F8EE',
+            100: '#E7F5DC',
+            200: '#CFE1B9',
+            300: '#B6C99B',
+            400: '#98A77C',
+            500: '#88976C',
+            600: '#728156',
+            700: '#5C6A44',
+            800: '#3E4A2F',
+            900: '#1A3B22',
+            950: '#142416'
+        };
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+                    },
                     colors: {
+                        matcha: matcha,
+                        emerald: matcha,
+                        sage: '#F4F6F2',
+                        ink: '#142416',
                         medical: {
-                            50: '#F0FDF4',
-                            100: '#DCFCE7',
-                            200: '#BBF7D0',
-                            500: '#22C55E',
-                            600: '#16A34A',
-                            700: '#15803D',
-                            800: '#166534',
-                            900: '#14532D',
-                            950: '#052e16',
+                            50: '#F0FDF4', 100: '#DCFCE7', 200: '#BBF7D0', 500: '#22C55E',
+                            600: '#16A34A', 700: '#15803D', 800: '#166534', 900: '#14532D', 950: '#052e16'
                         },
-                        navy: {
-                            800: '#1e293b',
-                            900: '#0f172a',
-                            950: '#020617',
-                        }
+                        navy: { 800: '#1e293b', 900: '#0f172a', 950: '#020617' }
+                    },
+                    boxShadow: {
+                        float: '0 8px 30px rgb(0 0 0 / 0.04)',
+                        'float-lg': '0 14px 44px rgb(20 36 22 / 0.09)'
                     }
                 }
             }
         }
     </script>
+
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Google Fonts Inter -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif; background-color: #F4F6F2; }
+        .tnum { font-variant-numeric: tabular-nums; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #CFE1B9; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #98A77C; }
+        a:focus-visible, button:focus-visible { outline: 2px solid #728156; outline-offset: 2px; }
     </style>
     @stack('styles')
 </head>
-<body class="h-full text-slate-800 antialiased flex flex-col md:flex-row overflow-x-hidden">
+<body class="min-h-full bg-sage text-ink antialiased overflow-x-hidden">
 
-    <!-- Mobile Header -->
-    <div class="md:hidden bg-navy-950 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-50 shadow-md">
-        <div class="flex items-center space-x-3">
-            <div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white">
+@php
+    // Menu navigasi Portal Farmasi (nama rute tidak diubah)
+    $navGroups = [
+        'Menu' => [
+            ['route' => 'pharmacy.dashboard',   'icon' => 'fa-house',           'label' => 'Beranda Gudang & Stok'],
+        ],
+        'Operasional' => [
+            ['route' => 'pharmacy.entry',       'icon' => 'fa-pen-to-square',   'label' => 'Pusat Entri Data',      'badge' => '4 Modul'],
+            ['route' => 'pharmacy.procurement', 'icon' => 'fa-cart-flatbed',    'label' => 'Usulan Pengadaan P5',   'badge' => '95% SS'],
+            ['route' => 'pharmacy.print',       'icon' => 'fa-print',           'label' => 'Cetak Lembar Kerja LPLPO', 'blank' => true],
+        ],
+        'Analisis Stok' => [
+            ['route' => 'pharmacy.medicines',   'icon' => 'fa-pills',           'label' => 'Katalog Formularium Obat'],
+            ['route' => 'pharmacy.macd',        'icon' => 'fa-chart-line',      'label' => 'Deteksi Permintaan (MACD)'],
+            ['route' => 'pharmacy.audit',       'icon' => 'fa-hourglass-end',   'label' => 'Audit Kadaluarsa & FEFO'],
+        ],
+    ];
+@endphp
+
+    <!-- Header mobile -->
+    <div class="lg:hidden sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-matcha-100 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-matcha-600 text-white flex items-center justify-center">
                 <i class="fa-solid fa-prescription-bottle-medical"></i>
             </div>
-            <div>
-                <span class="font-extrabold text-sm text-white">PRABOTIK <span class="text-emerald-400">FARMASI</span></span>
-                <span class="block text-[10px] text-slate-400 -mt-0.5">Puskesmas Teluk Sasah</span>
+            <div class="leading-tight">
+                <span class="block font-extrabold text-sm text-ink tracking-wide">PRABOTIK <span class="text-matcha-600">FARMASI</span></span>
+                <span class="block text-[11px] text-slate-500">Puskesmas Teluk Sasah</span>
             </div>
         </div>
-        <button id="mobileMenuBtn" class="text-slate-300 hover:text-white p-2 focus:outline-none">
-            <i class="fa-solid fa-bars text-xl"></i>
+        <button id="mobileMenuBtn" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="Buka menu navigasi"
+                class="w-10 h-10 rounded-full bg-matcha-50 text-matcha-800 hover:bg-matcha-100 transition flex items-center justify-center">
+            <i class="fa-solid fa-bars"></i>
         </button>
     </div>
 
-    <!-- LEFT SIDEBAR: KHUSUS BAGIAN FARMASI -->
-    <aside id="sidebar" class="fixed md:sticky top-0 inset-y-0 left-0 z-40 w-72 bg-navy-950 text-slate-300 flex flex-col justify-between transition-transform duration-300 -translate-x-full md:translate-x-0 h-screen shadow-xl border-r border-slate-800/80 select-none">
-        
-        <!-- Sidebar Brand Header -->
-        <div class="p-5 border-b border-slate-800/80">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20">
-                    <i class="fa-solid fa-prescription-bottle-medical text-lg"></i>
+    <!-- Latar gelap saat menu mobile terbuka -->
+    <div id="sidebarBackdrop" class="hidden fixed inset-0 z-40 bg-ink/40 backdrop-blur-[2px] lg:hidden" aria-hidden="true"></div>
+
+    <div class="lg:flex">
+
+        <!-- SIDEBAR KIRI -->
+        <aside id="sidebar"
+               class="fixed lg:sticky top-0 left-0 z-50 w-[19rem] h-screen lg:h-[calc(100vh-2rem)] lg:m-4 lg:shrink-0
+                      bg-white rounded-r-[28px] lg:rounded-[28px] shadow-float-lg lg:shadow-float
+                      flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-300 select-none">
+
+            <!-- Brand -->
+            <div class="px-6 pt-7 pb-5">
+                <a href="{{ route('pharmacy.dashboard') }}" class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-matcha-600 text-white flex items-center justify-center shadow-md shadow-matcha-600/25">
+                        <i class="fa-solid fa-prescription-bottle-medical text-lg"></i>
+                    </div>
+                    <div class="leading-tight">
+                        <h1 class="text-lg font-extrabold tracking-wide text-ink">PRA<span class="text-matcha-600">BOTIK</span></h1>
+                        <span class="text-[11px] font-semibold text-slate-500">Portal Bagian Farmasi</span>
+                    </div>
+                </a>
+                <div class="mt-4 px-3.5 py-2 rounded-2xl bg-matcha-50 flex items-center justify-between text-[11px]">
+                    <span class="text-slate-500 font-medium">Faskes</span>
+                    <span class="font-bold text-matcha-800 truncate ml-2">Puskesmas Teluk Sasah</span>
                 </div>
+            </div>
+
+            <!-- Navigasi -->
+            <nav class="flex-1 px-4 pb-4 space-y-5 overflow-y-auto" aria-label="Navigasi Portal Farmasi">
+                @foreach($navGroups as $groupLabel => $items)
                 <div>
-                    <h1 class="text-lg font-black text-white tracking-wider leading-tight">PRA<span class="text-emerald-400">BOTIK</span></h1>
-                    <span class="text-[10px] font-bold text-emerald-400 tracking-wider uppercase block">Portal Bagian Farmasi</span>
+                    <p class="px-3 mb-1.5 text-[10px] font-bold tracking-[0.14em] text-slate-400 uppercase">{{ $groupLabel }}</p>
+                    <div class="space-y-1">
+                        @foreach($items as $item)
+                            @php $active = empty($item['blank']) && request()->routeIs($item['route']); @endphp
+                            <a href="{{ route($item['route']) }}"
+                               @if(!empty($item['blank'])) target="_blank" rel="noopener" @endif
+                               @if($active) aria-current="page" @endif
+                               class="flex items-center gap-3 px-4 py-2.5 rounded-full text-[13px] font-semibold transition-all duration-150
+                                      {{ $active ? 'bg-matcha-600 text-white shadow-md shadow-matcha-600/25' : 'text-slate-600 hover:bg-matcha-50 hover:text-matcha-800' }}">
+                                <i class="fa-solid {{ $item['icon'] }} w-5 text-center text-[15px] {{ $active ? 'text-white' : 'text-matcha-500' }}"></i>
+                                <span class="truncate">{{ $item['label'] }}</span>
+                                @if(!empty($item['badge']))
+                                    <span class="ml-auto shrink-0 text-[9px] px-2 py-0.5 rounded-full font-bold {{ $active ? 'bg-white/25 text-white' : 'bg-matcha-100 text-matcha-800' }}">{{ $item['badge'] }}</span>
+                                @elseif(!empty($item['blank']))
+                                    <i class="fa-solid fa-arrow-up-right-from-square ml-auto text-[10px] text-slate-300"></i>
+                                @endif
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
-            <div class="mt-3 px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 flex items-center justify-between text-[11px]">
-                <span class="text-slate-400 font-medium">Faskes:</span>
-                <span class="font-bold text-emerald-300 truncate">Puskesmas Teluk Sasah</span>
-            </div>
-        </div>
+                @endforeach
+            </nav>
 
-        <!-- Sidebar Navigation Menu: KHUSUS FARMASI -->
-        <nav class="flex-1 px-4 py-5 space-y-6 overflow-y-auto">
-            
-            <div>
-                <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Operasional Farmasi</p>
-                <div class="mt-2 space-y-1">
-                    <a href="{{ route('pharmacy.dashboard') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('pharmacy.dashboard') ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
-                        <i class="fa-solid fa-warehouse w-6 text-center text-base {{ request()->routeIs('pharmacy.dashboard') ? 'text-white' : 'text-emerald-400' }}"></i>
-                        <span class="ml-2.5">Beranda Gudang & Stok</span>
-                    </a>
-
-                    <a href="{{ route('pharmacy.entry') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('pharmacy.entry') ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
-                        <i class="fa-solid fa-pen-to-square w-6 text-center text-base {{ request()->routeIs('pharmacy.entry') ? 'text-white' : 'text-amber-400' }}"></i>
-                        <span class="ml-2.5">Pusat Entri Data</span>
-                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded font-bold {{ request()->routeIs('pharmacy.entry') ? 'bg-white/20 text-white' : 'bg-amber-500/20 text-amber-300' }}">4 Modul</span>
-                    </a>
-
-                    <a href="{{ route('pharmacy.procurement') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('pharmacy.procurement') ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
-                        <i class="fa-solid fa-cart-flatbed w-6 text-center text-base {{ request()->routeIs('pharmacy.procurement') ? 'text-white' : 'text-cyan-400' }}"></i>
-                        <span class="ml-2.5 truncate">Usulan Pengadaan P5</span>
-                        <span class="ml-auto text-[9px] px-1.5 py-0.5 rounded font-bold shrink-0 {{ request()->routeIs('pharmacy.procurement') ? 'bg-white/20 text-white' : 'bg-cyan-500/20 text-cyan-300' }}">95% SS</span>
-                    </a>
-                </div>
-            </div>
-
-            <div>
-                <p class="px-3 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Katalog & Analisis Stok</p>
-                <div class="mt-2 space-y-1">
-                    <a href="{{ route('pharmacy.medicines') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('pharmacy.medicines') ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
-                        <i class="fa-solid fa-pills w-6 text-center text-base {{ request()->routeIs('pharmacy.medicines') ? 'text-white' : 'text-emerald-400' }}"></i>
-                        <span class="ml-2.5">Katalog Formularium Obat</span>
-                    </a>
-
-                    <a href="{{ route('pharmacy.macd') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('pharmacy.macd') ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
-                        <i class="fa-solid fa-chart-line w-6 text-center text-base {{ request()->routeIs('pharmacy.macd') ? 'text-white' : 'text-amber-400' }}"></i>
-                        <span class="ml-2.5">Deteksi Permintaan (MACD)</span>
-                    </a>
-
-                    <a href="{{ route('pharmacy.audit') }}" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 {{ request()->routeIs('pharmacy.audit') ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30' : 'text-slate-300 hover:bg-slate-900 hover:text-white' }}">
-                        <i class="fa-solid fa-hourglass-end w-6 text-center text-base {{ request()->routeIs('pharmacy.audit') ? 'text-white' : 'text-rose-400' }}"></i>
-                        <span class="ml-2.5">Audit Kadaluarsa & FEFO</span>
-                    </a>
-
-                    <a href="{{ route('pharmacy.print') }}" target="_blank" class="flex items-center px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:bg-slate-900 hover:text-white transition">
-                        <i class="fa-solid fa-print w-6 text-center text-base text-slate-400"></i>
-                        <span class="ml-2.5">Cetak Lembar Kerja LPLPO</span>
+            <!-- Kartu profil pengguna -->
+            <div class="p-4">
+                <div class="rounded-3xl bg-matcha-50 p-3.5 flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-matcha-600 text-white flex items-center justify-center font-extrabold text-sm shrink-0">SR</div>
+                    <div class="flex-1 min-w-0 leading-tight">
+                        <p class="text-xs font-bold text-ink truncate">Apt. Siti Rahmawati, S.Farm</p>
+                        <p class="text-[11px] text-slate-500 truncate">Pengelola Obat Puskesmas</p>
+                        <p class="text-[9px] text-matcha-700 font-mono truncate">SIP. 19890415/SIPA/2018/021</p>
+                    </div>
+                    <a href="{{ route('logout') }}" title="Keluar / Kunci Portal" aria-label="Keluar / Kunci Portal"
+                       class="w-9 h-9 rounded-full bg-white text-matcha-700 hover:bg-matcha-600 hover:text-white shadow-sm transition flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-right-from-bracket text-sm"></i>
                     </a>
                 </div>
             </div>
+        </aside>
 
-        </nav>
+        <!-- AREA UTAMA -->
+        <div class="flex-1 min-w-0 flex flex-col min-h-screen">
 
-        <!-- Sidebar Bottom: Dedicated Pharmacist Identity -->
-        <div class="p-4 border-t border-slate-800/80 bg-slate-950/60 space-y-3">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0 shadow-md shadow-emerald-600/30">
-                    <i class="fa-solid fa-pills"></i>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-xs font-bold text-white truncate">Apt. Siti Rahmawati, S.Farm</p>
-                    <p class="text-[10px] text-slate-400 truncate">Pengelola Obat Puskesmas</p>
-                    <p class="text-[9px] text-emerald-400 font-mono truncate">SIP. 19890415/SIPA/2018/021</p>
-                </div>
-            </div>
-
-            <a href="{{ route('gateway') }}" class="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold transition flex items-center justify-center space-x-2 border border-slate-700/60">
-                <i class="fa-solid fa-door-open text-slate-400"></i>
-                <span>Keluar ke Portal Utama</span>
-            </a>
-        </div>
-
-    </aside>
-
-    <!-- MAIN PHARMACY VIEW AREA -->
-    <div class="flex-1 flex flex-col min-h-screen bg-slate-50 overflow-x-hidden">
-        
-        <!-- Top Pharmacy Bar -->
-        <header class="bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-xs">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    
-                    <div class="flex items-center space-x-3">
-                        <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 text-[10px] font-extrabold uppercase border border-emerald-200">
-                            Aplikasi Farmasi
-                        </span>
-                        <div class="hidden sm:flex items-center text-slate-500 text-xs font-medium space-x-2">
-                            <span class="text-slate-400">UPTD Puskesmas Teluk Sasah</span>
-                            <i class="fa-solid fa-chevron-right text-[10px] text-slate-300"></i>
-                            <span class="text-emerald-700 font-bold">@yield('page_title', 'Operasional Logistik')</span>
+            <!-- Topbar -->
+            <header class="px-4 sm:px-6 lg:px-8 pt-5 lg:pt-6">
+                <div class="max-w-7xl mx-auto flex items-center justify-between gap-3 bg-white rounded-full shadow-float px-3 sm:px-4 py-2.5">
+                    <div class="flex items-center gap-2.5 min-w-0 pl-1">
+                        <span class="hidden sm:inline-flex px-3 py-1 rounded-full bg-matcha-100 text-matcha-800 text-[10px] font-extrabold uppercase tracking-wider">Aplikasi Farmasi</span>
+                        <div class="flex items-center gap-2 text-xs font-medium text-slate-500 min-w-0">
+                            <span class="hidden md:inline text-slate-400 whitespace-nowrap">UPTD Puskesmas Teluk Sasah</span>
+                            <i class="hidden md:inline fa-solid fa-chevron-right text-[9px] text-slate-300"></i>
+                            <span class="text-matcha-800 font-bold truncate">@yield('page_title', 'Operasional Logistik')</span>
                         </div>
                     </div>
 
-                    <div class="flex items-center space-x-3">
-                        <div class="flex items-center space-x-2 px-3 py-1.5 bg-emerald-50 rounded-xl border border-emerald-200 text-emerald-800 text-xs font-bold">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <div class="hidden sm:flex items-center gap-2 px-3.5 py-1.5 bg-matcha-50 rounded-full text-matcha-800 text-xs font-bold">
+                            <span class="w-2 h-2 rounded-full bg-matcha-600 animate-pulse"></span>
                             <span>Periode 2026-P5</span>
                         </div>
-
-                        <a href="{{ route('gateway') }}" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center space-x-1.5 border border-slate-200">
-                            <i class="fa-solid fa-arrow-right-from-bracket text-slate-500"></i>
+                        <a href="{{ route('logout') }}"
+                           class="px-3.5 py-1.5 rounded-full bg-matcha-600 hover:bg-matcha-700 text-white text-xs font-bold transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrow-right-arrow-left text-[11px]"></i>
                             <span class="hidden sm:inline">Ganti Portal</span>
                         </a>
                     </div>
-
                 </div>
-            </div>
-        </header>
+            </header>
 
-        <main class="flex-1">
-            @yield('content')
-        </main>
+            <main class="flex-1">
+                @yield('content')
+            </main>
 
-        <footer class="bg-white border-t border-slate-200 py-6 text-xs text-slate-500 mt-auto">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <p>&copy; 2026 PRABOTIK Farmasi &bull; UPTD Puskesmas Teluk Sasah, Kabupaten Bintan.</p>
-                <div class="flex items-center space-x-4">
-                    <span>Penanggung Jawab: Apt. Siti Rahmawati, S.Farm</span>
-                    <span>&bull;</span>
-                    <span>Format Standar LPLPO Kemenkes</span>
+            <footer class="px-4 sm:px-6 lg:px-8 pb-6 pt-2 text-xs text-slate-500">
+                <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-matcha-200/60 pt-5">
+                    <p>&copy; 2026 PRABOTIK Farmasi &bull; UPTD Puskesmas Teluk Sasah, Kabupaten Bintan.</p>
+                    <p class="text-center sm:text-right">Penanggung Jawab: Apt. Siti Rahmawati, S.Farm &bull; Format Standar LPLPO Kemenkes</p>
                 </div>
-            </div>
-        </footer>
-
+            </footer>
+        </div>
     </div>
 
     <script>
-        const mobileBtn = document.getElementById('mobileMenuBtn');
-        const sidebar = document.getElementById('sidebar');
-        if (mobileBtn && sidebar) {
-            mobileBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('-translate-x-full');
+        (function () {
+            var btn = document.getElementById('mobileMenuBtn');
+            var sidebar = document.getElementById('sidebar');
+            var backdrop = document.getElementById('sidebarBackdrop');
+            if (!btn || !sidebar || !backdrop) return;
+
+            function setOpen(open) {
+                sidebar.classList.toggle('-translate-x-full', !open);
+                backdrop.classList.toggle('hidden', !open);
+                btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            }
+            btn.addEventListener('click', function () {
+                setOpen(sidebar.classList.contains('-translate-x-full'));
             });
-        }
+            backdrop.addEventListener('click', function () { setOpen(false); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+        })();
     </script>
     @stack('scripts')
 </body>

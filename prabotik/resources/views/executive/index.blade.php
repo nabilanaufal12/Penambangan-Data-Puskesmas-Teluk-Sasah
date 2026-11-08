@@ -4,147 +4,170 @@
 @section('page_title', 'Ringkasan Eksekutif & Pengawasan Pimpinan Faskes')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+@php
+    // Angka turunan untuk tampilan saja (data tetap dari controller)
+    $spm        = (float) $kpis['ketersediaan_pct'];
+    $spmText    = number_format($spm, 1, ',', '.');
+    $spmOk      = $spm >= 80;
+    $spmBar     = max(0, min(100, $spm));
+    $anggaranJt = number_format($kpis['estimasi_anggaran'] / 1000000, 1, ',', '.');
+    $edLossJt   = number_format($kpis['total_ed_loss'] / 1000000, 2, ',', '.');
+    $d1 = $topDiseases->get(0);
+    $d2 = $topDiseases->get(1);
+    $diseaseNames  = $topDiseases->map(fn ($d) => $d->nama_penyakit)->values();
+    $diseaseTotals = $topDiseases->map(fn ($d) => (float) $d->total_pasien)->values();
+    $top5Share     = round($topDiseases->sum(fn ($d) => (float) $d->persentase), 1);
+    $edYears       = $edLossByYear->map(fn ($e) => (string) $e->tahun)->values();
+    $edLossMio     = $edLossByYear->map(fn ($e) => round(((float) $e->total_loss) / 1000000, 2))->values();
+    $shades        = ['#1A3B22', '#4F5E3A', '#728156', '#98A77C', '#B6C99B'];
+@endphp
 
-    <!-- MAIN EXECUTIVE HERO BANNER -->
-    <div class="bg-gradient-to-r from-navy-950 via-slate-900 to-amber-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-slate-800">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div class="space-y-2">
-                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold border border-amber-500/30">
-                    <i class="fa-solid fa-building-columns mr-1"></i>Panel Pengawasan & Pengambilan Keputusan Strategis
-                </div>
-                <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                    Ringkasan Eksekutif Tata Kelola Faskes & Logistik
-                </h1>
-                <p class="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
-                    Menyajikan indikator makro ketersediaan obat pelayanan dasar Kemenkes, efisiensi anggaran pengadaan, pengendalian kerugian obat kadaluarsa, beban morbiditas penyakit SIMPUS, serta disposisi pengesahan lembar LPLPO resmi UPTD Puskesmas Teluk Sasah.
-                </p>
-            </div>
-            <div class="flex flex-wrap items-center gap-3 shrink-0">
-                <a href="{{ route('executive.disposition') }}" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shadow-md shadow-amber-500/30 transition flex items-center">
-                    <i class="fa-solid fa-stamp mr-2"></i>
-                    <span>Tinjau & Sahkan LPLPO</span>
-                </a>
-                <a href="{{ route('executive.diseases') }}" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold border border-white/20 transition flex items-center">
-                    <i class="fa-solid fa-chart-pie mr-2 text-amber-300"></i>
-                    <span>Analisis Morbiditas</span>
-                </a>
-            </div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 space-y-6">
+
+    <!-- SAPAAN + AKSI UTAMA -->
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+        <div>
+            <p class="text-xs font-bold tracking-[0.14em] uppercase text-matcha-600">Panel Pengawasan &amp; Keputusan Strategis</p>
+            <h1 class="mt-1 text-2xl sm:text-[32px] leading-tight font-extrabold tracking-tight text-ink">
+                Selamat datang, <span class="text-matcha-600">dr. Bambang Utoyo</span>
+            </h1>
+            <p class="mt-1.5 text-sm text-slate-500 max-w-3xl leading-relaxed">
+                Ringkasan ketersediaan obat pelayanan dasar, efisiensi anggaran pengadaan, kerugian obat kadaluarsa, beban morbiditas SIMPUS, dan disposisi pengesahan LPLPO resmi UPTD Puskesmas Teluk Sasah.
+            </p>
         </div>
-
-        <!-- 4 EXECUTIVE KPI SCORECARDS -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8 pt-6 border-t border-slate-800/80">
-            
-            <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
-                <div class="flex items-center justify-between">
-                    <span class="text-[10px] text-slate-400 uppercase font-semibold">Tingkat Ketersediaan Obat</span>
-                    <i class="fa-solid fa-shield-halved text-emerald-400 text-sm"></i>
-                </div>
-                <p class="text-2xl font-black text-emerald-400 mt-1">{{ $kpis['ketersediaan_pct'] }}%</p>
-                <span class="text-[10px] text-slate-300 mt-1 block">Target Kemenkes: &ge; 80% (Terpenuhi)</span>
-            </div>
-
-            <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
-                <div class="flex items-center justify-between">
-                    <span class="text-[10px] text-slate-400 uppercase font-semibold">Pasien Terlayani (SIMPUS)</span>
-                    <i class="fa-solid fa-hospital-user text-cyan-400 text-sm"></i>
-                </div>
-                <p class="text-2xl font-black text-cyan-400 mt-1">{{ number_format($kpis['total_pasien'], 0, ',', '.') }}</p>
-                <span class="text-[10px] text-slate-300 mt-1 block">Akumulasi 22 Periode Faskes</span>
-            </div>
-
-            <div class="bg-white/5 rounded-2xl p-4 border border-white/10">
-                <div class="flex items-center justify-between">
-                    <span class="text-[10px] text-slate-400 uppercase font-semibold">Usulan Pengadaan P5</span>
-                    <i class="fa-solid fa-receipt text-amber-400 text-sm"></i>
-                </div>
-                <p class="text-2xl font-black text-amber-400 mt-1">Rp {{ number_format($kpis['estimasi_anggaran'] / 1000000, 1, ',', '.') }} Jt</p>
-                <span class="text-[10px] text-slate-300 mt-1 block">{{ number_format($kpis['total_order_unit'], 0, ',', '.') }} Unit Sediaan</span>
-            </div>
-
-            <div class="bg-white/5 rounded-2xl p-4 border border-rose-500/20 bg-rose-500/5">
-                <div class="flex items-center justify-between">
-                    <span class="text-[10px] text-rose-300 uppercase font-semibold">Kerugian Obat Rusak / ED</span>
-                    <i class="fa-solid fa-sack-xmark text-rose-400 text-sm"></i>
-                </div>
-                <p class="text-2xl font-black text-rose-400 mt-1">Rp {{ number_format($kpis['total_ed_loss'] / 1000000, 2, ',', '.') }} Jt</p>
-                <span class="text-[10px] text-rose-300 mt-1 block">Audit 3 Tahun (APBD/DAK)</span>
-            </div>
-
+        <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+            <a href="{{ route('executive.disposition') }}" class="px-5 py-2.5 rounded-full bg-matcha-600 hover:bg-matcha-700 text-white text-xs font-bold shadow-md shadow-matcha-600/25 transition flex items-center gap-2">
+                <i class="fa-solid fa-stamp"></i><span>Tinjau &amp; Sahkan LPLPO</span>
+            </a>
+            <a href="{{ route('executive.diseases') }}" class="px-5 py-2.5 rounded-full bg-white hover:bg-matcha-50 text-matcha-800 text-xs font-bold shadow-float transition flex items-center gap-2">
+                <i class="fa-solid fa-chart-pie text-matcha-500"></i><span>Analisis Morbiditas</span>
+            </a>
         </div>
     </div>
 
-    <!-- 2 MAIN EXECUTIVE SECTIONS -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
-        <!-- Left: Ringkasan Disposisi & Pengesahan LPLPO P5 -->
-        <div class="lg:col-span-7 space-y-6">
-            
-            <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm space-y-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-slate-100">
+    <!-- 4 KPI -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+
+        <!-- Featured Card: Skor SPM -->
+        <div class="relative overflow-hidden rounded-3xl p-5 text-white shadow-float-lg"
+             style="background: linear-gradient(145deg, #1A3B22 0%, #2A4A2E 100%);">
+            <div class="absolute inset-0 opacity-[0.12] pointer-events-none"
+                 style="background-image: radial-gradient(#CFE1B9 1px, transparent 1px); background-size: 14px 14px;"></div>
+            <div class="relative flex items-start justify-between">
+                <div class="w-11 h-11 rounded-2xl bg-white text-matcha-900 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-matcha-200 text-matcha-900 text-[11px] font-bold">
+                    {{ $spmOk ? 'Target terpenuhi' : 'Di bawah target' }}
+                </span>
+            </div>
+            <p class="relative mt-5 text-xs font-semibold text-matcha-200">Skor Capaian SPM &bull; Ketersediaan Obat</p>
+            <p class="relative mt-0.5 text-[36px] leading-none font-extrabold tnum">{{ $spmText }}<span class="text-xl font-bold text-matcha-200">%</span></p>
+            <div class="relative mt-4">
+                <div class="relative h-2 rounded-full bg-white/15 overflow-visible">
+                    <div class="h-full rounded-full bg-matcha-200" style="width: {{ $spmBar }}%"></div>
+                    <span class="absolute -top-1 h-4 w-0.5 rounded bg-white" style="left: 80%" title="Target 80%"></span>
+                </div>
+                <p class="mt-2 text-[11px] text-matcha-200">Target Kemenkes: &ge; 80% &bull; {{ $kpis['obat_tersedia'] }} dari {{ $kpis['total_obat'] }} sediaan tersedia</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-3xl p-5 shadow-float">
+            <div class="flex items-start justify-between">
+                <div class="w-11 h-11 rounded-2xl bg-matcha-100 text-matcha-700 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-hospital-user"></i>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-matcha-100 text-matcha-800 text-[11px] font-bold">SIMPUS</span>
+            </div>
+            <p class="mt-5 text-xs font-semibold text-slate-500">Kasus Terdiagnosis (10 Besar)</p>
+            <p class="mt-0.5 text-[32px] leading-none font-extrabold text-ink tnum">{{ number_format($kpis['total_pasien'], 0, ',', '.') }}</p>
+            <p class="mt-4 text-[11px] text-slate-400">Akumulasi 10 diagnosis teratas per bulan</p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-5 shadow-float">
+            <div class="flex items-start justify-between">
+                <div class="w-11 h-11 rounded-2xl bg-matcha-100 text-matcha-700 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-receipt"></i>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-matcha-100 text-matcha-800 text-[11px] font-bold">P5 &bull; 2026</span>
+            </div>
+            <p class="mt-5 text-xs font-semibold text-slate-500">Usulan Pengadaan P5</p>
+            <p class="mt-0.5 text-[32px] leading-none font-extrabold text-ink tnum">Rp {{ $anggaranJt }} <span class="text-sm font-semibold text-slate-400">Jt</span></p>
+            <p class="mt-4 text-[11px] text-slate-400">{{ number_format($kpis['total_order_unit'], 0, ',', '.') }} unit sediaan</p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-5 shadow-float">
+            <div class="flex items-start justify-between">
+                <div class="w-11 h-11 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-sack-xmark"></i>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-rose-100 text-rose-700 text-[11px] font-bold">Perlu dikendalikan</span>
+            </div>
+            <p class="mt-5 text-xs font-semibold text-slate-500">Kerugian Obat Rusak / ED</p>
+            <p class="mt-0.5 text-[32px] leading-none font-extrabold text-rose-600 tnum">Rp {{ $edLossJt }} <span class="text-sm font-semibold text-slate-400">Jt</span></p>
+            <p class="mt-4 text-[11px] text-slate-400">Audit 3 Tahun (APBD/DAK)</p>
+        </div>
+    </div>
+
+    <!-- BARIS UTAMA -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+        <!-- Kiri: Disposisi + tren kerugian ED -->
+        <div class="lg:col-span-7 space-y-5">
+
+            <div class="bg-white rounded-3xl p-6 shadow-float space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                     <div>
-                        <div class="flex items-center space-x-2">
-                            <span class="px-2.5 py-1 rounded-lg bg-amber-100 text-amber-800 text-[10px] font-extrabold uppercase">
-                                Dokumen Otorisasi
-                            </span>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 rounded-full bg-matcha-100 text-matcha-800 text-[10px] font-extrabold uppercase tracking-wider">Dokumen Otorisasi</span>
                             <span class="text-xs text-slate-400 font-mono">LPLPO-TS-2026-P5</span>
                         </div>
-                        <h2 class="text-lg font-black text-slate-900 mt-1.5">
-                            Lembar Disposisi Pengesahan Pengadaan Obat P5 (2026)
-                        </h2>
+                        <h2 class="text-base font-extrabold text-ink mt-2">Lembar Disposisi Pengesahan Pengadaan Obat P5 (2026)</h2>
                     </div>
                     @if($kpis['is_approved'])
-                    <span class="px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold inline-flex items-center shrink-0">
-                        <i class="fa-solid fa-stamp mr-1.5"></i>
-                        <span>Telah Disahkan Digital</span>
+                    <span class="px-3.5 py-1.5 rounded-full bg-matcha-100 text-matcha-800 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 self-start">
+                        <i class="fa-solid fa-stamp"></i><span>Telah Disahkan Digital</span>
                     </span>
                     @else
-                    <span class="px-3 py-1.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold inline-flex items-center shrink-0">
-                        <i class="fa-solid fa-clock-rotate-left mr-1.5"></i>
-                        <span>Menunggu Disposisi Kapus</span>
+                    <span class="px-3.5 py-1.5 rounded-full bg-amber-100 text-amber-800 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 self-start">
+                        <i class="fa-solid fa-clock-rotate-left"></i><span>Menunggu Disposisi Kapus</span>
                     </span>
                     @endif
                 </div>
 
-                <!-- 6 Item Pengadaan Terbesar -->
+                <!-- 6 alokasi terbesar -->
                 <div>
-                    <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">
-                        6 Alokasi Terbesar yang Diajukan Bagian Farmasi:
-                    </h3>
-                    <div class="overflow-x-auto rounded-2xl border border-slate-200">
-                        <table class="w-full text-left text-xs border-collapse">
-                            <thead class="bg-slate-50 text-slate-600 font-bold uppercase text-[10px] border-b border-slate-200">
-                                <tr>
+                    <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-[0.12em] mb-2">6 Alokasi Terbesar yang Diajukan Bagian Farmasi</h3>
+                    <div class="overflow-x-auto -mx-2">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
                                     <th class="py-2.5 px-3">Nama Sediaan</th>
                                     <th class="py-2.5 px-3 text-right">Sisa Stok</th>
                                     <th class="py-2.5 px-3 text-right">Rekomendasi</th>
                                     <th class="py-2.5 px-3">Indikasi Utama</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+                            <tbody class="font-medium text-slate-700">
                                 @foreach($topProcurement as $tp)
-                                <tr class="hover:bg-slate-50">
-                                    <td class="py-2.5 px-3">
-                                        <div class="font-bold text-slate-900">{{ $tp->nama_obat }}</div>
+                                <tr class="{{ $loop->odd ? 'bg-matcha-50/70' : '' }}">
+                                    <td class="py-2.5 px-3 rounded-l-2xl">
+                                        <div class="font-bold text-ink">{{ $tp->nama_obat }}</div>
                                         <div class="text-[10px] text-slate-400 font-mono">{{ $tp->satuan }}</div>
                                     </td>
-                                    <td class="py-2.5 px-3 text-right font-mono font-bold text-slate-800">
-                                        {{ number_format($tp->sisa_stok, 0, ',', '.') }}
-                                    </td>
-                                    <td class="py-2.5 px-3 text-right font-mono font-black text-amber-600">
-                                        {{ number_format($tp->rekomendasi_total, 0, ',', '.') }}
-                                    </td>
-                                    <td class="py-2.5 px-3 text-[11px] text-slate-600">
+                                    <td class="py-2.5 px-3 text-right font-mono font-bold text-ink tnum">{{ number_format($tp->sisa_stok, 0, ',', '.') }}</td>
+                                    <td class="py-2.5 px-3 text-right font-mono font-extrabold text-matcha-700 tnum">{{ number_format($tp->rekomendasi_total, 0, ',', '.') }}</td>
+                                    <td class="py-2.5 px-3 rounded-r-2xl text-[11px] text-slate-600">
                                         @if(str_contains(strtolower($tp->nama_obat), 'fero'))
-                                        Program Bumil & Anemia
+                                            Program Bumil &amp; Anemia
                                         @elseif(str_contains(strtolower($tp->nama_obat), 'amlodipin'))
-                                        Penyakit Hipertensi (I10)
+                                            Penyakit Hipertensi (I10)
                                         @elseif(str_contains(strtolower($tp->nama_obat), 'parasetamol'))
-                                        Antipiretik ISPA (J00)
+                                            Antipiretik ISPA (J00)
                                         @elseif(str_contains(strtolower($tp->nama_obat), 'metformin'))
-                                        Diabetes Melitus (E11)
+                                            Diabetes Melitus (E11)
                                         @else
-                                        Analgesik / Alergi
+                                            Analgesik / Alergi
                                         @endif
                                     </td>
                                 </tr>
@@ -154,179 +177,258 @@
                     </div>
                 </div>
 
-                <!-- Signatory & Action Box -->
-                <div class="bg-slate-50 rounded-2xl p-4 sm:p-5 border border-slate-200 space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                        <div class="p-3 bg-white rounded-xl border border-slate-200">
-                            <span class="text-[10px] text-slate-400 block uppercase font-semibold">Petugas Penelaah Farmasi:</span>
-                            <span class="font-bold text-slate-900 text-sm mt-0.5 block">{{ $kpis['pengelola_nama'] }}</span>
+                <!-- Penandatangan & aksi -->
+                <div class="bg-matcha-50 rounded-3xl p-4 sm:p-5 space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="p-3.5 bg-white rounded-2xl">
+                            <span class="text-[10px] text-slate-400 block uppercase font-semibold tracking-wider">Petugas Penelaah Farmasi</span>
+                            <span class="font-bold text-ink text-sm mt-0.5 block">{{ $kpis['pengelola_nama'] }}</span>
                             <span class="text-[10px] text-slate-500 font-mono">{{ $kpis['pengelola_sip'] }}</span>
-                            <span class="inline-block mt-2 px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200">
-                                Selesai Verifikasi Stok Opname
+                            <span class="inline-flex items-center gap-1.5 mt-2 px-2.5 py-0.5 rounded-full bg-matcha-100 text-matcha-800 text-[10px] font-bold">
+                                <span class="w-1.5 h-1.5 rounded-full bg-matcha-600"></span>Selesai Verifikasi Stok Opname
                             </span>
                         </div>
-
-                        <div class="p-3 bg-white rounded-xl border {{ $kpis['is_approved'] ? 'border-emerald-300 bg-emerald-50/40' : 'border-amber-200' }}">
-                            <span class="text-[10px] text-amber-600 block uppercase font-semibold">Kepala UPTD Puskesmas Teluk Sasah:</span>
-                            <span class="font-bold text-slate-900 text-sm mt-0.5 block">{{ $kpis['kapus_nama'] }}</span>
+                        <div class="p-3.5 bg-white rounded-2xl {{ $kpis['is_approved'] ? 'ring-2 ring-matcha-300' : '' }}">
+                            <span class="text-[10px] text-slate-400 block uppercase font-semibold tracking-wider">Kepala UPTD Puskesmas Teluk Sasah</span>
+                            <span class="font-bold text-ink text-sm mt-0.5 block">{{ $kpis['kapus_nama'] }}</span>
                             <span class="text-[10px] text-slate-500 font-mono">{{ $kpis['kapus_nip'] }}</span>
                             @if($kpis['is_approved'])
-                            <span class="inline-block mt-2 px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-bold shadow-xs">
-                                <i class="fa-solid fa-stamp mr-1"></i>Telah Disahkan Secara Digital
+                            <span class="inline-flex items-center gap-1.5 mt-2 px-2.5 py-0.5 rounded-full bg-matcha-600 text-white text-[10px] font-bold">
+                                <i class="fa-solid fa-stamp"></i>Telah Disahkan Secara Digital
                             </span>
                             @else
-                            <span class="inline-block mt-2 px-2 py-0.5 rounded bg-amber-50 text-amber-700 text-[10px] font-bold border border-amber-200">
-                                Menunggu Otorisasi Kepala Faskes
+                            <span class="inline-flex items-center gap-1.5 mt-2 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold">
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Menunggu Otorisasi Kepala Faskes
                             </span>
                             @endif
                         </div>
                     </div>
 
-                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-200">
+                    <div class="pt-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-matcha-200/70">
                         <p class="text-[11px] text-slate-500 leading-snug">
                             Dengan mengesahkan dokumen ini, rencana kebutuhan obat resmi diteruskan ke Dinas Kesehatan Kabupaten Bintan.
                         </p>
-                        <div class="flex items-center space-x-2 shrink-0 w-full sm:w-auto">
-                            <a href="{{ route('executive.print') }}" target="_blank" class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition flex items-center justify-center space-x-1.5 shadow-sm">
-                                <i class="fa-solid fa-print"></i>
-                                <span>Cetak LPLPO Resmi</span>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <a href="{{ route('executive.print') }}" target="_blank" rel="noopener" class="flex-1 sm:flex-none px-4 py-2.5 rounded-full bg-white hover:bg-matcha-100 text-matcha-900 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-print"></i><span>Cetak LPLPO Resmi</span>
                             </a>
-                            
                             @if(!$kpis['is_approved'])
                             <form method="POST" action="{{ route('executive.approve') }}" class="flex-1 sm:flex-none">
                                 @csrf
-                                <button type="submit" class="w-full px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold shadow-md shadow-amber-600/30 transition flex items-center justify-center space-x-1.5">
-                                    <i class="fa-solid fa-stamp"></i>
-                                    <span>Setujui Usulan P5 (Sahkan)</span>
+                                <button type="submit" class="w-full px-4 py-2.5 rounded-full bg-matcha-600 hover:bg-matcha-700 text-white text-xs font-bold shadow-md shadow-matcha-600/25 transition flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-stamp"></i><span>Setujui Usulan P5 (Sahkan)</span>
                                 </button>
                             </form>
                             @else
-                            <span class="px-4 py-2.5 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center space-x-1.5 border border-emerald-300">
-                                <i class="fa-solid fa-circle-check text-emerald-600"></i>
-                                <span>Usulan Telah Disahkan</span>
+                            <span class="px-4 py-2.5 rounded-full bg-matcha-100 text-matcha-800 font-bold text-xs flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-check text-matcha-600"></i><span>Usulan Telah Disahkan</span>
                             </span>
                             @endif
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            <!-- Evaluasi Akumulasi Kerugian Obat Kadaluarsa (ED) -->
-            <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm space-y-4">
-                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <div class="flex items-center space-x-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center text-sm">
-                            <i class="fa-solid fa-chart-line-down"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-extrabold text-slate-900 text-sm">Tren Akuntabilitas Kerugian Obat ED (3 Tahun)</h3>
-                            <p class="text-[11px] text-slate-500">Evaluasi efisiensi pengadaan anggaran APBD & DAK Farmasi</p>
-                        </div>
+            <!-- Tren kerugian ED -->
+            <div class="bg-white rounded-3xl p-6 shadow-float">
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <h3 class="font-extrabold text-ink text-base">Akuntabilitas Kerugian Obat ED</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Evaluasi efisiensi pengadaan anggaran APBD &amp; DAK Farmasi (Rp juta per tahun)</p>
                     </div>
-                    <a href="{{ route('executive.financial') }}" class="text-[11px] font-bold text-rose-600 hover:text-rose-700">
-                        Buka Audit Rinci &rarr;
-                    </a>
+                    <a href="{{ route('executive.financial') }}" class="text-[11px] font-bold text-rose-600 hover:text-rose-700 whitespace-nowrap mt-1">Buka Audit Rinci &rarr;</a>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                    @foreach($edLossByYear as $ey)
-                    <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-center">
-                        <span class="text-[11px] font-bold text-slate-400 block uppercase">Tahun {{ $ey->tahun }}</span>
-                        <span class="text-base font-black text-rose-600 font-mono mt-1 block">Rp {{ number_format($ey->total_loss, 0, ',', '.') }}</span>
-                        <span class="text-[10px] text-slate-500 mt-0.5 block">{{ $ey->count }} Berita Acara ED</span>
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-5 gap-4 items-center">
+                    <div class="sm:col-span-3 relative h-[190px]">
+                        <canvas id="chartEd" role="img" aria-label="Diagram batang kerugian obat kadaluarsa per tahun dalam jutaan rupiah">
+                            <table>
+                                <caption>Kerugian ED per tahun (Rp)</caption>
+                                @foreach($edLossByYear as $ey)
+                                <tr><th scope="row">{{ $ey->tahun }}</th><td>{{ number_format($ey->total_loss, 0, ',', '.') }}</td></tr>
+                                @endforeach
+                            </table>
+                        </canvas>
                     </div>
-                    @endforeach
+                    <div class="sm:col-span-2 space-y-2.5">
+                        @foreach($edLossByYear as $ey)
+                        <div class="p-3 bg-matcha-50 rounded-2xl text-xs">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tahun {{ $ey->tahun }}</span>
+                            <span class="block text-sm font-extrabold text-rose-600 font-mono tnum mt-0.5">Rp {{ number_format($ey->total_loss, 0, ',', '.') }}</span>
+                            <span class="text-[10px] text-slate-500">{{ $ey->count }} Berita Acara ED</span>
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- Right: Beban Morbiditas SIMPUS & Korelasi Pelayanan -->
-        <div class="lg:col-span-5 space-y-6">
-            
-            <!-- Top 5 Penyakit SIMPUS -->
-            <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm space-y-5">
-                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <div class="flex items-center space-x-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center text-sm">
-                            <i class="fa-solid fa-heart-pulse"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-extrabold text-slate-900 text-sm">Profil Beban 5 Penyakit Terbanyak</h3>
-                            <p class="text-[11px] text-slate-500">Rekapitulasi SIMPUS Wilayah Kerja Teluk Sasah</p>
-                        </div>
+        <!-- Kanan: morbiditas + standar terapi -->
+        <div class="lg:col-span-5 space-y-5">
+
+            <div class="bg-white rounded-3xl p-6 shadow-float">
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <h3 class="font-extrabold text-ink text-base">Profil Beban 5 Penyakit Terbanyak</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Rekapitulasi SIMPUS wilayah kerja Teluk Sasah</p>
                     </div>
-                    <a href="{{ route('executive.diseases') }}" class="text-[11px] font-bold text-cyan-600 hover:text-cyan-700">
-                        SIMPUS &rarr;
-                    </a>
+                    <a href="{{ route('executive.diseases') }}" class="text-[11px] font-bold text-matcha-700 hover:text-matcha-900 whitespace-nowrap mt-1">SIMPUS &rarr;</a>
                 </div>
 
-                <div class="space-y-4">
-                    @foreach($topDiseases as $td)
-                    <div class="space-y-1.5">
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="font-bold text-slate-800">
-                                <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 font-mono text-[10px] mr-1">{{ $td->kode_icd }}</span>
-                                {{ $td->nama_penyakit }}
-                            </span>
-                            <span class="font-mono font-bold text-slate-900">
-                                {{ number_format($td->total_pasien, 0, ',', '.') }} <span class="text-[10px] text-slate-400">({{ $td->persentase }}%)</span>
-                            </span>
-                        </div>
-                        <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full rounded-full transition-all duration-500 {{ $loop->index == 0 ? 'bg-rose-500' : ($loop->index == 1 ? 'bg-amber-500' : ($loop->index == 2 ? 'bg-emerald-500' : ($loop->index == 3 ? 'bg-cyan-500' : 'bg-purple-500'))) }}" style="width: {{ $td->persentase }}%"></div>
-                        </div>
+                <div class="mt-4 flex flex-col items-center gap-5">
+                    <div class="relative w-[180px] h-[180px] shrink-0">
+                        <canvas id="chartPenyakit" role="img" aria-label="Diagram donat lima penyakit terbanyak"></canvas>
                     </div>
-                    @endforeach
+                    <ul class="w-full space-y-3">
+                        @foreach($topDiseases as $td)
+                        <li class="text-xs min-w-0">
+                            <div class="flex items-center justify-between gap-3">
+                                <span class="flex items-center gap-2 min-w-0 font-bold text-ink">
+                                    <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background: {{ $shades[$loop->index] ?? '#B6C99B' }}"></span>
+                                    <span class="px-1.5 py-0.5 rounded bg-matcha-50 text-matcha-800 font-mono text-[10px]">{{ $td->kode_icd }}</span>
+                                    <span class="truncate">{{ $td->nama_penyakit }}</span>
+                                </span>
+                                <span class="font-mono font-bold text-ink tnum shrink-0">{{ number_format($td->total_pasien, 0, ',', '.') }} <span class="text-[10px] text-slate-400">({{ number_format($td->persentase, 1, ',', '.') }}%)</span></span>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
                 </div>
 
-                <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-600">
-                    <span class="font-bold text-slate-800 block mb-0.5">Catatan Epidemiologi Pimpinan:</span>
-                    <p class="text-[11px] text-slate-500 leading-relaxed">
-                        ISPA (34,8%) dan Hipertensi (24,0%) mendominasi 58,8% total beban kunjungan poli rawat jalan, menegaskan bahwa suplai Parasetamol dan Amlodipin tidak boleh terputus sama sekali.
+                @if($d1 && $d2)
+                <div class="mt-5 p-4 bg-matcha-50 rounded-2xl">
+                    <span class="font-bold text-ink text-xs block mb-0.5">Catatan Epidemiologi Pimpinan</span>
+                    <p class="text-[11px] text-slate-600 leading-relaxed">
+                        {{ $d1->nama_penyakit }} ({{ number_format($d1->persentase, 1, ',', '.') }}%) dan {{ $d2->nama_penyakit }} ({{ number_format($d2->persentase, 1, ',', '.') }}%) mendominasi {{ number_format($d1->persentase + $d2->persentase, 1, ',', '.') }}% dari total kasus 10 diagnosis teratas SIMPUS, sehingga kelancaran suplai obat terkait (mis. Parasetamol dan Amlodipin) perlu dijaga.
                     </p>
                 </div>
+                @endif
             </div>
 
-            <!-- Standar Terapi & Rasio Resep -->
-            <div class="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-sm space-y-4">
-                <div class="flex items-center space-x-2.5 pb-3 border-b border-slate-100">
-                    <div class="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-sm">
-                        <i class="fa-solid fa-notes-medical"></i>
-                    </div>
+            <div class="bg-white rounded-3xl p-6 shadow-float">
+                <div class="flex items-start justify-between gap-3">
                     <div>
-                        <h3 class="font-extrabold text-slate-900 text-sm">Kepatuhan Standar Terapi Morbiditas</h3>
-                        <p class="text-[11px] text-slate-500">Rasio Kesesuaian Diagnosis dengan Terapi Obat</p>
+                        <h3 class="font-extrabold text-ink text-base">Kepatuhan Standar Terapi</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Rasio kesesuaian diagnosis dengan terapi obat</p>
                     </div>
+                    <div class="w-9 h-9 rounded-full bg-matcha-50 text-matcha-700 flex items-center justify-center shrink-0"><i class="fa-solid fa-notes-medical text-xs"></i></div>
                 </div>
 
-                <div class="space-y-3">
+                <div class="mt-4 space-y-2.5">
                     @foreach($correlations as $c)
-                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-xs">
-                        <div>
-                            <span class="font-bold text-slate-900 block truncate max-w-[200px]">{{ $c->nama_obat }}</span>
+                    <div class="p-3 bg-matcha-50 rounded-2xl flex items-center justify-between gap-3 text-xs">
+                        <div class="min-w-0">
+                            <span class="font-bold text-ink block truncate">{{ $c->nama_obat }}</span>
                             <span class="text-[10px] text-slate-500">{{ $c->nama_penyakit }} ({{ $c->kode_icd }})</span>
                         </div>
-                        <div class="text-right">
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                Rasio {{ $c->rasio_resep_per_pasien }}
-                            </span>
-                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-matcha-100 text-matcha-800 shrink-0">Rasio {{ $c->rasio_resep_per_pasien }}</span>
                     </div>
                     @endforeach
                 </div>
 
-                <div class="pt-2 text-center">
-                    <a href="{{ route('executive.correlations') }}" class="text-xs font-bold text-purple-700 hover:text-purple-800">
-                        Lihat Seluruh Analisis Korelasi &rarr;
-                    </a>
+                <div class="pt-4 text-center">
+                    <a href="{{ route('executive.correlations') }}" class="text-xs font-bold text-matcha-700 hover:text-matcha-900">Lihat Seluruh Analisis Korelasi &rarr;</a>
                 </div>
             </div>
-
         </div>
-
     </div>
-
 </div>
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+    if (typeof Chart === 'undefined') return;
+
+    var fmt = function (n) { return Number(n).toLocaleString('id-ID'); };
+    Chart.defaults.font.family = "'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif";
+    Chart.defaults.color = '#64748b';
+
+    var tooltipBase = {
+        backgroundColor: '#142416',
+        titleColor: '#ffffff',
+        bodyColor: '#E7F5DC',
+        padding: 12,
+        cornerRadius: 12,
+        displayColors: false,
+        titleFont: { weight: '700' }
+    };
+
+    // 1) Donat: 5 penyakit terbanyak (satu hue, gelap ke terang menurut peringkat)
+    var penyakitNama  = @json($diseaseNames);
+    var penyakitTotal = @json($diseaseTotals);
+    var shades        = @json($shades);
+    var el1 = document.getElementById('chartPenyakit');
+    if (el1 && penyakitTotal.length) {
+        new Chart(el1, {
+            type: 'doughnut',
+            data: {
+                labels: penyakitNama,
+                datasets: [{ data: penyakitTotal, backgroundColor: shades.slice(0, penyakitTotal.length), borderWidth: 0, spacing: 3, borderRadius: 7, hoverOffset: 4 }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: Object.assign({}, tooltipBase, {
+                        callbacks: { label: function (c) { return c.label + ': ' + fmt(c.parsed) + ' kasus'; } }
+                    })
+                }
+            },
+            plugins: [{
+                id: 'centerLabel',
+                afterDraw: function (chart) {
+                    var a = chart.chartArea, ctx = chart.ctx;
+                    var cx = (a.left + a.right) / 2, cy = (a.top + a.bottom) / 2;
+                    ctx.save();
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillStyle = '#142416';
+                    ctx.font = "800 26px 'Plus Jakarta Sans', sans-serif";
+                    ctx.fillText('{{ number_format($top5Share, 1, ',', '.') }}%', cx, cy - 7);
+                    ctx.fillStyle = '#64748b';
+                    ctx.font = "600 10px 'Plus Jakarta Sans', sans-serif";
+                    ctx.fillText('dari kasus 10 besar', cx, cy + 15);
+                    ctx.restore();
+                }
+            }]
+        });
+    }
+
+    // 2) Bar: kerugian ED per tahun (Rp juta)
+    var tahun = @json($edYears);
+    var rugi  = @json($edLossMio);
+    var el2 = document.getElementById('chartEd');
+    if (el2 && rugi.length) {
+        new Chart(el2, {
+            type: 'bar',
+            data: {
+                labels: tahun,
+                datasets: [{
+                    data: rugi,
+                    backgroundColor: '#728156',
+                    hoverBackgroundColor: '#1A3B22',
+                    borderRadius: 8,
+                    borderSkipped: false,
+                    maxBarThickness: 44
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: Object.assign({}, tooltipBase, {
+                        callbacks: { label: function (c) { return 'Rp ' + c.parsed.y.toLocaleString('id-ID', { minimumFractionDigits: 2 }) + ' juta'; } }
+                    })
+                },
+                scales: {
+                    x: { grid: { display: false }, border: { display: false } },
+                    y: { beginAtZero: true, grid: { color: '#EEF2EA' }, border: { display: false }, ticks: { callback: function (v) { return fmt(v); } } }
+                }
+            }
+        });
+    }
+})();
+</script>
+@endpush

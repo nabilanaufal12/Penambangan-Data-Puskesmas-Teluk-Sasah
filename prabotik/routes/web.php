@@ -9,22 +9,25 @@ use App\Http\Controllers\ExecutiveController;
 |--------------------------------------------------------------------------
 | Web Routes - PRABOTIK (Puskesmas Teluk Sasah)
 |--------------------------------------------------------------------------
-| Sistem dipisahkan menjadi 2 Portal Aplikasi Terpisah:
-| 1. Gateway Pintu Utama: Pemilihan Portal Aplikasi (/)
+| Sistem dipisahkan menjadi 2 Portal Aplikasi Terpisah dengan Proteksi Sandi:
+| 1. Gateway Pintu Utama: Pemilihan Portal & Otentikasi Sandi (/)
 | 2. PRABOTIK Farmasi: Khusus Tenaga Farmasi & Gudang Obat (/farmasi/...)
-| 3. PRABOTIK Eksekutif: Khusus Kepala Puskesmas & Manajemen (/kepala/...)
+| 3. PRABOTIK Eksekutif: Khusus Kepala Puskesmas Ber-Password (/kepala/...)
 */
 
 // =========================================================================
-// 1. GATEWAY PINTU MASUK PORTAL UTAMA (Halaman Pemilihan Aplikasi)
+// 1. GATEWAY PINTU MASUK PORTAL UTAMA & OTENTIKASI
 // =========================================================================
 Route::get('/', [GatewayController::class, 'index'])->name('gateway');
+Route::post('/login/kepala', [GatewayController::class, 'loginKepala'])->name('login.kepala');
+Route::post('/login/farmasi', [GatewayController::class, 'loginFarmasi'])->name('login.pharmacy');
+Route::get('/logout', [GatewayController::class, 'logout'])->name('logout');
 
 
 // =========================================================================
 // 2. APLIKASI KHUSUS BAGIAN FARMASI & GUDANG OBAT (Apt. Siti Rahmawati)
 // =========================================================================
-Route::prefix('farmasi')->name('pharmacy.')->group(function () {
+Route::prefix('farmasi')->name('pharmacy.')->middleware('role.pharmacy')->group(function () {
     Route::get('/', [PharmacyController::class, 'index'])->name('dashboard');
     
     // Pusat Entri Data Faskes (4 Modul)
@@ -45,8 +48,9 @@ Route::prefix('farmasi')->name('pharmacy.')->group(function () {
 
 // =========================================================================
 // 3. APLIKASI KHUSUS KEPALA PUSKESMAS & MANAJEMEN (dr. Bambang Utoyo)
+// PROTEKSI KETAT: Memerlukan login password role.executive
 // =========================================================================
-Route::prefix('kepala')->name('executive.')->group(function () {
+Route::prefix('kepala')->name('executive.')->middleware('role.executive')->group(function () {
     Route::get('/', [ExecutiveController::class, 'index'])->name('dashboard');
     
     // Disposisi & Pengesahan Pengadaan P5
@@ -77,5 +81,5 @@ Route::get('/audit-stok', fn() => redirect()->route('pharmacy.audit'))->name('au
 Route::get('/cetak-lplpo', fn() => redirect()->route('pharmacy.print'))->name('lplpo.print');
 Route::get('/input-lplpo', fn() => redirect()->route('pharmacy.entry'))->name('lplpo.input');
 Route::get('/tentang', fn() => redirect()->route('executive.profile'))->name('about');
-Route::get('/ganti-akun/farmasi', fn() => redirect()->route('pharmacy.dashboard'));
-Route::get('/ganti-akun/kepala', fn() => redirect()->route('executive.dashboard'));
+Route::get('/ganti-akun/farmasi', fn() => redirect()->route('logout'));
+Route::get('/ganti-akun/kepala', fn() => redirect()->route('logout'));
