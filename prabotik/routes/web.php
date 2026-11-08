@@ -77,6 +77,7 @@ Route::prefix('lab')->name('lab.')->group(function () {
     Route::get('/modeling',     [DataMiningController::class, 'modelingArena'])->name('modeling');
     Route::get('/evaluation',   [DataMiningController::class, 'correlationEvaluation'])->name('evaluation');
     Route::get('/api/inspect/{drugId}', [DataMiningController::class, 'inspectDrugJson'])->name('api.inspect');
+    Route::get('/export-csv',           [DataMiningController::class, 'exportCsv'])->name('export');
 });
 
 
