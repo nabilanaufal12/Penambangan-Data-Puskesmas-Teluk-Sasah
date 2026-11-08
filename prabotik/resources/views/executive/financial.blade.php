@@ -7,14 +7,32 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
     
     <!-- Header Banner -->
-    <div class="bg-gradient-to-r from-navy-950 via-slate-900 to-rose-950 rounded-3xl p-6 sm:p-8 text-white shadow-lg">
-        <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-bold border border-rose-500/30 mb-2 inline-block">
-            Pemeriksaan &amp; Pertanggungjawaban Obat Faskes
-        </span>
-        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Laporan &amp; Pemeriksaan Kerugian Obat Rusak / Kadaluarsa</h1>
-        <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
-            Rekapitulasi resmi atas total 138 berita acara pemusnahan obat kadaluarsa senilai Rp {{ number_format($totalLoss, 0, ',', '.') }} kurun waktu 2023–2025 dari APBD dan DAK Farmasi Kabupaten Bintan.
-        </p>
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded-full bg-rose-100 text-rose-900 text-[10px] font-extrabold uppercase tracking-wider">
+                    Pemeriksaan &amp; Audit Faskes
+                </span>
+                <span class="text-xs font-mono text-slate-400">SUMBER: BERITA ACARA ED</span>
+            </div>
+            <h1 class="mt-2 text-2xl sm:text-[30px] leading-tight font-extrabold tracking-tight text-ink">
+                Laporan &amp; Pemeriksaan Kerugian Obat Rusak / Kadaluarsa
+            </h1>
+            <p class="mt-1 text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed">
+                Rekapitulasi resmi atas total 138 berita acara pemusnahan obat kadaluarsa senilai Rp {{ number_format($totalLoss, 0, ',', '.') }} kurun waktu 2023–2025 dari APBD dan DAK Farmasi Kabupaten Bintan.
+            </p>
+        </div>
+        
+        <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+            <a href="{{ route('executive.dashboard') }}" class="px-5 py-2.5 rounded-full bg-white hover:bg-matcha-50 text-matcha-900 text-xs font-bold shadow-float border border-slate-200/80 transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left text-matcha-700"></i>
+                <span>Kembali ke Ringkasan</span>
+            </a>
+            <a href="{{ route('executive.disposition') }}" class="px-5 py-2.5 rounded-full bg-matcha-700 hover:bg-matcha-800 text-white text-xs font-bold shadow-md shadow-matcha-700/25 transition flex items-center gap-2">
+                <i class="fa-solid fa-stamp"></i>
+                <span>Persetujuan Obat P5</span>
+            </a>
+        </div>
     </div>
 
     <!-- Summary Statistics Grid -->

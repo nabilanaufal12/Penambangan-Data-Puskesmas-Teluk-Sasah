@@ -7,14 +7,32 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
     
     <!-- Title Banner -->
-    <div class="bg-gradient-to-r from-navy-950 via-slate-900 to-purple-950 rounded-3xl p-6 sm:p-8 text-white shadow-lg">
-        <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold border border-purple-500/30 mb-2 inline-block">
-            Kepatuhan Penggunaan Obat &amp; Standar Pelayanan Medis
-        </span>
-        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Kesesuaian Obat-Penyakit &amp; Rata-Rata Resep Pasien</h1>
-        <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
-            Memantau kesesuaian antara jumlah kunjungan pasien penyakit terbanyak dengan jumlah obat yang keluar guna menjaga peresepan obat tetap rasional dan tepat indikasi di poli UPTD Puskesmas Teluk Sasah.
-        </p>
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded-full bg-matcha-100 text-matcha-900 text-[10px] font-extrabold uppercase tracking-wider">
+                    Standar Pelayanan Medis
+                </span>
+                <span class="text-xs font-mono text-slate-400">RASIONALITAS RESEP POLI</span>
+            </div>
+            <h1 class="mt-2 text-2xl sm:text-[30px] leading-tight font-extrabold tracking-tight text-ink">
+                Kesesuaian Obat-Penyakit &amp; Rata-Rata Resep Pasien
+            </h1>
+            <p class="mt-1 text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed">
+                Memantau kesesuaian antara jumlah kunjungan pasien penyakit terbanyak dengan jumlah obat yang keluar guna menjaga peresepan obat tetap rasional dan tepat indikasi di poli UPTD Puskesmas Teluk Sasah.
+            </p>
+        </div>
+        
+        <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+            <a href="{{ route('executive.diseases') }}" class="px-5 py-2.5 rounded-full bg-white hover:bg-matcha-50 text-matcha-900 text-xs font-bold shadow-float border border-slate-200/80 transition flex items-center gap-2">
+                <i class="fa-solid fa-heart-pulse text-matcha-700"></i>
+                <span>Cek Beban SIMPUS</span>
+            </a>
+            <a href="{{ route('executive.disposition') }}" class="px-5 py-2.5 rounded-full bg-matcha-700 hover:bg-matcha-800 text-white text-xs font-bold shadow-md shadow-matcha-700/25 transition flex items-center gap-2">
+                <i class="fa-solid fa-stamp"></i>
+                <span>Persetujuan Obat P5</span>
+            </a>
+        </div>
     </div>
 
     <!-- Correlation Table -->

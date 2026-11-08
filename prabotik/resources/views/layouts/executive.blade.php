@@ -174,34 +174,42 @@
         $sidebarItems = [
             [
                 'id' => 'sb-d-status',
+                'target' => 'status-card',
                 'icon' => 'fa-stamp',
                 'label' => 'Status Otorisasi Dokumen',
                 'badge' => $approved ? 'Disahkan' : 'Menunggu',
                 'href' => '#status-card',
+                'onclick' => "if(window.scrollToExecutiveSection){ window.scrollToExecutiveSection('status-card', this); return false; }",
                 'active' => true
             ],
             [
                 'id' => 'sb-d-metrics',
+                'target' => 'metrics-card',
                 'icon' => 'fa-chart-pie',
                 'label' => 'Alokasi & Anggaran P5',
-                'badge' => '184rb Unit',
+                'badge' => '135rb Unit',
                 'href' => '#metrics-card',
+                'onclick' => "if(window.scrollToExecutiveSection){ window.scrollToExecutiveSection('metrics-card', this); return false; }",
                 'active' => false
             ],
             [
                 'id' => 'sb-d-signatures',
+                'target' => 'signatures-box',
                 'icon' => 'fa-file-signature',
                 'label' => 'Verifikasi TTD Kapus',
                 'badge' => 'KPA',
                 'href' => '#signatures-box',
+                'onclick' => "if(window.scrollToExecutiveSection){ window.scrollToExecutiveSection('signatures-box', this); return false; }",
                 'active' => false
             ],
             [
                 'id' => 'sb-d-table',
+                'target' => 'disposition-table',
                 'icon' => 'fa-table-list',
                 'label' => 'Daftar Usulan 150 Obat',
                 'badge' => 'Tabel P5',
                 'href' => '#disposition-table',
+                'onclick' => "if(window.scrollToExecutiveSection){ window.scrollToExecutiveSection('disposition-table', this); return false; }",
                 'active' => false
             ],
         ];
@@ -246,24 +254,33 @@
         $sidebarSectionTitle = 'Informasi Faskes';
         $sidebarItems = [
             [
+                'id' => 'sb-p-profile',
+                'target' => 'profile-banner',
                 'icon' => 'fa-hospital',
                 'label' => 'Profil Puskesmas',
                 'badge' => 'FKTP',
                 'href' => '#profile-banner',
+                'onclick' => "if(window.scrollToExecutiveSection){ window.scrollToExecutiveSection('profile-banner', this); return false; }",
                 'active' => true
             ],
             [
+                'id' => 'sb-p-leadership',
+                'target' => 'leadership-card',
                 'icon' => 'fa-user-doctor',
                 'label' => 'Pimpinan & KPA',
                 'badge' => 'Kapus',
                 'href' => '#leadership-card',
+                'onclick' => "if(window.scrollToExecutiveSection){ window.scrollToExecutiveSection('leadership-card', this); return false; }",
                 'active' => false
             ],
             [
+                'id' => 'sb-p-services',
+                'target' => 'services-card',
                 'icon' => 'fa-map-location-dot',
                 'label' => 'Wilayah & Akreditasi',
                 'badge' => 'Paripurna',
                 'href' => '#services-card',
+                'onclick' => "if(window.scrollToExecutiveSection){ window.scrollToExecutiveSection('services-card', this); return false; }",
                 'active' => false
             ],
         ];
@@ -400,7 +417,7 @@
                                    @if(!empty($target)) data-target="{{ $target }}" @endif
                                    @if(!empty($item['onclick'])) onclick="{!! $item['onclick'] !!}" @endif
                                    @if($active) aria-current="page" @endif
-                                   class="sidebar-nav-item sidebar-link {{ $isDashboard ? 'executive-pintasan-link' : '' }} flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150
+                                   class="sidebar-nav-item sidebar-link {{ !empty($target) ? 'executive-pintasan-link' : '' }} flex items-center gap-3 px-3.5 py-2.5 rounded-full text-xs font-semibold transition-all duration-150
                                           {{ $active ? 'bg-matcha-700 text-white shadow-md shadow-matcha-700/25 active-dock-item' : 'text-slate-600 hover:bg-matcha-50 hover:text-matcha-900' }}">
                                     <i class="fa-solid {{ $item['icon'] }} text-center text-sm {{ $active ? 'text-white' : 'text-matcha-600' }}"></i>
                                     <span class="sidebar-text truncate">{{ $item['label'] }}</span>
@@ -435,7 +452,7 @@
                 <!-- Footer Sidebar Profil -->
                 <div class="px-2 pt-2 border-t border-slate-100">
                     <div class="sidebar-profile-text p-2 rounded-2xl bg-matcha-50/70 mb-2 text-center text-[10px] text-slate-500">
-                        <p class="font-bold text-matcha-900">NIP 19680512 199803 1 004</p>
+                        <p class="font-bold text-matcha-900">NIP 19780512 200604 1 008</p>
                         <p>Otoritas Pengesahan LPLPO</p>
                     </div>
                     <a href="{{ route('logout') }}" title="Ganti Portal / Keluar"
@@ -612,41 +629,52 @@
                 }
             };
 
-            // Scroll Spy Otomatis untuk 4 Bagian Vertikal Ringkasan Pimpinan
-            var executiveSections = ['kpi-section', 'disposisi-section', 'ed-loss-section', 'morbiditas-section'];
-            var isTicking = false;
+            // Ambil semua target section yang ada di halaman aktif secara dinamis
+            var pintasanLinks = document.querySelectorAll('.executive-pintasan-link');
+            var executiveSections = [];
+            pintasanLinks.forEach(function (link) {
+                var tgt = link.getAttribute('data-target');
+                if (tgt && document.getElementById(tgt)) {
+                    executiveSections.push(tgt);
+                }
+            });
 
-            window.addEventListener('scroll', function () {
-                if (isNavigating) return;
+            // Scroll Spy Otomatis untuk section aktif di halaman
+            if (executiveSections.length > 0) {
+                var isTicking = false;
 
-                if (isTicking) return;
-                isTicking = true;
-                requestAnimationFrame(function () {
-                    var scrollPos = window.scrollY + 140;
-                    var current = executiveSections[0];
+                window.addEventListener('scroll', function () {
+                    if (isNavigating) return;
 
-                    for (var i = 0; i < executiveSections.length; i++) {
-                        var sec = document.getElementById(executiveSections[i]);
-                        if (sec && sec.offsetTop <= scrollPos) {
-                            current = executiveSections[i];
+                    if (isTicking) return;
+                    isTicking = true;
+                    requestAnimationFrame(function () {
+                        var scrollPos = window.scrollY + 140;
+                        var current = executiveSections[0];
+
+                        for (var i = 0; i < executiveSections.length; i++) {
+                            var sec = document.getElementById(executiveSections[i]);
+                            if (sec && sec.offsetTop <= scrollPos) {
+                                current = executiveSections[i];
+                            }
                         }
-                    }
 
-                    var targetLink = document.querySelector('.executive-pintasan-link[data-target="' + current + '"]');
-                    if (targetLink && !targetLink.classList.contains('active-dock-item')) {
-                        window.setActiveExecutiveLink(targetLink);
-                    }
-                    isTicking = false;
-                });
-            }, { passive: true });
+                        var targetLink = document.querySelector('.executive-pintasan-link[data-target="' + current + '"]');
+                        if (targetLink && !targetLink.classList.contains('active-dock-item')) {
+                            window.setActiveExecutiveLink(targetLink);
+                        }
+                        isTicking = false;
+                    });
+                }, { passive: true });
 
-            if (window.location.hash) {
-                var hashId = window.location.hash.substring(1);
-                if (executiveSections.indexOf(hashId) !== -1) {
-                    setTimeout(function () {
-                        var initialLink = document.querySelector('.executive-pintasan-link[data-target="' + hashId + '"]');
-                        window.scrollToExecutiveSection(hashId, initialLink);
-                    }, 200);
+                if (window.location.hash) {
+                    var hashId = window.location.hash.substring(1);
+                    if (executiveSections.indexOf(hashId) !== -1) {
+                        setTimeout(function () {
+                            var initialLink = document.querySelector('.executive-pintasan-link[data-target="' + hashId + '"]');
+                            window.scrollToExecutiveSection(hashId, initialLink);
+                        }, 200);
+                    }
                 }
             }
         })();

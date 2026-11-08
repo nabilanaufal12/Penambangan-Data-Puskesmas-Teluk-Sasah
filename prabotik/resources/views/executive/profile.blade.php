@@ -7,14 +7,32 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
     
     <!-- Title Banner -->
-    <div id="profile-banner" class="bg-gradient-to-r from-navy-950 via-slate-900 to-amber-950 rounded-3xl p-6 sm:p-8 text-white shadow-lg scroll-mt-28">
-        <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold border border-amber-500/30 mb-2 inline-block">
-            Profil Fasilitas Kesehatan Tingkat Pertama (FKTP)
-        </span>
-        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">UPTD Puskesmas Teluk Sasah</h1>
-        <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
-            Faskes Pemerintah Tingkat Pertama di Kecamatan Seri Kuala Lobam, Kabupaten Bintan, Kepulauan Riau yang melayani masyarakat kawasan industri dan pesisir.
-        </p>
+    <div id="profile-banner" class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 scroll-mt-28">
+        <div>
+            <div class="flex items-center gap-2">
+                <span class="px-2.5 py-1 rounded-full bg-matcha-100 text-matcha-900 text-[10px] font-extrabold uppercase tracking-wider">
+                    Fasilitas Kesehatan Tingkat Pertama (FKTP)
+                </span>
+                <span class="text-xs font-mono text-slate-400">KEMENKES RI</span>
+            </div>
+            <h1 class="mt-2 text-2xl sm:text-[30px] leading-tight font-extrabold tracking-tight text-ink">
+                UPTD Puskesmas Teluk Sasah
+            </h1>
+            <p class="mt-1 text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed">
+                Faskes Pemerintah Tingkat Pertama di Kecamatan Seri Kuala Lobam, Kabupaten Bintan, Kepulauan Riau yang melayani masyarakat kawasan industri dan pesisir.
+            </p>
+        </div>
+        
+        <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+            <a href="{{ route('executive.dashboard') }}" class="px-5 py-2.5 rounded-full bg-white hover:bg-matcha-50 text-matcha-900 text-xs font-bold shadow-float border border-slate-200/80 transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left text-matcha-700"></i>
+                <span>Ringkasan Pimpinan</span>
+            </a>
+            <a href="{{ route('executive.print') }}" target="_blank" class="px-5 py-2.5 rounded-full bg-matcha-700 hover:bg-matcha-800 text-white text-xs font-bold shadow-md shadow-matcha-700/25 transition flex items-center gap-2">
+                <i class="fa-solid fa-print"></i>
+                <span>Cetak LPLPO Resmi</span>
+            </a>
+        </div>
     </div>
 
     <!-- Pimpinan & Pejabat Faskes Grid -->
@@ -27,7 +45,7 @@
             <div class="space-y-1">
                 <span class="text-[10px] font-bold text-amber-600 uppercase">Kepala UPTD Puskesmas / KPA</span>
                 <h4 class="font-extrabold text-slate-900 text-base">dr. Bambang Utoyo, M.M.</h4>
-                <p class="text-xs text-slate-500 font-mono">NIP. 19680512 199803 1 004</p>
+                <p class="text-xs text-slate-500 font-mono">NIP. 19780512 200604 1 008</p>
                 <p class="text-xs text-slate-600 mt-2 leading-relaxed">
                     Penanggung jawab operasional, otorisator pengesahan rencana pengadaan LPLPO resmi ke Dinas Kesehatan Kabupaten Bintan, serta pimpinan penjaminan mutu akreditasi faskes.
                 </p>
