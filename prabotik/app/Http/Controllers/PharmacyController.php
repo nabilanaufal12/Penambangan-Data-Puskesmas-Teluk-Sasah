@@ -99,28 +99,71 @@ class PharmacyController extends Controller
     {
         $validated = $request->validate([
             'medicine_id' => 'required|exists:medicines,id',
+            'stok_awal' => 'nullable|numeric|min:0',
+            'penerimaan' => 'nullable|numeric|min:0',
             'pemakaian_terbaru' => 'required|numeric|min:0',
-            'sisa_stok_terbaru' => 'required|numeric|min:0',
+            'sisa_stok_terbaru' => 'nullable|numeric|min:0',
+            'pernah_kosong' => 'nullable|boolean',
             'keterangan_tambahan' => 'nullable|string',
         ]);
 
         $med = Medicine::findOrFail($validated['medicine_id']);
-        
-        $stokAkhir = (float) $validated['sisa_stok_terbaru'];
+
+        $stokAwal = isset($validated['stok_awal']) ? (float) $validated['stok_awal'] : (float) $med->stok_awal;
+        $penerimaan = isset($validated['penerimaan']) ? (float) $validated['penerimaan'] : (float) $med->penerimaan;
+        $persediaan = $stokAwal + $penerimaan;
         $pemakaian = (float) $validated['pemakaian_terbaru'];
-        
-        $newPred = round(($med->prediksi_P5 * 0.5) + ($pemakaian * 0.5));
-        $safetyStock = $med->safety_stock;
-        $order = max(0, ($newPred + $safetyStock) - $stokAkhir);
+        $stokAkhir = isset($validated['sisa_stok_terbaru']) ? (float) $validated['sisa_stok_terbaru'] : max(0, $persediaan - $pemakaian);
+        $pernahKosong = $request->boolean('pernah_kosong');
+
+        // Evaluasi Akurasi Model Berkelanjutan terhadap prediksi sebelumnya
+        $prediksiSebelumnya = (float) $med->prediksi_P5;
+        $deviasi = $pemakaian - $prediksiSebelumnya;
+        $maxDenominator = max($pemakaian, $prediksiSebelumnya, 1);
+        $akurasi = max(0, round((1 - (abs($deviasi) / $maxDenominator)) * 100, 1));
+
+        if ($akurasi >= 85) {
+            $catatanEvaluasi = 'Sangat Sesuai (Akurat)';
+        } elseif ($akurasi >= 70) {
+            $catatanEvaluasi = 'Cukup Sesuai (Toleransi Wajar)';
+        } else {
+            $catatanEvaluasi = 'Lonjakan Pasien / Pencilan (Model Disesuaikan)';
+        }
+
+        // Kalkulasi Prediksi Periode Berikutnya (Moving Average Berbobot Terbaru)
+        $basisPemakaian = $pemakaian;
+        if ($pernahKosong) {
+            // Koreksi data tersensor apabila sempat terjadi kekosongan stok fisik
+            $basisPemakaian = round($pemakaian * 1.15);
+        }
+
+        $newPred = round(($prediksiSebelumnya * 0.4) + ($basisPemakaian * 0.6));
+        $safetyStock = round($newPred * 0.25);
+        $rekomendasiTotal = max(0, ($newPred + $safetyStock) - $stokAkhir);
 
         $med->update([
+            'stok_awal' => $stokAwal,
+            'penerimaan' => $penerimaan,
+            'persediaan' => $persediaan,
+            'pemakaian' => $pemakaian,
             'sisa_stok' => $stokAkhir,
+            'pernah_kosong' => $pernahKosong,
+            'evaluasi_akurasi' => $akurasi,
+            'deviasi_evaluasi' => $deviasi,
+            'evaluasi_catatan' => $catatanEvaluasi,
             'prediksi_P5' => $newPred,
-            'rekomendasi_total' => $order,
-            'keterangan' => $validated['keterangan_tambahan'] ? $validated['keterangan_tambahan'] . ' (Input Mandiri Petugas Farmasi)' : $med->keterangan,
+            'safety_stock' => $safetyStock,
+            'rekomendasi_total' => $rekomendasiTotal,
+            'keterangan' => $validated['keterangan_tambahan'] ? $validated['keterangan_tambahan'] . ' (Dicatat Petugas Farmasi)' : $med->keterangan,
         ]);
 
-        return redirect()->route('pharmacy.entry', ['tab' => 'lplpo'])->with('success', "Stok obat '{$med->nama_obat}' berhasil diperbarui! Rekomendasi order baru: " . number_format($order, 0, ',', '.') . " {$med->satuan}.");
+        $satuan = $med->satuan ?: 'unit';
+        $msg = "Pencatatan LPLPO '{$med->nama_obat}' berhasil disimpan! " .
+               "Evaluasi Akurasi Model: {$akurasi}% ({$catatanEvaluasi}). " .
+               "Perkiraan Kebutuhan Periode Baru: " . number_format($newPred, 0, ',', '.') . " {$satuan}, " .
+               "dan Usulan Permintaan ke Dinkes: " . number_format($rekomendasiTotal, 0, ',', '.') . " {$satuan}.";
+
+        return redirect()->route('pharmacy.entry', ['tab' => 'lplpo'])->with('success', $msg);
     }
 
     public function storeDisease(Request $request)

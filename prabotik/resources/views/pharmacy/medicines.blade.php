@@ -1,7 +1,7 @@
 @extends('layouts.pharmacy')
 
-@section('title', 'Katalog 150 Obat & Evaluasi MA')
-@section('page_title', 'Katalog Formularium Obat & Evaluasi Moving Average')
+@section('title', 'Daftar Obat Puskesmas & Perhitungan Kebutuhan')
+@section('page_title', 'Daftar Obat Puskesmas & Perhitungan Rata-Rata Kebutuhan')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
@@ -11,11 +11,11 @@
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
                 <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold border border-cyan-500/30 mb-2 inline-block">
-                    Katalog Lengkap Logistik Puskesmas
+                    Daftar Lengkap Obat &amp; Perbekalan Farmasi
                 </span>
-                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Katalog 150 Obat Aktif & Evaluasi Moving Average</h1>
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Daftar 150 Obat Puskesmas &amp; Perhitungan Kebutuhan</h1>
                 <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
-                    Evaluasi komparatif akurasi model SMA-2, SMA-3, dan WMA-3 berdasarkan metrik MAPE, MAE, dan RMSE pada 22 periode dwibulanan LPLPO UPTD Puskesmas Teluk Sasah.
+                    Daftar sediaan obat resmi UPTD Puskesmas Teluk Sasah lengkap dengan perbandingan rata-rata pemakaian historis, stok cadangan aman, dan tingkat ketepatan hitungan.
                 </p>
             </div>
             <div class="text-right">
@@ -38,19 +38,19 @@
 
             <div class="sm:col-span-3">
                 <select name="prioritas" class="w-full py-2 px-3 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
-                    <option value="">Semua Prioritas</option>
-                    <option value="Tinggi" {{ request('prioritas') == 'Tinggi' ? 'selected' : '' }}>Prioritas Tinggi (Fast Moving)</option>
-                    <option value="Sedang" {{ request('prioritas') == 'Sedang' ? 'selected' : '' }}>Prioritas Sedang</option>
-                    <option value="Rendah" {{ request('prioritas') == 'Rendah' ? 'selected' : '' }}>Prioritas Rendah (Slow Moving)</option>
+                    <option value="">Semua Kategori Pemakaian</option>
+                    <option value="Tinggi" {{ request('prioritas') == 'Tinggi' ? 'selected' : '' }}>Sering Dipakai (Cepat Habis)</option>
+                    <option value="Sedang" {{ request('prioritas') == 'Sedang' ? 'selected' : '' }}>Pemakaian Sedang (Normal)</option>
+                    <option value="Rendah" {{ request('prioritas') == 'Rendah' ? 'selected' : '' }}>Jarang Dipakai (Stok Lambat)</option>
                 </select>
             </div>
 
             <div class="sm:col-span-2">
                 <select name="momentum" class="w-full py-2 px-3 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
-                    <option value="">Semua Momentum</option>
-                    <option value="Bullish" {{ request('momentum') == 'Bullish' ? 'selected' : '' }}>Bullish (Lonjakan)</option>
-                    <option value="Rebound" {{ request('momentum') == 'Rebound' ? 'selected' : '' }}>Rebound (Pulih)</option>
-                    <option value="Bearish" {{ request('momentum') == 'Bearish' ? 'selected' : '' }}>Bearish (Penurunan)</option>
+                    <option value="">Semua Tren Kebutuhan</option>
+                    <option value="Bullish" {{ request('momentum') == 'Bullish' ? 'selected' : '' }}>Permintaan Naik ↗</option>
+                    <option value="Rebound" {{ request('momentum') == 'Rebound' ? 'selected' : '' }}>Mulai Meningkat ➔</option>
+                    <option value="Bearish" {{ request('momentum') == 'Bearish' ? 'selected' : '' }}>Permintaan Turun ↘</option>
                 </select>
             </div>
 

@@ -75,19 +75,19 @@
     // Menu navigasi Portal Eksekutif (nama rute tidak diubah)
     $approved = (bool) session('p5_procurement_approved');
     $navGroups = [
-        'Menu' => [
-            ['route' => 'executive.dashboard',    'icon' => 'fa-building-columns', 'label' => 'Ringkasan Eksekutif & SPM'],
-            ['route' => 'executive.disposition',  'icon' => 'fa-stamp',            'label' => 'Disposisi Pengadaan P5',
-                'badge' => $approved ? 'Disahkan' : 'Otorisasi', 'tone' => $approved ? 'ok' : 'warn'],
+        'Menu Utama' => [
+            ['route' => 'executive.dashboard',    'icon' => 'fa-building-columns', 'label' => 'Ringkasan Pimpinan & SPM'],
+            ['route' => 'executive.disposition',  'icon' => 'fa-stamp',            'label' => 'Persetujuan Permintaan Obat',
+                'badge' => $approved ? 'Disahkan' : 'Perlu TTD', 'tone' => $approved ? 'ok' : 'warn'],
         ],
-        'Laporan & Kebijakan' => [
-            ['route' => 'executive.diseases',     'icon' => 'fa-heart-pulse',      'label' => 'Morbiditas SIMPUS',  'badge' => '10 Besar'],
-            ['route' => 'executive.financial',    'icon' => 'fa-sack-dollar',      'label' => 'Audit Kerugian Obat ED'],
-            ['route' => 'executive.correlations', 'icon' => 'fa-notes-medical',    'label' => 'Standar Terapi & Peresepan'],
+        'Laporan Puskesmas' => [
+            ['route' => 'executive.diseases',     'icon' => 'fa-heart-pulse',      'label' => 'Kunjungan Pasien (SIMPUS)', 'badge' => '10 Terbesar'],
+            ['route' => 'executive.financial',    'icon' => 'fa-sack-dollar',      'label' => 'Laporan Obat Kadaluarsa'],
+            ['route' => 'executive.correlations', 'icon' => 'fa-notes-medical',    'label' => 'Kesesuaian Obat & Penyakit'],
         ],
-        'Dokumen & Profil' => [
-            ['route' => 'executive.print',        'icon' => 'fa-print',            'label' => 'Cetak LPLPO Resmi Ber-NIP', 'blank' => true],
-            ['route' => 'executive.profile',      'icon' => 'fa-hospital-user',    'label' => 'Profil Puskesmas & Wilayah'],
+        'Dokumen & Wilayah' => [
+            ['route' => 'executive.print',        'icon' => 'fa-print',            'label' => 'Cetak Dokumen LPLPO Resmi', 'blank' => true],
+            ['route' => 'executive.profile',      'icon' => 'fa-hospital-user',    'label' => 'Profil & Wilayah Kerja'],
         ],
     ];
 @endphp

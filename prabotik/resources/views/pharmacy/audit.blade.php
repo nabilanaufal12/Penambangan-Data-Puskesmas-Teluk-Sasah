@@ -1,7 +1,7 @@
 @extends('layouts.pharmacy')
 
-@section('title', 'Audit Stokout & Kadaluarsa (FEFO)')
-@section('page_title', 'Pengawasan Kadaluarsa & Pencegahan Kekosongan Stok')
+@section('title', 'Pemeriksaan Obat Kadaluarsa & Pencegahan Kekosongan Stok')
+@section('page_title', 'Pemeriksaan Obat Kadaluarsa & Pencegahan Kekosongan Stok')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
@@ -9,11 +9,11 @@
     <!-- Title Banner -->
     <div class="bg-gradient-to-r from-navy-950 via-slate-900 to-emerald-950 rounded-3xl p-6 sm:p-8 text-white shadow-lg">
         <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30 mb-2 inline-block">
-            Pengendalian Mutu & Kadaluarsa (FEFO)
+            Pengendalian Mutu &amp; Rotasi Obat Kadaluarsa
         </span>
-        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Audit Kekosongan Stok & Berita Acara Kadaluarsa</h1>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Pemeriksaan Obat Kadaluarsa &amp; Riwayat Kekosongan Stok</h1>
         <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
-            Data empiris evaluasi 138 berita acara pemusnahan obat kadaluarsa/rusak kurun waktu 2023–2025 di UPTD Puskesmas Teluk Sasah guna memperketat rotasi stok FEFO (*First Expired, First Out*).
+            Data pemeriksaan resmi 138 berita acara obat kadaluarsa/rusak kurun waktu 2023–2025 di UPTD Puskesmas Teluk Sasah guna memastikan obat yang mendekati masa kadaluarsa lebih dulu didistribusikan ke pasien.
         </p>
     </div>
 

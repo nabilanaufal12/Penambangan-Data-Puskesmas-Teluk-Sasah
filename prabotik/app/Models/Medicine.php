@@ -12,9 +12,15 @@ class Medicine extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'stok_awal' => 'float',
+        'penerimaan' => 'float',
+        'persediaan' => 'float',
+        'pemakaian' => 'float',
         'mape_terbaik' => 'float',
         'mae' => 'float',
         'rmse' => 'float',
+        'evaluasi_akurasi' => 'float',
+        'deviasi_evaluasi' => 'float',
         'prediksi_P5' => 'float',
         'safety_stock' => 'float',
         'sisa_stok' => 'float',
@@ -23,5 +29,6 @@ class Medicine extends Model
         'signal_line' => 'float',
         'histogram' => 'float',
         'is_censored_adjusted' => 'boolean',
+        'pernah_kosong' => 'boolean',
     ];
 }

@@ -108,80 +108,132 @@
     <div id="content-tab-lplpo" class="tab-content {{ $tab === 'lplpo' ? '' : 'hidden' }} space-y-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div class="lg:col-span-5">
-                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm sticky top-24 space-y-5">
+                <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-float sticky top-24 space-y-5">
                     <div class="flex items-center space-x-3 pb-4 border-b border-slate-100">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg">
-                            <i class="fa-solid fa-pen-to-square"></i>
+                        <div class="w-11 h-11 rounded-2xl bg-matcha-100 text-matcha-800 flex items-center justify-center text-xl shadow-xs">
+                            <i class="fa-solid fa-file-invoice"></i>
                         </div>
                         <div>
-                            <h3 class="font-extrabold text-slate-900 text-sm">Pembaruan Stok & Pemakaian LPLPO</h3>
-                            <p class="text-[11px] text-slate-500">Kalkulasi ulang rekomendasi otomatis (Safety Stock & WMA)</p>
+                            <h3 class="font-extrabold text-slate-900 text-sm">Pencatatan Lembar LPLPO Puskesmas</h3>
+                            <p class="text-[11px] text-slate-500">Kolom disesuaikan langsung dengan lembar Excel resmi Puskesmas Teluk Sasah</p>
                         </div>
                     </div>
 
                     <form method="POST" action="{{ route('pharmacy.entry.lplpo') }}" class="space-y-4">
                         @csrf
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Pilih Sediaan Obat Farmasi:</label>
-                            <select name="medicine_id" id="medSelect" required class="w-full py-2.5 px-3 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                                <option value="">-- Pilih Obat dari Katalog --</option>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
+                                <span>1. Nama Sediaan Obat:</span>
+                                <span class="text-[10px] text-matcha-700 font-semibold">150 Obat Aktif</span>
+                            </label>
+                            <select name="medicine_id" id="medSelect" required class="w-full py-2.5 px-3 rounded-xl text-xs bg-slate-50 border border-slate-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-matcha-600/30 text-ink font-medium">
+                                <option value="">-- Pilih Sediaan Obat dari Daftar --</option>
                                 @foreach($medicines as $m)
                                 <option value="{{ $m->id }}" 
                                     data-satuan="{{ $m->satuan }}" 
-                                    data-stok="{{ $m->sisa_stok }}" 
-                                    data-pred="{{ $m->prediksi_P5 }}"
-                                    data-ss="{{ $m->safety_stock }}"
-                                    data-order="{{ $m->rekomendasi_total }}"
-                                    data-model="{{ $m->model_terbaik }}">
+                                    data-stokawal="{{ (float) $m->stok_awal }}"
+                                    data-terima="{{ (float) $m->penerimaan }}"
+                                    data-sedia="{{ (float) $m->persediaan }}"
+                                    data-pakai="{{ (float) $m->pemakaian }}"
+                                    data-stokakhir="{{ (float) $m->sisa_stok }}"
+                                    data-pred="{{ (float) $m->prediksi_P5 }}"
+                                    data-ss="{{ (float) $m->safety_stock }}"
+                                    data-order="{{ (float) $m->rekomendasi_total }}"
+                                    data-akurasi="{{ (float) ($m->evaluasi_akurasi ?? 95) }}"
+                                    data-catatan="{{ $m->evaluasi_catatan ?? 'Sesuai Standar Konsumsi' }}">
                                     {{ $m->nama_obat }} ({{ $m->satuan }})
                                 </option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div id="medInfoCard" class="hidden bg-slate-50 rounded-xl p-3.5 border border-slate-200 text-xs space-y-2">
-                            <div class="flex justify-between items-center text-[11px]">
-                                <span class="text-slate-500">Model Algoritma:</span>
-                                <span id="infoModel" class="font-bold text-emerald-700">WMA</span>
+                        <!-- Panel Evaluasi Akurasi Model & Prediksi Sebelumnya -->
+                        <div id="medInfoCard" class="hidden bg-matcha-50/80 rounded-2xl p-4 border border-matcha-200 text-xs space-y-3">
+                            <div class="flex items-center justify-between text-[11px]">
+                                <span class="font-bold text-matcha-900 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-chart-line text-matcha-700"></i>
+                                    <span>Evaluasi Akurasi Perkiraan Model</span>
+                                </span>
+                                <span id="infoAkurasiPill" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-matcha-200 text-matcha-900">
+                                    Akurasi: 95%
+                                </span>
                             </div>
-                            <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-200 text-center">
-                                <div>
-                                    <span class="text-[10px] text-slate-400 block">Sisa Stok Fisik</span>
-                                    <span id="infoStok" class="font-extrabold text-slate-800 font-mono">-</span>
+                            <div class="grid grid-cols-3 gap-2 pt-1 text-center">
+                                <div class="bg-white/80 p-2 rounded-xl">
+                                    <span class="text-[10px] text-slate-500 block">Prediksi Model Lalu</span>
+                                    <span id="infoPred" class="font-extrabold text-matcha-800 font-mono text-xs">-</span>
                                 </div>
-                                <div>
-                                    <span class="text-[10px] text-slate-400 block">Prediksi P5</span>
-                                    <span id="infoPred" class="font-extrabold text-emerald-600 font-mono">-</span>
+                                <div class="bg-white/80 p-2 rounded-xl">
+                                    <span class="text-[10px] text-slate-500 block">Cadangan Pengaman</span>
+                                    <span id="infoSs" class="font-extrabold text-slate-700 font-mono text-xs">-</span>
                                 </div>
-                                <div>
-                                    <span class="text-[10px] text-slate-400 block">Order P5 Aktif</span>
-                                    <span id="infoOrder" class="font-extrabold text-amber-600 font-mono">-</span>
+                                <div class="bg-white/80 p-2 rounded-xl">
+                                    <span class="text-[10px] text-slate-500 block">Usulan Permintaan</span>
+                                    <span id="infoOrder" class="font-extrabold text-amber-700 font-mono text-xs">-</span>
                                 </div>
+                            </div>
+                            <p id="infoEvaluasiTeks" class="text-[10px] text-matcha-800 leading-tight">
+                                Sistem otomatis membandingkan pemakaian riil dengan perkiraan model sebelumnya.
+                            </p>
+                        </div>
+
+                        <!-- Kolom Stok Awal & Penerimaan (Format Excel LPLPO) -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">2. Stok Awal Periode:</label>
+                                <input type="number" name="stok_awal" id="inputStokAwal" min="0" step="1" placeholder="0" class="w-full py-2 px-3 rounded-xl text-xs bg-slate-50 border border-slate-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-matcha-600/30 font-mono">
+                                <span class="text-[10px] text-slate-400 block mt-0.5">Sisa awal periode</span>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">3. Penerimaan (Dinkes):</label>
+                                <input type="number" name="penerimaan" id="inputPenerimaan" min="0" step="1" placeholder="0" class="w-full py-2 px-3 rounded-xl text-xs bg-slate-50 border border-slate-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-matcha-600/30 font-mono">
+                                <span class="text-[10px] text-slate-400 block mt-0.5">Drop dari GFK Bintan</span>
                             </div>
                         </div>
 
+                        <!-- Kolom Total Persediaan & Pemakaian Riil -->
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1.5">Pemakaian Riil Periode:</label>
-                                <input type="number" name="pemakaian_terbaru" min="0" step="1" required placeholder="0" class="w-full py-2.5 px-3 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono">
-                                <span class="text-[10px] text-slate-400 block mt-1">Total keluar dari gudang</span>
+                                <label class="block text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
+                                    <span>4. Total Persediaan:</span>
+                                    <span class="text-[9px] text-matcha-600 font-normal">Stok Awal + Terima</span>
+                                </label>
+                                <input type="number" id="previewPersediaan" readonly placeholder="0" class="w-full py-2 px-3 rounded-xl text-xs bg-slate-100 border border-slate-200 text-slate-700 font-mono font-bold cursor-not-allowed">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1.5">Sisa Stok Fisik Akhir (SOH):</label>
-                                <input type="number" name="sisa_stok_terbaru" min="0" step="1" required placeholder="0" class="w-full py-2.5 px-3 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono">
-                                <span class="text-[10px] text-slate-400 block mt-1">Hasil stock opname fisik</span>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">5. Pemakaian Riil (Keluar):</label>
+                                <input type="number" name="pemakaian_terbaru" id="inputPemakaian" min="0" step="1" required placeholder="0" class="w-full py-2 px-3 rounded-xl text-xs bg-slate-50 border border-slate-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-matcha-600/30 font-mono font-bold text-ink">
+                                <span class="text-[10px] text-slate-400 block mt-0.5">Jumlah resep dilayani</span>
+                            </div>
+                        </div>
+
+                        <!-- Kolom Sisa Stok Fisik & Flag Kekosongan -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">6. Sisa Stok Fisik Gudang:</label>
+                                <input type="number" name="sisa_stok_terbaru" id="inputStokAkhir" min="0" step="1" placeholder="0" class="w-full py-2 px-3 rounded-xl text-xs bg-slate-50 border border-slate-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-matcha-600/30 font-mono font-bold text-ink">
+                                <span class="text-[10px] text-slate-400 block mt-0.5">Hasil stock opname fisik</span>
+                            </div>
+                            <div class="flex items-center pt-5">
+                                <label class="flex items-start gap-2 cursor-pointer select-none">
+                                    <input type="checkbox" name="pernah_kosong" value="1" id="checkPernahKosong" class="w-4 h-4 rounded text-matcha-600 focus:ring-matcha-500 border-slate-300 mt-0.5">
+                                    <span class="text-[11px] text-slate-700 leading-tight">
+                                        <strong>Stok Sempat Kosong</strong>
+                                        <span class="block text-[10px] text-slate-400">Pernah habis saat pasien butuh (stok 0)</span>
+                                    </span>
+                                </label>
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1.5">Catatan Khusus Farmasi (Opsional):</label>
-                            <textarea name="keterangan_tambahan" rows="2" placeholder="Contoh: Stok kritis akibat peningkatan kasus musiman..." class="w-full py-2 px-3 rounded-xl text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">7. Catatan Petugas Farmasi (Opsional):</label>
+                            <textarea name="keterangan_tambahan" rows="2" placeholder="Contoh: Terjadi lonjakan resep ISPA karena pancaroba / drop Dinkes berkurang..." class="w-full py-2 px-3 rounded-xl text-xs bg-slate-50 border border-slate-300 focus:bg-white focus:outline-none focus:ring-2 focus:ring-matcha-600/30"></textarea>
                         </div>
 
-                        <div class="pt-2">
-                            <button type="submit" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-600/20 transition flex items-center justify-center space-x-2">
-                                <i class="fa-solid fa-calculator"></i>
-                                <span>Simpan & Hitung Ulang Rekomendasi P5</span>
+                        <div class="pt-1">
+                            <button type="submit" class="w-full py-3.5 px-4 rounded-full bg-matcha-600 hover:bg-matcha-700 text-white font-extrabold text-xs shadow-md shadow-matcha-600/25 transition flex items-center justify-center space-x-2 cursor-pointer">
+                                <i class="fa-solid fa-calculator text-sm"></i>
+                                <span>Simpan Lembar LPLPO &amp; Evaluasi Model</span>
                             </button>
                         </div>
                     </form>
@@ -189,56 +241,74 @@
             </div>
 
             <div class="lg:col-span-7">
-                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                    <div class="px-5 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <div class="bg-white rounded-3xl border border-slate-200/80 shadow-float overflow-hidden">
+                    <div class="px-5 py-4 bg-slate-50/70 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
-                            <h3 class="font-extrabold text-slate-900 text-sm">Status Stok & Usulan Pengadaan Terkini</h3>
+                            <h3 class="font-extrabold text-slate-900 text-sm">Tabel Lembar Kerja LPLPO &amp; Evaluasi Akurasi</h3>
                             <p class="text-[11px] text-slate-500">150 Sediaan Obat Terdaftar di UPTD Puskesmas Teluk Sasah</p>
                         </div>
-                        <a href="{{ route('pharmacy.procurement') }}" class="text-[11px] font-bold text-emerald-600 hover:text-emerald-700">
-                            Buka Rencana Pengadaan &rarr;
+                        <a href="{{ route('pharmacy.print') }}" target="_blank" class="text-[11px] font-bold text-matcha-700 hover:text-matcha-800 flex items-center gap-1.5 self-start sm:self-auto">
+                            <i class="fa-solid fa-print"></i>
+                            <span>Cetak Format LPLPO &rarr;</span>
                         </a>
                     </div>
 
-                    <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+                    <div class="overflow-x-auto max-h-[640px] overflow-y-auto">
                         <table class="w-full text-left border-collapse text-xs">
-                            <thead class="bg-slate-100 text-slate-600 font-bold sticky top-0 uppercase tracking-wider text-[10px] border-b border-slate-200">
+                            <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 uppercase tracking-wider text-[10px] border-b border-slate-200">
                                 <tr>
-                                    <th class="py-3 px-4">Nama Sediaan Obat</th>
-                                    <th class="py-3 px-3 text-right">Sisa Stok Fisik</th>
-                                    <th class="py-3 px-3 text-right">Prediksi P5</th>
-                                    <th class="py-3 px-3 text-right">Safety Stock</th>
-                                    <th class="py-3 px-3 text-right">Rekomendasi</th>
-                                    <th class="py-3 px-4 text-center">Prioritas</th>
+                                    <th class="py-3 px-3.5">Nama Obat &amp; Bentuk</th>
+                                    <th class="py-3 px-2 text-right">Stok Awal</th>
+                                    <th class="py-3 px-2 text-right">Terima</th>
+                                    <th class="py-3 px-2 text-right">Sedia</th>
+                                    <th class="py-3 px-2 text-right">Pakai</th>
+                                    <th class="py-3 px-2.5 text-right">Sisa Fisik</th>
+                                    <th class="py-3 px-2.5 text-center">Akurasi Model</th>
+                                    <th class="py-3 px-3 text-right">Usulan Permintaan</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
                                 @foreach($medicines as $m)
-                                <tr class="hover:bg-slate-50 transition">
-                                    <td class="py-2.5 px-4">
-                                        <div class="font-bold text-slate-900">{{ $m->nama_obat }}</div>
+                                <tr class="hover:bg-matcha-50/40 transition">
+                                    <td class="py-2.5 px-3.5">
+                                        <div class="font-bold text-slate-900 leading-tight">{{ $m->nama_obat }}</div>
                                         <div class="text-[10px] text-slate-400 font-mono">{{ $m->satuan }}</div>
                                     </td>
-                                    <td class="py-2.5 px-3 text-right font-mono font-bold {{ $m->sisa_stok <= $m->safety_stock ? 'text-rose-600' : 'text-slate-700' }}">
+                                    <td class="py-2.5 px-2 text-right font-mono text-slate-600">
+                                        {{ number_format($m->stok_awal ?? 0, 0, ',', '.') }}
+                                    </td>
+                                    <td class="py-2.5 px-2 text-right font-mono text-slate-600">
+                                        {{ number_format($m->penerimaan ?? 0, 0, ',', '.') }}
+                                    </td>
+                                    <td class="py-2.5 px-2 text-right font-mono text-slate-800 font-semibold">
+                                        {{ number_format($m->persediaan ?? 0, 0, ',', '.') }}
+                                    </td>
+                                    <td class="py-2.5 px-2 text-right font-mono font-bold text-ink">
+                                        {{ number_format($m->pemakaian ?? 0, 0, ',', '.') }}
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-right font-mono font-bold {{ $m->sisa_stok <= $m->safety_stock ? 'text-rose-600' : 'text-slate-800' }}">
                                         {{ number_format($m->sisa_stok, 0, ',', '.') }}
                                     </td>
-                                    <td class="py-2.5 px-3 text-right font-mono text-emerald-700">
-                                        {{ number_format($m->prediksi_P5, 0, ',', '.') }}
-                                    </td>
-                                    <td class="py-2.5 px-3 text-right font-mono text-slate-500">
-                                        {{ number_format($m->safety_stock, 0, ',', '.') }}
-                                    </td>
-                                    <td class="py-2.5 px-3 text-right font-mono font-black text-amber-600">
-                                        {{ number_format($m->rekomendasi_total, 0, ',', '.') }}
-                                    </td>
-                                    <td class="py-2.5 px-4 text-center">
-                                        @if($m->prioritas_kategori == 'Prioritas Tinggi (Fast Moving)')
-                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-rose-50 text-rose-700 border border-rose-200">Tinggi</span>
-                                        @elseif($m->prioritas_kategori == 'Prioritas Sedang')
-                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-50 text-amber-700 border border-amber-200">Sedang</span>
+                                    <td class="py-2.5 px-2.5 text-center">
+                                        @php
+                                            $acc = (float) ($m->evaluasi_akurasi ?? 92);
+                                        @endphp
+                                        @if($acc >= 85)
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-matcha-100 text-matcha-900">
+                                                <i class="fa-solid fa-check text-[9px]"></i>{{ number_format($acc, 1) }}%
+                                            </span>
+                                        @elseif($acc >= 70)
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900">
+                                                {{ number_format($acc, 1) }}%
+                                            </span>
                                         @else
-                                        <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-100 text-slate-600 border border-slate-200">Rendah</span>
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-900">
+                                                {{ number_format($acc, 1) }}%
+                                            </span>
                                         @endif
+                                    </td>
+                                    <td class="py-2.5 px-3 text-right font-mono font-black text-matcha-800">
+                                        {{ number_format($m->rekomendasi_total, 0, ',', '.') }}
                                     </td>
                                 </tr>
                                 @endforeach
@@ -696,27 +766,108 @@
         window.history.pushState({}, '', url);
     }
 
-    // Dynamic Medicine Selector Preview
+    // Dynamic Medicine Selector & LPLPO Calculation Preview
     const medSelect = document.getElementById('medSelect');
     const medInfoCard = document.getElementById('medInfoCard');
-    const infoModel = document.getElementById('infoModel');
-    const infoStok = document.getElementById('infoStok');
     const infoPred = document.getElementById('infoPred');
+    const infoSs = document.getElementById('infoSs');
     const infoOrder = document.getElementById('infoOrder');
+    const infoAkurasiPill = document.getElementById('infoAkurasiPill');
+    const infoEvaluasiTeks = document.getElementById('infoEvaluasiTeks');
+
+    const inputStokAwal = document.getElementById('inputStokAwal');
+    const inputPenerimaan = document.getElementById('inputPenerimaan');
+    const previewPersediaan = document.getElementById('previewPersediaan');
+    const inputPemakaian = document.getElementById('inputPemakaian');
+    const inputStokAkhir = document.getElementById('inputStokAkhir');
+    const checkPernahKosong = document.getElementById('checkPernahKosong');
+
+    let currentBaselinePred = 0;
+
+    function recalculateLplpo() {
+        const awal = parseFloat(inputStokAwal.value) || 0;
+        const terima = parseFloat(inputPenerimaan.value) || 0;
+        const persediaan = awal + terima;
+        previewPersediaan.value = persediaan;
+
+        const pakai = parseFloat(inputPemakaian.value) || 0;
+        const stokAkhir = Math.max(0, persediaan - pakai);
+        inputStokAkhir.value = stokAkhir;
+
+        // Evaluasi akurasi terhadap baseline prediksi model sebelumnya
+        if (currentBaselinePred > 0 || pakai > 0) {
+            const diff = Math.abs(pakai - currentBaselinePred);
+            const maxVal = Math.max(pakai, currentBaselinePred, 1);
+            const acc = Math.max(0, Math.round((1 - (diff / maxVal)) * 1000) / 10);
+
+            let status = 'Sangat Sesuai';
+            let pillClass = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-matcha-200 text-matcha-900';
+            if (acc >= 85) {
+                status = 'Sangat Sesuai (Akurat)';
+                pillClass = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-matcha-200 text-matcha-900';
+            } else if (acc >= 70) {
+                status = 'Cukup Sesuai';
+                pillClass = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900';
+            } else {
+                status = 'Lonjakan Resep Pasien';
+                pillClass = 'px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-900';
+            }
+
+            infoAkurasiPill.className = pillClass;
+            infoAkurasiPill.textContent = 'Akurasi: ' + acc + '% (' + status + ')';
+
+            // Hitungan baru untuk periode berikutnya
+            let basis = pakai;
+            if (checkPernahKosong && checkPernahKosong.checked) {
+                basis = Math.round(pakai * 1.15); // koreksi data tersensor
+            }
+            const newPred = Math.round((currentBaselinePred * 0.4) + (basis * 0.6));
+            const newSs = Math.round(newPred * 0.25);
+            const newOrder = Math.max(0, (newPred + newSs) - stokAkhir);
+
+            infoPred.textContent = newPred.toLocaleString('id-ID');
+            infoSs.textContent = newSs.toLocaleString('id-ID');
+            infoOrder.textContent = newOrder.toLocaleString('id-ID');
+
+            infoEvaluasiTeks.textContent = 'Pemakaian nyata (' + pakai.toLocaleString('id-ID') + ') dibandingkan dengan perkiraan awal (' + currentBaselinePred.toLocaleString('id-ID') + '). Selisih: ' + (pakai - currentBaselinePred).toLocaleString('id-ID') + ' unit.';
+        }
+    }
 
     if (medSelect) {
         medSelect.addEventListener('change', function() {
             const opt = this.options[this.selectedIndex];
             if (this.value) {
                 medInfoCard.classList.remove('hidden');
-                infoModel.textContent = opt.dataset.model || 'WMA';
-                infoStok.textContent = Number(opt.dataset.stok).toLocaleString('id-ID') + ' ' + (opt.dataset.satuan || '');
+                currentBaselinePred = parseFloat(opt.dataset.pred) || 0;
+
+                inputStokAwal.value = opt.dataset.stokawal || 0;
+                inputPenerimaan.value = opt.dataset.terima || 0;
+                previewPersediaan.value = opt.dataset.sedia || 0;
+                inputPemakaian.value = opt.dataset.pakai || 0;
+                inputStokAkhir.value = opt.dataset.stokakhir || 0;
+
                 infoPred.textContent = Number(opt.dataset.pred).toLocaleString('id-ID');
+                infoSs.textContent = Number(opt.dataset.ss).toLocaleString('id-ID');
                 infoOrder.textContent = Number(opt.dataset.order).toLocaleString('id-ID');
+                
+                const initialAcc = parseFloat(opt.dataset.akurasi) || 95;
+                infoAkurasiPill.textContent = 'Akurasi: ' + initialAcc.toFixed(1) + '%';
+                infoEvaluasiTeks.textContent = opt.dataset.catatan || 'Sesuai dengan rata-rata konsumsi historis.';
+
+                recalculateLplpo();
             } else {
                 medInfoCard.classList.add('hidden');
             }
         });
+    }
+
+    if (inputStokAwal && inputPenerimaan && inputPemakaian) {
+        inputStokAwal.addEventListener('input', recalculateLplpo);
+        inputPenerimaan.addEventListener('input', recalculateLplpo);
+        inputPemakaian.addEventListener('input', recalculateLplpo);
+        if (checkPernahKosong) {
+            checkPernahKosong.addEventListener('change', recalculateLplpo);
+        }
     }
 
     // Dynamic SIMPUS Quick Preset Disease Selection

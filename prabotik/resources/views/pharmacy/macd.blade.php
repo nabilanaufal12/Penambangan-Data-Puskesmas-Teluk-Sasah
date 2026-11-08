@@ -1,7 +1,7 @@
 @extends('layouts.pharmacy')
 
-@section('title', 'Indikator Momentum MACD Farmasi')
-@section('page_title', 'Deteksi Dini Momentum Permintaan (MACD Farmasi)')
+@section('title', 'Tren Kebutuhan & Lonjakan Permintaan Obat')
+@section('page_title', 'Tren Kebutuhan & Deteksi Lonjakan Permintaan Obat')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
@@ -9,11 +9,11 @@
     <!-- Title Banner -->
     <div class="bg-gradient-to-r from-navy-950 via-slate-900 to-emerald-950 rounded-3xl p-6 sm:p-8 text-white shadow-lg">
         <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30 mb-2 inline-block">
-            Sistem Deteksi Dini Kebutuhan Obat
+            Sistem Deteksi Dini Kebutuhan Obat Puskesmas
         </span>
-        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Indikator Momentum MACD Farmasi Puskesmas</h1>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Tren Kebutuhan &amp; Deteksi Lonjakan Permintaan Obat</h1>
         <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
-            Adaptasi indikator teknikal (Fast EMA=2, Slow EMA=4, Signal EMA=2) sebagai <em>Early Warning System</em> untuk mendeteksi akselerasi lonjakan resep (Bullish) atau perlambatan/kekosongan stok (Bearish).
+            Sistem pemantau arah pemakaian obat untuk mendeteksi sedini mungkin obat yang sedang mengalami lonjakan peresepan (Permintaan Naik ↗) atau sediaan yang mulai jarang keluar (Permintaan Turun ↘).
         </p>
     </div>
 
@@ -25,7 +25,7 @@
             </div>
             <div>
                 <span class="text-2xl font-extrabold text-navy-950">{{ $bullishCount }}</span>
-                <p class="text-xs font-semibold text-slate-500 uppercase">Obat Bullish (Lonjakan)</p>
+                <p class="text-xs font-semibold text-slate-500 uppercase">Permintaan Meningkat ↗</p>
             </div>
         </div>
 
@@ -35,7 +35,7 @@
             </div>
             <div>
                 <span class="text-2xl font-extrabold text-navy-950">{{ $bearishCount }}</span>
-                <p class="text-xs font-semibold text-slate-500 uppercase">Obat Bearish (Penurunan)</p>
+                <p class="text-xs font-semibold text-slate-500 uppercase">Permintaan Menurun ↘</p>
             </div>
         </div>
 

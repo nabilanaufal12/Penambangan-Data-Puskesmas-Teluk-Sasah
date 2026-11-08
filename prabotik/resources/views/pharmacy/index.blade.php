@@ -26,7 +26,7 @@
                 Halo, <span class="text-matcha-600">Apt. Siti Rahmawati</span>
             </h1>
             <p class="mt-1.5 text-sm text-slate-500 max-w-2xl leading-relaxed">
-                Pantau stok fisik gudang (<em>Stock on Hand</em>), deteksi defisit di bawah batas aman (<em>Safety Stock</em>), dan susun usulan LPLPO dwibulanan Periode 5 (2026).
+                Pantau sisa stok fisik di gudang obat, deteksi sediaan yang menipis di bawah cadangan pengaman, dan susun usulan lembar LPLPO dwibulanan Periode 5 (2026).
             </p>
         </div>
         <div class="flex flex-wrap items-center gap-2.5 shrink-0">
@@ -89,7 +89,7 @@
                 <div class="w-11 h-11 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg">
                     <i class="fa-solid fa-bell"></i>
                 </div>
-                <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold">&le; Safety Stock</span>
+                <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold">Di Bawah Cadangan Aman</span>
             </div>
             <p class="mt-5 text-xs font-semibold text-slate-500">Stok Kritis</p>
             <p class="mt-0.5 text-[32px] leading-none font-extrabold text-amber-600 tnum">{{ $stats['stok_kritis_count'] }} <span class="text-sm font-semibold text-slate-400">Item</span></p>
@@ -194,7 +194,7 @@
                 <div class="px-6 pt-6 pb-4 flex items-start justify-between gap-3">
                     <div>
                         <h3 class="font-extrabold text-ink text-base">Prioritas Restock Fisik Gudang</h3>
-                        <p class="text-xs text-slate-500 mt-0.5">Sediaan dengan stok gudang di bawah batas Safety Stock</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Sediaan dengan stok gudang di bawah batas cadangan aman</p>
                     </div>
                     <a href="{{ route('pharmacy.procurement') }}" class="text-[11px] font-bold text-matcha-700 hover:text-matcha-900 whitespace-nowrap mt-1">
                         Lihat {{ $stats['total_obat_aktif'] }} Obat &rarr;
@@ -207,9 +207,9 @@
                             <tr class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
                                 <th class="py-3 px-3">Nama Sediaan</th>
                                 <th class="py-3 px-3 text-right">Sisa Fisik</th>
-                                <th class="py-3 px-3 text-right">Safety Stock</th>
+                                <th class="py-3 px-3 text-right">Cadangan Aman</th>
                                 <th class="py-3 px-3 text-right">Usulan Order</th>
-                                <th class="py-3 px-3">Status Buffer</th>
+                                <th class="py-3 px-3">Kondisi Stok</th>
                             </tr>
                         </thead>
                         <tbody class="font-medium text-slate-700">
@@ -258,8 +258,8 @@
             <div class="bg-white rounded-3xl p-6 shadow-float">
                 <div class="flex items-start justify-between gap-3">
                     <div>
-                        <h3 class="font-extrabold text-ink text-base">Deteksi Lonjakan Permintaan (MACD)</h3>
-                        <p class="text-xs text-slate-500 mt-0.5">Obat dengan percepatan konsumsi di ruang pelayanan</p>
+                        <h3 class="font-extrabold text-ink text-base">Tren Kebutuhan Obat (Lonjakan Resep)</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Obat yang sedang mengalami peningkatan pemakaian di ruang pelayanan</p>
                     </div>
                     <a href="{{ route('pharmacy.macd') }}" class="text-[11px] font-bold text-matcha-700 hover:text-matcha-900 whitespace-nowrap mt-1">Selengkapnya &rarr;</a>
                 </div>
@@ -294,7 +294,7 @@
                     <a href="{{ route('pharmacy.entry', ['tab' => 'lplpo']) }}" class="p-3.5 rounded-2xl bg-matcha-50 hover:bg-matcha-100 transition block">
                         <div class="w-9 h-9 rounded-xl bg-matcha-600 text-white flex items-center justify-center text-sm mb-2.5"><i class="fa-solid fa-pen-to-square"></i></div>
                         <div class="font-bold text-xs text-ink">Update Stok LPLPO</div>
-                        <div class="text-[10px] text-slate-500 mt-0.5">Input pemakaian &amp; SOH</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">Catat stok &amp; pemakaian fisik</div>
                     </a>
                     <a href="{{ route('pharmacy.entry', ['tab' => 'obat']) }}" class="p-3.5 rounded-2xl bg-matcha-50 hover:bg-matcha-100 transition block">
                         <div class="w-9 h-9 rounded-xl bg-matcha-600 text-white flex items-center justify-center text-sm mb-2.5"><i class="fa-solid fa-pills"></i></div>

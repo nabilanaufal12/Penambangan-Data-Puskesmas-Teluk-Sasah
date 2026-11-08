@@ -1,7 +1,7 @@
 @extends('layouts.pharmacy')
 
-@section('title', 'Rencana Pengadaan Obat P5 (2026)')
-@section('page_title', 'Perencanaan Kuantitas Pengadaan Periode 2026-P5')
+@section('title', 'Lembar Permintaan Obat ke Dinkes (Periode P5)')
+@section('page_title', 'Perencanaan Lembar Permintaan Obat Periode 2026-P5')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
@@ -12,11 +12,11 @@
             <div class="space-y-2">
                 <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/30">
                     <i class="fa-solid fa-cart-shopping"></i>
-                    <span>Kalkulasi Alokasi Kebutuhan Logistik</span>
+                    <span>Hitungan Otomatis Kebutuhan Logistik</span>
                 </div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Usulan Pengadaan Periode 2026-P5</h1>
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Usulan Permintaan Obat Periode 2026-P5</h1>
                 <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
-                    Perencanaan kuantitas pemesanan resmi ke Instalasi Farmasi Dinas Kesehatan Kabupaten Bintan berbasis integrasi peramalan WMA, proteksi Safety Stock 95%, dan eliminasi overstock.
+                    Lembar usulan permintaan resmi ke Gudang Farmasi Dinas Kesehatan Kabupaten Bintan dihitung otomatis dari rata-rata pemakaian riil, cadangan pengaman (stok penyangga), dan sisa fisik di gudang.
                 </p>
             </div>
             
@@ -39,14 +39,14 @@
             <div class="flex-1">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <h3 class="font-extrabold text-amber-950 text-sm">
-                        Koreksi Permintaan Tersensor: {{ $paracetamol->nama_obat }}
+                        Penyesuaian Akibat Obat Sempat Kosong: {{ $paracetamol->nama_obat }}
                     </h3>
                     <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-200 text-amber-900 w-fit">
-                        Censored Demand Adjusted
+                        Stok 0 Terkoreksi
                     </span>
                 </div>
                 <p class="text-xs text-amber-900/80 mt-1.5 leading-relaxed">
-                    Pada periode 2026-P4 (Juli–Agustus 2026), pemakaian tercatat 0 butir akibat kekosongan fisik total. Tanpa koreksi, ramalan naif jatuh ke <strong>3.222 butir</strong>. Melalui imputasi ilmiah (5.850 butir), proyeksi peramalan resmi disesuaikan menjadi <strong>{{ number_format($paracetamol->prediksi_P5, 0, ',', '.') }} tablet</strong> dengan Safety Stock 95% sebesar <strong>{{ number_format($paracetamol->safety_stock, 0, ',', '.') }} tablet</strong>.
+                    Pada periode Juli–Agustus 2026, pemakaian tercatat 0 butir karena obat sempat habis total di gudang. Jika dihitung mentah tanpa koreksi, usulan permintaan akan anjlok terlalu rendah (hanya 3.222 butir) dan dapat memicu kekosongan obat kembali. Sistem telah menyesuaikan perkiraan kebutuhan menjadi <strong>{{ number_format($paracetamol->prediksi_P5, 0, ',', '.') }} tablet</strong> dengan cadangan pengaman sebesar <strong>{{ number_format($paracetamol->safety_stock, 0, ',', '.') }} tablet</strong>.
                 </p>
                 <div class="mt-3 flex items-center space-x-4 text-xs font-bold text-amber-950">
                     <span>Total Rekomendasi Pengadaan: <span class="text-base text-emerald-700 font-extrabold">{{ number_format($paracetamol->rekomendasi_total, 0, ',', '.') }} tablet</span></span>

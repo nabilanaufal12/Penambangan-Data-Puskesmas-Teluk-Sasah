@@ -74,18 +74,18 @@
 @php
     // Menu navigasi Portal Farmasi (nama rute tidak diubah)
     $navGroups = [
-        'Menu' => [
-            ['route' => 'pharmacy.dashboard',   'icon' => 'fa-house',           'label' => 'Beranda Gudang & Stok'],
+        'Menu Utama' => [
+            ['route' => 'pharmacy.dashboard',   'icon' => 'fa-house',           'label' => 'Beranda Gudang Obat'],
         ],
-        'Operasional' => [
-            ['route' => 'pharmacy.entry',       'icon' => 'fa-pen-to-square',   'label' => 'Pusat Entri Data',      'badge' => '4 Modul'],
-            ['route' => 'pharmacy.procurement', 'icon' => 'fa-cart-flatbed',    'label' => 'Usulan Pengadaan P5',   'badge' => '95% SS'],
-            ['route' => 'pharmacy.print',       'icon' => 'fa-print',           'label' => 'Cetak Lembar Kerja LPLPO', 'blank' => true],
+        'Operasional Faskes' => [
+            ['route' => 'pharmacy.entry',       'icon' => 'fa-pen-to-square',   'label' => 'Pencatatan LPLPO & Pasien', 'badge' => 'Input Riil'],
+            ['route' => 'pharmacy.procurement', 'icon' => 'fa-clipboard-check', 'label' => 'Lembar Permintaan Obat',   'badge' => 'Otomatis'],
+            ['route' => 'pharmacy.print',       'icon' => 'fa-print',           'label' => 'Cetak Lembar Kerja LPLPO',  'blank' => true],
         ],
-        'Analisis Stok' => [
-            ['route' => 'pharmacy.medicines',   'icon' => 'fa-pills',           'label' => 'Katalog Formularium Obat'],
-            ['route' => 'pharmacy.macd',        'icon' => 'fa-chart-line',      'label' => 'Deteksi Permintaan (MACD)'],
-            ['route' => 'pharmacy.audit',       'icon' => 'fa-hourglass-end',   'label' => 'Audit Kadaluarsa & FEFO'],
+        'Pemeriksaan & Tren' => [
+            ['route' => 'pharmacy.medicines',   'icon' => 'fa-pills',           'label' => 'Daftar Obat Puskesmas'],
+            ['route' => 'pharmacy.macd',        'icon' => 'fa-chart-line',      'label' => 'Tren Permintaan Obat'],
+            ['route' => 'pharmacy.audit',       'icon' => 'fa-hourglass-end',   'label' => 'Pemeriksaan Obat Kadaluarsa'],
         ],
     ];
 @endphp

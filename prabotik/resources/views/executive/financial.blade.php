@@ -1,7 +1,7 @@
 @extends('layouts.executive')
 
-@section('title', 'Evaluasi Kerugian Finansial Obat ED')
-@section('page_title', 'Audit Akuntabilitas Kerugian Obat Rusak / Kadaluarsa (ED)')
+@section('title', 'Laporan & Nilai Kerugian Obat Kadaluarsa')
+@section('page_title', 'Laporan & Pemeriksaan Kerugian Obat Kadaluarsa / Rusak')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
@@ -9,11 +9,11 @@
     <!-- Header Banner -->
     <div class="bg-gradient-to-r from-navy-950 via-slate-900 to-rose-950 rounded-3xl p-6 sm:p-8 text-white shadow-lg">
         <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-bold border border-rose-500/30 mb-2 inline-block">
-            Audit BPKP & Inspektorat Daerah
+            Pemeriksaan &amp; Pertanggungjawaban Obat Faskes
         </span>
-        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Evaluasi Akuntabilitas Kerugian Obat Rusak / ED</h1>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Laporan &amp; Pemeriksaan Kerugian Obat Rusak / Kadaluarsa</h1>
         <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
-            Pemeriksaan komprehensif atas total 138 berita acara pemusnahan sediaan farmasi senilai Rp {{ number_format($totalLoss, 0, ',', '.') }} kurun waktu 2023–2025 dari APBD dan DAK Farmasi Kabupaten Bintan.
+            Rekapitulasi resmi atas total 138 berita acara pemusnahan obat kadaluarsa senilai Rp {{ number_format($totalLoss, 0, ',', '.') }} kurun waktu 2023–2025 dari APBD dan DAK Farmasi Kabupaten Bintan.
         </p>
     </div>
 

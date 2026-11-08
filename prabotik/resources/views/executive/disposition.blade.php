@@ -1,7 +1,7 @@
 @extends('layouts.executive')
 
-@section('title', 'Disposisi Pengesahan Pengadaan P5 (2026)')
-@section('page_title', 'Disposisi & Otorisasi Pengadaan Obat P5')
+@section('title', 'Persetujuan & Pengesahan Usulan Permintaan Obat P5')
+@section('page_title', 'Persetujuan & Pengesahan Lembar Permintaan Obat P5')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
@@ -11,11 +11,11 @@
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div class="space-y-2">
                 <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold border border-amber-500/30 inline-block">
-                    Otorisasi Kuasa Pengguna Anggaran (KPA)
+                    Persetujuan Kepala Puskesmas
                 </span>
-                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Disposisi Pengesahan Rencana Pengadaan P5</h1>
+                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Persetujuan &amp; Pengesahan Usulan Permintaan Obat P5</h1>
                 <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
-                    Penelaahan resmi atas usulan pemesanan 184.077 unit sediaan obat periode September–Oktober 2026 yang diajukan oleh Bagian Farmasi UPTD Puskesmas Teluk Sasah.
+                    Penelaahan dan pengesahan resmi atas usulan permintaan 184.077 unit sediaan obat periode September–Oktober 2026 yang diajukan oleh Bagian Farmasi UPTD Puskesmas Teluk Sasah ke Dinas Kesehatan Kabupaten Bintan.
                 </p>
             </div>
             
