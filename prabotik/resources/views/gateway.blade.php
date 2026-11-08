@@ -144,7 +144,7 @@
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
 
             <!-- KARTU 1: PORTAL FARMASI -->
             <section class="group relative bg-white rounded-[32px] p-7 sm:p-8 shadow-float hover:shadow-float-lg transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between" aria-labelledby="judul-farmasi">
@@ -261,6 +261,66 @@
                     <p class="text-center text-[11px] text-matcha-200 flex items-center justify-center gap-1.5 pt-1">
                         <i class="fa-solid fa-shield-halved text-[10px] text-matcha-300"></i>
                         <span>Wajib Kata Sandi Otoritas Pimpinan</span>
+                    </p>
+                </div>
+            </section>
+
+            <!-- KARTU 3: PORTAL LAB SAINS DATA (Terbuka untuk Sidang) -->
+            <section class="group relative overflow-hidden rounded-[32px] p-7 sm:p-8 shadow-float hover:shadow-float-lg transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between border-2"
+                     style="background: linear-gradient(150deg, #F3F8EE 0%, #E7F5DC 100%); border-color:#5C6A44;" aria-labelledby="judul-lab">
+                <div class="absolute inset-0 opacity-[0.07] pointer-events-none"
+                     style="background-image: radial-gradient(#1A3B22 1px, transparent 1px); background-size: 14px 14px;" aria-hidden="true"></div>
+
+                <div class="space-y-5 relative">
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-105 transition-transform" style="background:#1A3B22;">
+                            <i class="fa-solid fa-flask-vial text-matcha-200"></i>
+                        </div>
+                        <span class="px-3.5 py-1.5 rounded-full text-[11px] font-bold" style="background:#CFE1B9; color:#1A3B22;">
+                            Terbuka · Sidang Akademik
+                        </span>
+                    </div>
+
+                    <div>
+                        <h2 id="judul-lab" class="text-2xl font-extrabold" style="color:#1A3B22;">Portal Sains Data</h2>
+                        <p class="text-sm mt-1" style="color:#5C6A44;">CRISP-DM Lab — Kelompok 23 · INF11121</p>
+                    </div>
+
+                    <p class="text-sm leading-relaxed" style="color:#728156;">
+                        Validasi metodologi penambangan data end-to-end: Pipeline CRISP-DM, Censored Demand, Arena Model WMA-3 vs SMA vs SES, MACD Momentum, dan Korelasi ICD-10.
+                    </p>
+
+                    <ul class="space-y-1.5 text-xs" style="color:#3E4A2F;">
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-check-circle text-xs" style="color:#1A3B22;"></i>
+                            Pipeline CRISP-DM 6 Fase Interaktif
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-check-circle text-xs" style="color:#1A3B22;"></i>
+                            150 Obat · 31.125 Kunjungan · 138 BA Obat ED
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-check-circle text-xs" style="color:#1A3B22;"></i>
+                            Drug Switcher Instan &lt;35ms · Chart.js 4.4.1
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-graduation-cap text-xs" style="color:#1A3B22;"></i>
+                            Mode Sidang — Ringkasan Pembuktian
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="relative mt-6">
+                    <a href="{{ route('lab.eda') }}"
+                       class="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-2xl text-sm font-bold text-white transition-all hover:opacity-90 hover:scale-[1.02]"
+                       style="background:#1A3B22;">
+                        <i class="fa-solid fa-flask-vial"></i>
+                        Masuk Portal Sains Data
+                        <i class="fa-solid fa-arrow-right text-matcha-300 ml-auto"></i>
+                    </a>
+                    <p class="mt-3 flex items-center gap-1.5 text-xs" style="color:#728156;">
+                        <i class="fa-solid fa-unlock text-[10px]"></i>
+                        <span>Tanpa kata sandi · Akses verifikasi publik sidang</span>
                     </p>
                 </div>
             </section>

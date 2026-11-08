@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GatewayController;
 use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\ExecutiveController;
+use App\Http\Controllers\DataMiningController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,7 +68,20 @@ Route::prefix('kepala')->name('executive.')->middleware('role.executive')->group
 
 
 // =========================================================================
-// 4. ALIAS / REDIREKSI UNTUK KOMPATIBILITAS ROUTE LAMA
+// 4. PORTAL SAINS DATA & LABORATORIUM CRISP-DM (Kelompok 23)
+// Akses terbuka untuk presentasi sidang & verifikasi metodologi
+// =========================================================================
+Route::prefix('lab')->name('lab.')->group(function () {
+    Route::get('/',             [DataMiningController::class, 'pipelineEda'])->name('eda');
+    Route::get('/preprocessing',[DataMiningController::class, 'preprocessing'])->name('preprocess');
+    Route::get('/modeling',     [DataMiningController::class, 'modelingArena'])->name('modeling');
+    Route::get('/evaluation',   [DataMiningController::class, 'correlationEvaluation'])->name('evaluation');
+    Route::get('/api/inspect/{drugId}', [DataMiningController::class, 'inspectDrugJson'])->name('api.inspect');
+});
+
+
+// =========================================================================
+// 5. ALIAS / REDIREKSI UNTUK KOMPATIBILITAS ROUTE LAMA
 // =========================================================================
 Route::get('/dashboard-farmasi', fn() => redirect()->route('pharmacy.dashboard'))->name('dashboard.pharmacy');
 Route::get('/dashboard-kepala', fn() => redirect()->route('executive.dashboard'))->name('dashboard.executive');
