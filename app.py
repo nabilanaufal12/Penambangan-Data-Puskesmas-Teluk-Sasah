@@ -197,6 +197,7 @@ with st.sidebar:
         "Pilih Modul Navigasi:",
         [
             "🏠 Beranda & Profil Puskesmas",
+            "📊 Eksplorasi Data Analitik (EDA)",
             "📅 Tren 1-Bulanan (2024) vs 2-Bulanan",
             "🩺 Peramalan 4 Penyakit Terbanyak",
             "🔗 Korelasi & Prediksi Obat-Penyakit",
@@ -331,6 +332,91 @@ if menu == "🏠 Beranda & Profil Puskesmas":
             st.metric("Obat Kadaluarsa Murni", "138 Item", "Terverifikasi Audit Fisik")
         with c_res4:
             st.metric("Total Kerugian ED", "Rp 43,35 Juta", "Lookup Harga Presisi")
+
+# ==============================================================================
+# MODUL EDA: EKSPLORASI DATA ANALITIK KOMPREHENSIF
+# ==============================================================================
+elif menu == "📊 Eksplorasi Data Analitik (EDA)":
+    st.markdown("## 📊 **Eksplorasi Data Analitik (EDA) Terpadu**")
+    st.markdown("""
+    <div class="alert-card-blue">
+        <b>Judul Penelitian:</b> PREDIKSI KEBUTUHAN STOK OBAT DAN ANALISIS TREN PENYAKIT MUSIMAN BERDASARKAN POLA PEMAKAIAN OBAT PADA PUSKESMAS TELUK SASAH DI KABUPATEN BINTAN SERTA KORELASI OBAT DENGAN PENYAKIT<br>
+        <span style="font-size:0.85rem; color:#475569;">Sumber Data: Rekonsiliasi 15.781 transaksi bersih LPLPO (2023–2026), 450 rekap morbiditas ICD-10, dan 138 audit item kadaluarsa.</span>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # 4 Indikator Utama
+    m1, m2, m3, m4 = st.columns(4)
+    with m1:
+        st.metric("Puncak Musiman ISPA", "436 Pasien/Bln", "November (Musim Hujan)")
+    with m2:
+        st.metric("Korelasi Tertinggi", "ρ = 0.78", "Metformin ➔ Diabetes")
+    with m3:
+        st.metric("Kejadian Stockout Nyata", "482 Kejadian", "292 obat terdampak")
+    with m4:
+        st.metric("Kerugian Kadaluarsa", "Rp 43,35 Jt", "138 item overstock")
+        
+    st.markdown("---")
+    
+    eda_tab1, eda_tab2, eda_tab3, eda_tab4, eda_tab5 = st.tabs([
+        "🖼️ Master Dashboard (6-in-1)",
+        "🌧️ 1. Tren Musiman Penyakit",
+        "💊 2. Pola Konsumsi & CV Obat",
+        "🔗 3. Korelasi Penyakit vs Obat",
+        "🛡️ 4. Prediksi & Safety Stock 95%"
+    ])
+    
+    with eda_tab1:
+        st.markdown("#### **Dashboard Master EDA Komprehensif (Multi-Panel Resolusi 300 DPI)**")
+        master_img = os.path.join(BASE_DIR, '05_Visualisasi_Grafik', 'EDA_MASTER_PREDIKSI_STOK_DAN_TREN_PENYAKIT.png')
+        if os.path.exists(master_img):
+            st.image(master_img, caption="Dashboard Master Sintesis: Tren Musiman, Konsumsi Obat, Korelasi Klinis, Rasio Dosis, Safety Stock, dan Risiko Stok", use_container_width=True)
+        else:
+            st.warning("Berkas master visualisasi belum ditemukan.")
+            
+    with eda_tab2:
+        st.markdown("#### **Analisis Tren Penyakit Musiman & Heatmap Morbiditas Bulanan**")
+        img_musiman = os.path.join(BASE_DIR, '05_Visualisasi_Grafik', 'EDA_01_tren_penyakit_musiman.png')
+        if os.path.exists(img_musiman):
+            st.image(img_musiman, caption="Pola Musiman 12 Bulan Kalender & Heatmap Intensitas 8 Diagnosis Utama", use_container_width=True)
+            
+        with st.expander("📋 Lihat Data Rata-Rata Bulanan Kasus Penyakit (Top 5 ICD-10)", expanded=False):
+            if df_dis is not None:
+                pvt_dis = df_dis.groupby(['bulan_angka', 'nama_penyakit'])['total_pasien'].mean().unstack()
+                top5_cols = df_dis.groupby('nama_penyakit')['total_pasien'].sum().nlargest(5).index
+                st.dataframe(pvt_dis[top5_cols].round(1), use_container_width=True)
+                
+    with eda_tab3:
+        st.markdown("#### **Pola Pemakaian Obat Kuratif & Karakteristik Variabilitas (CV)**")
+        img_obat = os.path.join(BASE_DIR, '05_Visualisasi_Grafik', 'EDA_02_pola_pemakaian_obat_dan_volatilitas.png')
+        if os.path.exists(img_obat):
+            st.image(img_obat, caption="Top 10 Obat Kuratif, Tren 22 Dwibulanan, dan Distribusi Volatilitas Koefisien Variasi (CV)", use_container_width=True)
+            
+        with st.expander("📋 Lihat Tabel Pemakaian Obat & Nilai CV", expanded=False):
+            if df_pivot is not None:
+                cols_show = ['nama_obat', 'satuan', 'total_pemakaian', 'mean_pemakaian', 'cv_pemakaian']
+                st.dataframe(df_pivot[cols_show].sort_values('total_pemakaian', ascending=False).head(20), use_container_width=True)
+                
+    with eda_tab4:
+        st.markdown("#### **Korelasi Klinis Diagnosis Penyakit vs Konsumsi Obat Terkait**")
+        img_corr = os.path.join(BASE_DIR, '05_Visualisasi_Grafik', 'EDA_03_korelasi_klinis_penyakit_obat.png')
+        if os.path.exists(img_corr):
+            st.image(img_corr, caption="Koefisien Korelasi Pearson & Spearman, Regresi Linier OLS, dan Rasio Dosis Butir per Pasien", use_container_width=True)
+            
+        with st.expander("📋 Lihat Tabel Rincian Korelasi & Rasio Dosis", expanded=False):
+            if df_corr is not None:
+                st.dataframe(df_corr, use_container_width=True)
+                
+    with eda_tab5:
+        st.markdown("#### **Rekomendasi Kebutuhan Stok Periode 2026-P5 & Proteksi Safety Stock 95%**")
+        img_stok = os.path.join(BASE_DIR, '05_Visualisasi_Grafik', 'EDA_04_prediksi_kebutuhan_stok_safety_stock.png')
+        if os.path.exists(img_stok):
+            st.image(img_stok, caption="Proyeksi Pengadaan Obat P5 Lengkap dengan Buffer Pengaman 95% dan Evaluasi Risiko Stok", use_container_width=True)
+            
+        with st.expander("📋 Lihat Metrik Evaluasi Model Terbaik & Rekomendasi P5", expanded=False):
+            if df_eval is not None:
+                cols_eval = ['nama_obat', 'best_model', 'forecast_rekomendasi_2026_P5', 'mape_wma3', 'cv_pemakaian']
+                st.dataframe(df_eval[cols_eval].sort_values('forecast_rekomendasi_2026_P5', ascending=False).head(20), use_container_width=True)
 
 # ==============================================================================
 # MODUL 2: TREN 1-BULANAN (2024) VS 2-BULANAN (SARAN DOSEN #1)
