@@ -1,0 +1,387 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — PRABOTIK Puskesmas Teluk Sasah{% endblock %}
+
+{% block content %}
+<!-- HERO BANNER -->
+<div class="hero-banner">
+    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+        <div>
+            <div class="badge bg-white text-primary fw-bold mb-2 px-3 py-1 text-uppercase" style="letter-spacing: 0.5px;">
+                <i class="fa-solid fa-hospital"></i> UPTD Puskesmas Teluk Sasah • Kab. Bintan
+            </div>
+            <h1 class="h2 fw-bolder mb-2">PRABOTIK: Sistem Prediksi & Analisis Kebutuhan Obat</h1>
+            <p class="hero-subtitle mb-0">
+                Dashboard terintegrasi data mining logistik farmasi (LPLPO), morbiditas penyakit (ICD-10), dan peramalan kebutuhan stok berbasis Moving Average adaptif.
+            </p>
+        </div>
+        <div class="text-end d-none d-md-block">
+            <span class="badge bg-light text-dark px-3 py-2 border shadow-sm">
+                <i class="fa-solid fa-clock-rotate-left"></i> Periode Data: <strong>{{ kpi.periode_awal }}</strong> s/d <strong>{{ kpi.periode_akhir }}</strong>
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- ROLE SPECIFIC WIDGET SECTION -->
+{% if current_role == 'kepala' %}
+<!-- PANEL KHUSUS KEPALA PUSKESMAS (EKSEKUTIF & KEBIJAKAN ANGGARAN) -->
+<div class="row g-3 mb-4">
+    <div class="col-md-5">
+        <div class="p-3 border rounded bg-white shadow-sm h-100 border-start border-4 border-success">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="small text-muted fw-bold text-uppercase"><i class="fa-solid fa-coins text-success"></i> Estimasi Alokasi Anggaran 2026-P5</span>
+                <span class="badge bg-success-subtle text-success">30 Obat Prioritas</span>
+            </div>
+            <div class="h3 fw-bolder text-success mb-1">{{ budget_summary.total_anggaran_fmt }}</div>
+            <div class="small text-muted">
+                Prioritas 1 (Vital): <strong>{{ budget_summary.p1_anggaran_fmt }}</strong> | Prioritas 2 (Buffer): <strong>{{ budget_summary.p2_anggaran_fmt }}</strong>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="p-3 border rounded bg-white shadow-sm h-100 border-start border-4 border-primary">
+            <div class="small text-muted fw-bold text-uppercase mb-1"><i class="fa-solid fa-signature text-primary"></i> Status Disposisi Pimpinan</div>
+            <div class="h5 fw-bold text-primary mb-1">
+                {% if 'Disetujui' in disposition_status %}
+                    <span class="text-success"><i class="fa-solid fa-circle-check"></i> {{ disposition_status }}</span>
+                {% else %}
+                    <span class="text-warning-emphasis"><i class="fa-solid fa-hourglass-half"></i> {{ disposition_status }}</span>
+                {% endif %}
+            </div>
+            <div class="small text-muted">
+                Catatan: <em>"{{ disposition_notes }}"</em>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="p-3 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center text-center">
+            <a href="{{ url_for('rekomendasi_page', role=current_role) }}" class="btn btn-success fw-bold py-2 shadow-sm">
+                <i class="fa-solid fa-file-signature"></i> Tinjau & Disposisi RKO
+            </a>
+            <div class="text-muted small mt-1">Pengajuan Dinas Kesehatan</div>
+        </div>
+    </div>
+</div>
+{% else %}
+<!-- PANEL KHUSUS ADMIN FARMASI (AUDIT DATA & KONTROL LOGISTIK) -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="p-3 border rounded bg-white shadow-sm h-100 border-start border-4 border-primary">
+            <div class="small text-muted fw-bold text-uppercase mb-1"><i class="fa-solid fa-shield-halved text-primary"></i> Konsistensi Matematis LPLPO</div>
+            <div class="h4 fw-bold text-primary mb-1">99,88% <span class="fs-6 fw-normal text-muted">(15.762 baris)</span></div>
+            <div class="small text-muted">Logika stok awal + penerimaan - pemakaian = stok akhir valid.</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="p-3 border rounded bg-white shadow-sm h-100 border-start border-4 border-warning">
+            <div class="small text-muted fw-bold text-uppercase mb-1"><i class="fa-solid fa-circle-exclamation text-warning"></i> Selisih Stok (Discrepancy)</div>
+            <div class="h4 fw-bold text-warning-emphasis mb-1">19 Baris <span class="fs-6 fw-normal text-muted">Tercatat</span></div>
+            <div class="small text-muted">Perbedaan fisik vs administratif pada data mentah telah diberi flag.</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="p-3 border rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-center text-center">
+            <a href="{{ url_for('data_page', role=current_role) }}" class="btn btn-primary fw-bold py-2 shadow-sm">
+                <i class="fa-solid fa-folder-open"></i> Kelola & Input Data Transaksi
+            </a>
+            <div class="text-muted small mt-1">Audit 15.781 baris data LPLPO</div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- KPI SUMMARY CARDS -->
+<div class="row g-3 mb-4">
+    <!-- KPI 1: Transaksi LPLPO -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="kpi-card">
+            <div class="d-flex justify-content-between align-items-start">
+                <span class="kpi-label">Transaksi LPLPO Bersih</span>
+                <div class="kpi-icon-box kpi-blue"><i class="fa-solid fa-file-waveform"></i></div>
+            </div>
+            <div class="kpi-value">{{ "{:,}".format(kpi.total_transaksi) }}</div>
+            <div class="kpi-note"><i class="fa-solid fa-capsules text-primary"></i> <strong>{{ kpi.total_obat_unik }}</strong> jenis obat/BMHP aktif (22 dwibulan)</div>
+        </div>
+    </div>
+
+    <!-- KPI 2: Morbiditas Pasien -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="kpi-card">
+            <div class="d-flex justify-content-between align-items-start">
+                <span class="kpi-label">Kunjungan Pasien Poli</span>
+                <div class="kpi-icon-box kpi-green"><i class="fa-solid fa-users"></i></div>
+            </div>
+            <div class="kpi-value">{{ "{:,}".format(kpi.total_pasien) }}</div>
+            <div class="kpi-note"><i class="fa-solid fa-venus-mars text-success"></i> {{ "{:,}".format(kpi.total_pasien_laki) }} Laki / {{ "{:,}".format(kpi.total_pasien_perempuan) }} Perempuan</div>
+        </div>
+    </div>
+
+    <!-- KPI 3: Kerugian Obat Kadaluarsa -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="kpi-card">
+            <div class="d-flex justify-content-between align-items-start">
+                <span class="kpi-label">Kerugian Kadaluarsa</span>
+                <div class="kpi-icon-box kpi-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            </div>
+            <div class="kpi-value">Rp {{ "{:,.0f}".format(kpi.total_kerugian_ed) }}</div>
+            <div class="kpi-note"><i class="fa-solid fa-trash-can text-danger"></i> <strong>{{ kpi.total_item_ed }}</strong> item obat (BA Pemusnahan 2023–2025)</div>
+        </div>
+    </div>
+
+    <!-- KPI 4: Kejadian Stockout Nyata -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="kpi-card">
+            <div class="d-flex justify-content-between align-items-start">
+                <span class="kpi-label">Kejadian Stockout Nyata</span>
+                <div class="kpi-icon-box kpi-amber"><i class="fa-solid fa-box-open"></i></div>
+            </div>
+            <div class="kpi-value">{{ kpi.total_kejadian_stockout }} <span class="fs-6 text-muted fw-normal">kejadian</span></div>
+            <div class="kpi-note"><i class="fa-solid fa-circle-exclamation text-warning"></i> Pada <strong>292</strong> jenis obat (Stok = 0 saat dibutuhkan)</div>
+        </div>
+    </div>
+</div>
+
+<!-- ALERT WARNING STOCKOUT & MUSIMAN -->
+<div class="alert alert-warning border-start border-4 border-warning shadow-sm py-3 px-4 mb-4" role="alert">
+    <div class="d-flex align-items-start gap-3">
+        <i class="fa-solid fa-bell text-warning fs-3 mt-1"></i>
+        <div>
+            <div class="fw-bold mb-1">Peringatan Strategis Logistik Puskesmas:</div>
+            <div class="small text-secondary">
+                1. <strong>Musim Puncak ISPA:</strong> Analisis indeks musiman menunjukkan lonjakan kasus ISPA mencapai titik puncak ekstrem di bulan <strong>November (indeks 1,72×)</strong>. Diperlukan penguatan buffer stok Parasetamol dan Amoksisilin.<br>
+                2. <strong>Koreksi Stok Parasetamol:</strong> Terjadi kekosongan total pada 2026-P4 (Juli–Agustus). Rekomendasi alokasi pengadaan 2026-P5 telah dihitung dengan imputasi konsumsi normal sebesar <strong>7.487 tablet</strong> (termasuk Safety Stock 95%).
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CHARTS ROW -->
+<div class="row g-3 mb-4">
+    <!-- Chart 1: Tren Penyakit Bulanan -->
+    <div class="col-lg-7">
+        <div class="content-card h-100">
+            <div class="content-card-header">
+                <h5 class="content-card-title">
+                    <i class="fa-solid fa-virus-covid text-primary"></i> Tren Kasus Penyakit Utama (2023 – 2026)
+                </h5>
+                <span class="badge bg-light text-muted border">45 Bulan Observasi</span>
+            </div>
+            <div style="height: 320px; position: relative;">
+                <canvas id="diseaseTrendChart"></canvas>
+            </div>
+            <div class="d-flex justify-content-between text-muted small mt-2 pt-2 border-top">
+                <span><i class="fa-solid fa-circle" style="color: #0284c7;"></i> ISPA (J00)</span>
+                <span><i class="fa-solid fa-circle" style="color: #10b981;"></i> Hipertensi (I10)</span>
+                <span><i class="fa-solid fa-circle" style="color: #f59e0b;"></i> Dispepsia (K30)</span>
+                <span><i class="fa-solid fa-circle" style="color: #ef4444;"></i> Diabetes M. (E11)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart 2: Komposisi Obat Fast-Moving -->
+    <div class="col-lg-5">
+        <div class="content-card h-100">
+            <div class="content-card-header">
+                <h5 class="content-card-title">
+                    <i class="fa-solid fa-pills text-success"></i> Top 5 Obat Terbanyak Digunakan
+                </h5>
+                <span class="badge bg-light text-muted border">Total Pemakaian Reguler</span>
+            </div>
+            <div style="height: 320px; position: relative;">
+                <canvas id="topDrugsChart"></canvas>
+            </div>
+            <div class="text-center text-muted small mt-2 pt-2 border-top">
+                Akumulasi konsumsi pasien rawat jalan poli umum (di luar program gizi massal).
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- QUICK DATA PREVIEWS -->
+<div class="row g-3">
+    <!-- Quick Table: Top Diagnosa Penyakit -->
+    <div class="col-lg-6">
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5 class="content-card-title">
+                    <i class="fa-solid fa-stethoscope text-primary"></i> 5 Diagnosis Penyakit Terbanyak
+                </h5>
+                <a href="{{ url_for('data_page', role=current_role) }}" class="btn btn-sm btn-outline-primary">Lihat Semua</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table-prabotik">
+                    <thead>
+                        <tr>
+                            <th>Kode</th>
+                            <th>Nama Diagnosis</th>
+                            <th class="text-end">Total Pasien</th>
+                            <th class="text-end">Proporsi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for d in top_diseases[:5] %}
+                        <tr>
+                            <td><span class="badge bg-primary-subtle text-primary fw-bold">{{ d.kode_icd }}</span></td>
+                            <td>
+                                <div class="fw-semibold">{{ d.nama_penyakit }}</div>
+                                <div class="small text-muted">{{ d.klaster_icd }}</div>
+                            </td>
+                            <td class="text-end fw-bold">{{ "{:,}".format(d.total_pasien|int) }}</td>
+                            <td class="text-end">
+                                <span class="badge bg-light text-dark border">{{ d.persentase }}%</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Table: Rekomendasi Prioritas 2026-P5 -->
+    <div class="col-lg-6">
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5 class="content-card-title">
+                    <i class="fa-solid fa-cart-flatbed text-success"></i> Rekomendasi Pengadaan 2026-P5
+                </h5>
+                <a href="{{ url_for('rekomendasi_page', role=current_role) }}" class="btn btn-sm btn-outline-success">Buka Rekomendasi</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table-prabotik">
+                    <thead>
+                        <tr>
+                            <th>Nama Obat</th>
+                            <th>Model</th>
+                            <th class="text-end">Prediksi</th>
+                            <th class="text-end">Safety Stock</th>
+                            <th class="text-end">Total Rencana</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in quick_recs[:5] %}
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">{{ r.nama_obat }}</div>
+                                <div class="small text-muted">{{ r.satuan }}</div>
+                            </td>
+                            <td><span class="badge bg-light text-dark border">{{ r.model_terbaik }}</span></td>
+                            <td class="text-end">{{ r.prediksi_fmt }}</td>
+                            <td class="text-end text-muted">+{{ r.safety_stock_fmt }}</td>
+                            <td class="text-end fw-bold text-primary">{{ r.total_pengadaan_fmt }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // 1. Chart Tren Penyakit Bulanan
+    const diseaseData = {{ disease_trends | tojson }};
+    const ctxDisease = document.getElementById('diseaseTrendChart').getContext('2d');
+    new Chart(ctxDisease, {
+        type: 'line',
+        data: {
+            labels: diseaseData.labels,
+            datasets: [
+                {
+                    label: 'ISPA (J00)',
+                    data: diseaseData.series['J00'],
+                    borderColor: '#0284c7',
+                    backgroundColor: 'rgba(2, 132, 199, 0.08)',
+                    tension: 0.3,
+                    borderWidth: 2,
+                    pointRadius: 2,
+                    fill: true
+                },
+                {
+                    label: 'Hipertensi (I10)',
+                    data: diseaseData.series['I10'],
+                    borderColor: '#10b981',
+                    borderWidth: 2,
+                    pointRadius: 2,
+                    tension: 0.3
+                },
+                {
+                    label: 'Dispepsia (K30)',
+                    data: diseaseData.series['K30'],
+                    borderColor: '#f59e0b',
+                    borderWidth: 2,
+                    pointRadius: 2,
+                    tension: 0.3
+                },
+                {
+                    label: 'Diabetes (E11)',
+                    data: diseaseData.series['E11'],
+                    borderColor: '#ef4444',
+                    borderWidth: 2,
+                    pointRadius: 2,
+                    tension: 0.3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { mode: 'index', intersect: false }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { maxTicksLimit: 12, font: { size: 10 } }
+                },
+                y: {
+                    grid: { color: '#f1f5f9' },
+                    beginAtZero: true,
+                    ticks: { font: { size: 10 } }
+                }
+            }
+        }
+    });
+
+    // 2. Chart Top Obat Fast-Moving
+    const topDrugs = {{ top_drugs | tojson }};
+    const ctxDrugs = document.getElementById('topDrugsChart').getContext('2d');
+    new Chart(ctxDrugs, {
+        type: 'bar',
+        data: {
+            labels: topDrugs.map(d => d.nama_obat.split(' ')[0] + ' ' + (d.nama_obat.split(' ')[1] || '')),
+            datasets: [{
+                label: 'Total Pemakaian',
+                data: topDrugs.map(d => d.pemakaian),
+                backgroundColor: ['#0284c7', '#0ea5e9', '#38bdf8', '#7dd3fc', '#bae6fd'],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { size: 10 } }
+                },
+                y: {
+                    grid: { color: '#f1f5f9' },
+                    beginAtZero: true,
+                    ticks: { font: { size: 10 } }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
+

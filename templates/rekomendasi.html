@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Rekomendasi Pengadaan — PRABOTIK Puskesmas Teluk Sasah{% endblock %}
+
+{% block content %}
+<!-- HEADER MENU REKOMENDASI -->
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <div>
+        <h2 class="h4 fw-bold mb-1"><i class="fa-solid fa-clipboard-check text-success"></i> Rekomendasi Perencanaan Pengadaan Obat (2026-P5)</h2>
+        <p class="text-muted small mb-0">Integrasi peramalan Moving Average adaptif, cadangan pengaman (Safety Stock 95%), dan momentum indikator MACD.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-prabotik-primary" onclick="exportTableToCSV('tableRekomendasi', 'rekomendasi_pengadaan_2026_P5.csv')">
+            <i class="fa-solid fa-download"></i> Ekspor CSV Rekomendasi
+        </button>
+    </div>
+</div>
+
+<!-- FORMULA EXPLANATION BANNER -->
+<div class="content-card mb-4 bg-light border-primary-subtle">
+    <div class="row align-items-center g-3">
+        <div class="col-lg-8">
+            <div class="fw-bold text-primary mb-1">
+                <i class="fa-solid fa-square-root-variable"></i> Prinsip Perhitungan Kebutuhan Obat (Membedakan Prediksi vs Pengadaan):
+            </div>
+            <div class="small text-secondary">
+                $$\text{Rekomendasi Alokasi Pengadaan} = \text{Prediksi Pemakaian / Kebutuhan Konsumsi} + \text{Cadangan Pengaman (Safety Stock 95\%)} - \text{Sisa Stok Efektif}$$
+                <ul class="mb-0 mt-1 ps-3">
+                    <li><strong>Prediksi Kebutuhan:</strong> Estimasi konsumsi pasien berdasarkan model peramalan terbaik (SMA-2, SMA-3, atau WMA-3) dengan MAPE terendah.</li>
+                    <li><strong>Safety Stock 95% ($Z = 1,645$):</strong> Penyangga stok pengaman terhadap keterlambatan droping dinas atau lonjakan kasus mendadak.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-4 text-lg-end">
+            <div class="badge bg-success-subtle text-success p-3 border rounded text-start">
+                <div class="fw-bold fs-6 mb-1"><i class="fa-solid fa-shield-halved"></i> Standar Logistik Farmasi</div>
+                <div class="small">Mencegah kehabisan obat (*stockout*) tanpa memicu penumpukan obat kedaluwarsa (*over-stock*).</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- KHUSUS KEPALA PUSKESMAS: EXECUTIVE SUMMARY CARDS & DISPOSISI -->
+{% if current_role == 'kepala' %}
+<div class="row g-3 mb-4">
+    <div class="col-lg-8">
+        <div class="content-card h-100 border-start border-4 border-success">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold text-success mb-0"><i class="fa-solid fa-file-signature"></i> Formulir Lembar Disposisi Kepala Puskesmas</h6>
+                <span class="badge {% if 'Disetujui' in disposition_status %}bg-success{% else %}bg-warning-subtle text-warning-emphasis{% endif %} fs-6 px-3 py-1">
+                    {{ disposition_status }}
+                </span>
+            </div>
+            <p class="small text-muted mb-3">
+                Rencana Kebutuhan Obat (RKO) 2026-P5 ini mengintegrasikan prediksi konsumsi riil dan cadangan pengaman (Safety Stock 95%). Silakan verifikasi catatan disposisi sebelum diajukan ke Dinas Kesehatan.
+            </p>
+            <form action="{{ url_for('disposisi', role=current_role) }}" method="POST">
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">Catatan Arahan / Lembar Disposisi Pimpinan:</label>
+                    <textarea name="notes" class="form-control form-control-sm" rows="2" placeholder="Tuliskan arahan persetujuan untuk pengelola instalasi farmasi...">{{ disposition_notes }}</textarea>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" name="action" value="approve" class="btn btn-sm btn-success fw-bold">
+                        <i class="fa-solid fa-check-double"></i> Setujui & Sahkan Alokasi Pengadaan P5
+                    </button>
+                    <button type="submit" name="action" value="revisi" class="btn btn-sm btn-outline-warning">
+                        <i class="fa-solid fa-arrow-rotate-left"></i> Ajukan Penyesuaian Kuota
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="content-card h-100 border-start border-4 border-primary">
+            <div class="small text-muted fw-bold text-uppercase mb-1"><i class="fa-solid fa-wallet text-primary"></i> Total Estimasi Anggaran P5</div>
+            <div class="h3 fw-bolder text-primary mb-2">{{ budget_summary.total_anggaran_fmt }}</div>
+            <div class="small text-muted mb-2">30 Jenis Sediaan Obat & BMHP Prioritas</div>
+            <hr class="my-2">
+            <div class="d-flex justify-content-between small text-secondary">
+                <span>Prioritas 1 (Vital):</span>
+                <strong>{{ budget_summary.p1_anggaran_fmt }}</strong>
+            </div>
+            <div class="d-flex justify-content-between small text-secondary">
+                <span>Prioritas 2 (Buffer):</span>
+                <strong>{{ budget_summary.p2_anggaran_fmt }}</strong>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- TABEL REKOMENDASI PENGADAAN -->
+<div class="content-card">
+    <div class="row g-2 mb-3 align-items-center">
+        <div class="col-md-5">
+            <div class="input-group input-group-sm">
+                <span class="input-group-text bg-light"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" class="form-control" placeholder="Cari nama obat dalam daftar rekomendasi..." data-table-search="tableRekomendasi">
+            </div>
+        </div>
+        <div class="col-md-7 text-md-end">
+            <span class="badge bg-light text-muted border">
+                Menampilkan <strong>{{ rec_list|length }}</strong> Sediaan Obat Terpilih
+            </span>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table-prabotik" id="tableRekomendasi">
+            <thead>
+                <tr>
+                    <th style="width: 40px;">No</th>
+                    <th>Nama Obat</th>
+                    <th>Satuan</th>
+                    {% if current_role == 'kepala' %}
+                    <th class="text-end text-success">Estimasi Anggaran</th>
+                    {% endif %}
+                    <th>Model Terbaik</th>
+                    <th class="text-end">Akurasi (MAPE)</th>
+                    <th class="text-end">Prediksi Konsumsi</th>
+                    <th class="text-end">Safety Stock (95%)</th>
+                    <th class="text-end">Rekomendasi Pengadaan</th>
+                    <th>Status Momentum MACD</th>
+                    <th>Kategori Prioritas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in rec_list %}
+                <tr>
+                    <td class="text-muted small">{{ loop.index }}</td>
+                    <td>
+                        <div class="fw-bold">{{ r.nama_obat }}</div>
+                    </td>
+                    <td class="text-muted small">{{ r.satuan }}</td>
+                    {% if current_role == 'kepala' %}
+                    <td class="text-end fw-bold text-success">{{ r.estimasi_anggaran_fmt }}</td>
+                    {% endif %}
+                    <td><span class="badge bg-light text-dark border">{{ r.model_terbaik }}</span></td>
+                    <td class="text-end">{{ r.mape_fmt }}</td>
+                    <td class="text-end">{{ r.prediksi_fmt }}</td>
+                    <td class="text-end text-muted">+{{ r.safety_stock_fmt }}</td>
+                    <td class="text-end fw-bold text-primary fs-6">{{ r.total_pengadaan_fmt }}</td>
+                    <td>
+                        {% if 'Bullish' in r.momentum_status %}
+                            <span class="badge badge-momentum-bullish"><i class="fa-solid fa-arrow-trend-up"></i> Bullish (Naik)</span>
+                        {% elif 'Rebound' in r.momentum_status %}
+                            <span class="badge badge-momentum-rebound"><i class="fa-solid fa-arrows-rotate"></i> Rebound Pasca-Habis</span>
+                        {% else %}
+                            <span class="badge badge-momentum-bearish"><i class="fa-solid fa-arrow-trend-down"></i> Bearish (Melambat)</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if 'Prioritas 1' in r.prioritas_kategori %}
+                            <span class="badge badge-prioritas-1">{{ r.prioritas_kategori }}</span>
+                        {% elif 'Prioritas 2' in r.prioritas_kategori %}
+                            <span class="badge badge-prioritas-2">{{ r.prioritas_kategori }}</span>
+                        {% else %}
+                            <span class="badge badge-prioritas-3">{{ r.prioritas_kategori }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 3 STRATEGIC ACTION CARDS -->
+<div class="row g-3">
+    <div class="col-lg-4">
+        <div class="content-card h-100 border-start border-4 border-primary">
+            <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-shield-virus"></i> Antisipasi Musim ISPA</h6>
+            <p class="small text-muted mb-0">
+                Pola musiman membuktikan kasus ISPA melonjak drastis pada kuartal akhir (puncak November indeks 1,72×). Alokasi Parasetamol (7.487 tab) dan Amoksisilin (2.662 kaplet) wajib diajukan ke dinas tanpa pemotongan kuota.
+            </p>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="content-card h-100 border-start border-4 border-success">
+            <h6 class="fw-bold text-success mb-2"><i class="fa-solid fa-heart-pulse"></i> Pemeliharaan Pasien Prolanis</h6>
+            <p class="small text-muted mb-0">
+                Amlodipin 10 mg (rekomendasi 13.596 tab) dan Metformin (5.096 tab) memiliki rasio konsumsi tinggi untuk 60 hari. Pengadaan harus konsisten demi menjaga kestabilan tekanan darah dan gula darah pasien kronis di wilayah kerja.
+            </p>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="content-card h-100 border-start border-4 border-warning">
+            <h6 class="fw-bold text-warning-emphasis mb-2"><i class="fa-solid fa-boxes-packing"></i> Kontrol Buffer Slow-Moving</h6>
+            <p class="small text-muted mb-0">
+                Sediaan dengan momentum Bearish seperti Kalsium Laktat (4.799 tab) dan Asam Askorbat (3.623 tab) disarankan tidak ditambah buffer ekstra untuk mencegah terulangnya pemusnahan obat kadaluarsa.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

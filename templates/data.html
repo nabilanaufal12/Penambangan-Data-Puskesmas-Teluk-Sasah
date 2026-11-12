@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+
+{% block title %}Data — PRABOTIK Puskesmas Teluk Sasah{% endblock %}
+
+{% block content %}
+<!-- HEADER MENU DATA -->
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <div>
+        <h2 class="h4 fw-bold mb-1"><i class="fa-solid fa-database text-primary"></i> Pengelolaan Dataset Master (Admin Farmasi)</h2>
+        <p class="text-muted small mb-0">Kelola dan telusuri rekaman transaksi LPLPO, morbiditas ICD-10, serta Berita Acara Kadaluarsa.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-primary" data-bs-toggle="collapse" data-bs-target="#formTambahData">
+            <i class="fa-solid fa-plus-circle"></i> Input Transaksi Baru
+        </button>
+        <button class="btn btn-sm btn-prabotik-outline" onclick="exportActiveTable()">
+            <i class="fa-solid fa-file-csv"></i> Unduh Data Aktif (.csv)
+        </button>
+    </div>
+</div>
+
+<!-- FORM INPUT TRANSAKSI BARU (KHUSUS ADMIN) -->
+<div class="collapse mb-4" id="formTambahData">
+    <div class="content-card border-primary">
+        <div class="content-card-header bg-light">
+            <h6 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-pen-to-square"></i> Form Pemutakhiran / Entri Data Logistik Baru</h6>
+        </div>
+        <form action="{{ url_for('data_tambah', role=current_role) }}" method="POST" class="row g-3 p-2">
+            <div class="col-md-4">
+                <label class="form-label small fw-bold">Nama Obat / Sediaan:</label>
+                <input type="text" name="nama_obat" class="form-control form-control-sm" placeholder="Contoh: Parasetamol tablet 500 mg" required>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small fw-bold">Kategori:</label>
+                <select name="kategori" class="form-select form-select-sm">
+                    <option value="OBAT">OBAT</option>
+                    <option value="BMHP">BMHP</option>
+                    <option value="LABORATORIUM">LABORATORIUM</option>
+                    <option value="KESEHATAN GIGI">KESEHATAN GIGI</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small fw-bold">Satuan:</label>
+                <input type="text" name="satuan" class="form-control form-control-sm" placeholder="tablet / botol / vial" value="tablet" required>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small fw-bold">Jumlah Pemakaian:</label>
+                <input type="number" name="pemakaian" class="form-control form-control-sm" placeholder="0" min="0" required>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label small fw-bold">Sisa Stok Akhir:</label>
+                <input type="number" name="stok_akhir" class="form-control form-control-sm" placeholder="0" min="0" required>
+            </div>
+            <div class="col-12 text-end">
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="collapse" data-bs-target="#formTambahData">Batal</button>
+                <button type="submit" class="btn btn-sm btn-success fw-bold"><i class="fa-solid fa-floppy-disk"></i> Simpan Catatan Data</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- TAB NAVIGATION -->
+<div class="tab-wrapper">
+    <ul class="prabotik-nav-tabs">
+        <li>
+            <button class="prabotik-tab-btn active" data-target="pane-lplpo">
+                <i class="fa-solid fa-receipt"></i> LPLPO Transaksi ({{ "{:,}".format(total_lplpo) }} Baris)
+            </button>
+        </li>
+        <li>
+            <button class="prabotik-tab-btn" data-target="pane-penyakit">
+                <i class="fa-solid fa-virus"></i> Rekap Penyakit ICD-10 ({{ total_penyakit }} Rekaman)
+            </button>
+        </li>
+        <li>
+            <button class="prabotik-tab-btn" data-target="pane-ed">
+                <i class="fa-solid fa-calendar-xmark"></i> Obat Kadaluarsa ({{ total_ed }} Item)
+            </button>
+        </li>
+    </ul>
+
+    <!-- PANE 1: LPLPO TRANSAKSI -->
+    <div id="pane-lplpo" class="tab-pane-prabotik content-card">
+        <div class="row g-2 mb-3 align-items-center">
+            <div class="col-md-5">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-light"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" class="form-control" id="searchLplpo" placeholder="Cari nama obat/sediaan..." data-table-search="tableLplpo">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select form-select-sm" id="filterTahunLplpo" onchange="filterLplpoServer()">
+                    <option value="">Semua Tahun (2023 - 2026)</option>
+                    <option value="2023" {% if filter_tahun == '2023' %}selected{% endif %}>Tahun 2023 (3.655 baris)</option>
+                    <option value="2024" {% if filter_tahun == '2024' %}selected{% endif %}>Tahun 2024 (6.477 baris)</option>
+                    <option value="2025" {% if filter_tahun == '2025' %}selected{% endif %}>Tahun 2025 (3.354 baris)</option>
+                    <option value="2026" {% if filter_tahun == '2026' %}selected{% endif %}>Tahun 2026 (2.295 baris)</option>
+                </select>
+            </div>
+            <div class="col-md-4 text-end">
+                <span class="badge bg-light text-dark border">
+                    Menampilkan seluruh <strong>{{ "{:,}".format(lplpo_records|length) }}</strong> baris data
+                </span>
+            </div>
+        </div>
+
+        <div class="table-responsive" style="max-height: 540px; overflow-y: auto;">
+            <table class="table-prabotik" id="tableLplpo">
+                <thead style="position: sticky; top: 0; z-index: 2;">
+                    <tr>
+                        <th style="width: 50px;">No</th>
+                        <th>Periode</th>
+                        <th>Kategori</th>
+                        <th>Nama Obat / Sediaan</th>
+                        <th>Satuan</th>
+                        <th class="text-end">Stok Awal</th>
+                        <th class="text-end">Penerimaan</th>
+                        <th class="text-end">Pemakaian</th>
+                        <th class="text-end">Stok Akhir</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in lplpo_records %}
+                    <tr>
+                        <td class="text-muted small">{{ loop.index }}</td>
+                        <td><span class="badge bg-light text-dark border">{{ row.periode_bimonthly_id }}</span></td>
+                        <td><span class="badge bg-primary-subtle text-primary">{{ row.kategori }}</span></td>
+                        <td class="fw-semibold">{{ row.nama_obat }}</td>
+                        <td class="text-muted small">{{ row.satuan }}</td>
+                        <td class="text-end">{{ "{:,.0f}".format(row.stok_awal) }}</td>
+                        <td class="text-end">{{ "{:,.0f}".format(row.penerimaan) }}</td>
+                        <td class="text-end fw-bold text-primary">{{ "{:,.0f}".format(row.pemakaian) }}</td>
+                        <td class="text-end {% if row.stok_akhir == 0 and row.pemakaian > 0 %}text-danger fw-bold{% endif %}">
+                            {{ "{:,.0f}".format(row.stok_akhir) }}
+                        </td>
+                        <td>
+                            {% if row.flag_program_gizi %}
+                                <span class="badge bg-info-subtle text-info border">Program Gizi</span>
+                            {% elif row.stok_akhir == 0 and row.pemakaian > 0 %}
+                                <span class="badge bg-danger-subtle text-danger border">Stockout</span>
+                            {% elif row.flag_stok_discrepancy %}
+                                <span class="badge bg-warning-subtle text-warning border">Discrepancy</span>
+                            {% else %}
+                                <span class="badge bg-success-subtle text-success">Normal</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PANE 2: PENYAKIT ICD-10 -->
+    <div id="pane-penyakit" class="tab-pane-prabotik content-card" style="display: none;">
+        <div class="row g-2 mb-3 align-items-center">
+            <div class="col-md-6">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-light"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" class="form-control" placeholder="Cari kode ICD-10 atau nama diagnosis..." data-table-search="tablePenyakit">
+                </div>
+            </div>
+            <div class="col-md-6 text-end">
+                <span class="badge bg-light text-muted border">
+                    Top-Censored: 10 Diagnosis Terbesar / Bulan (45 Bulan)
+                </span>
+            </div>
+        </div>
+
+        <div class="table-responsive" style="max-height: 540px; overflow-y: auto;">
+            <table class="table-prabotik" id="tablePenyakit">
+                <thead style="position: sticky; top: 0; z-index: 2;">
+                    <tr>
+                        <th style="width: 50px;">No</th>
+                        <th>Periode</th>
+                        <th>Kode ICD</th>
+                        <th>Nama Diagnosis</th>
+                        <th>Klaster Medis</th>
+                        <th class="text-end">Laki-Laki</th>
+                        <th class="text-end">Perempuan</th>
+                        <th class="text-end">Total Pasien</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in penyakit_records %}
+                    <tr>
+                        <td class="text-muted small">{{ loop.index }}</td>
+                        <td>{{ row.tahun }}-{{ "{:02d}".format(row.bulan_angka) }} ({{ row.bulan }})</td>
+                        <td><span class="badge bg-primary-subtle text-primary fw-bold">{{ row.kode_icd }}</span></td>
+                        <td class="fw-semibold">{{ row.nama_penyakit }}</td>
+                        <td class="small text-muted">{{ row.klaster_icd }}</td>
+                        <td class="text-end">{{ "{:,}".format(row.pasien_laki|int) }}</td>
+                        <td class="text-end">{{ "{:,}".format(row.pasien_perempuan|int) }}</td>
+                        <td class="text-end fw-bold text-success">{{ "{:,}".format(row.total_pasien|int) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PANE 3: OBAT KADALUARSA -->
+    <div id="pane-ed" class="tab-pane-prabotik content-card" style="display: none;">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div class="input-group input-group-sm" style="max-width: 380px;">
+                <span class="input-group-text bg-light"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" class="form-control" placeholder="Cari nama barang atau no batch..." data-table-search="tableKadaluarsa">
+            </div>
+            <div class="badge bg-danger-subtle text-danger fs-6 px-3 py-2 border">
+                Total Kerugian Resmi: <strong>Rp {{ "{:,.0f}".format(kpi.total_kerugian_ed) }}</strong>
+            </div>
+        </div>
+
+        <div class="table-responsive" style="max-height: 540px; overflow-y: auto;">
+            <table class="table-prabotik" id="tableKadaluarsa">
+                <thead style="position: sticky; top: 0; z-index: 2;">
+                    <tr>
+                        <th style="width: 50px;">No</th>
+                        <th>Tahun BA</th>
+                        <th>Nama Barang / Obat</th>
+                        <th>Satuan</th>
+                        <th>No Batch</th>
+                        <th>Tgl Kadaluarsa</th>
+                        <th class="text-end">Jumlah ED</th>
+                        <th class="text-end">Harga Satuan</th>
+                        <th class="text-end">Subtotal Kerugian</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in ed_records %}
+                    <tr>
+                        <td class="text-muted small">{{ loop.index }}</td>
+                        <td><span class="badge bg-light text-dark border">{{ row.tahun_lapor }}</span></td>
+                        <td class="fw-semibold">{{ row.nama_barang }}</td>
+                        <td class="text-muted small">{{ row.satuan }}</td>
+                        <td class="small font-monospace">{{ row.no_batch }}</td>
+                        <td><span class="badge bg-secondary-subtle text-secondary">{{ row.tgl_kadaluarsa_standar }}</span></td>
+                        <td class="text-end fw-bold">{{ "{:,.0f}".format(row.jumlah_kadaluarsa) }}</td>
+                        <td class="text-end text-muted">Rp {{ "{:,.0f}".format(row.harga_satuan) }}</td>
+                        <td class="text-end fw-bold text-danger">Rp {{ "{:,.0f}".format(row.sub_total_kerugian) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function filterLplpoServer() {
+    const val = document.getElementById('filterTahunLplpo').value;
+    const url = new URL(window.location.href);
+    if (val) {
+        url.searchParams.set('tahun', val);
+    } else {
+        url.searchParams.delete('tahun');
+    }
+    window.location.href = url.toString();
+}
+
+function exportActiveTable() {
+    const activePane = document.querySelector('.tab-pane-prabotik:not([style*="display: none"])');
+    if (activePane) {
+        const table = activePane.querySelector('table');
+        if (table) {
+            exportTableToCSV(table.id, table.id + '_prabotik.csv');
+        }
+    }
+}
+</script>
+{% endblock %}
+

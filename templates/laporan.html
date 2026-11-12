@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Laporan Resmi — PRABOTIK Puskesmas Teluk Sasah{% endblock %}
+
+{% block content %}
+<!-- TOOLBAR AKSI LAPORAN (DISEMBUNYIKAN SAAT PRINT) -->
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2 btn-no-print">
+    <div>
+        <h2 class="h4 fw-bold mb-1"><i class="fa-solid fa-file-invoice text-primary"></i> Laporan Resmi Eksekutif & Rekomendasi Farmasi</h2>
+        <p class="text-muted small mb-0">Format resmi siap cetak dan ekspor digital untuk pelaporan Dinas Kesehatan & UPTD Puskesmas.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-sm btn-prabotik-primary" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> Cetak / Simpan PDF
+        </button>
+        <button class="btn btn-sm btn-prabotik-outline" onclick="exportTableToCSV('tableLaporanPengadaan', 'laporan_rekomendasi_pengadaan_prabotik.csv')">
+            <i class="fa-solid fa-file-csv"></i> Unduh Data (.csv)
+        </button>
+    </div>
+</div>
+
+<!-- CONTAINER DOKUMEN CETAK -->
+<div class="content-card p-4 p-md-5 bg-white shadow-sm" id="printableReport">
+    <!-- KOP RESMI LAPORAN -->
+    <div class="d-flex align-items-center justify-content-between pb-3 mb-4 border-bottom border-2 border-dark flex-wrap gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <img src="{{ url_for('static', filename='img/logo_umrah.png') }}" alt="UMRAH" style="height: 64px;" onerror="this.style.display='none'">
+            <div>
+                <h6 class="text-uppercase fw-bold mb-0 text-muted small">Pemerintah Kabupaten Bintan • Dinas Kesehatan</h6>
+                <h4 class="fw-bolder mb-0 text-primary">UPTD PUSKESMAS TELUK SASAH</h4>
+                <div class="small text-secondary">Jl. Raya Teluk Sasah, Kec. Seri Kuala Lobam, Kabupaten Bintan, Kepulauan Riau</div>
+            </div>
+        </div>
+        <div class="text-end">
+            <div class="badge bg-light text-dark border p-2 text-uppercase fw-bold">Dokumen Resmi Riset</div>
+            <div class="small text-muted mt-1">Sistem PRABOTIK v2.0</div>
+        </div>
+    </div>
+
+    <!-- JUDUL DOKUMEN -->
+    <div class="text-center my-4">
+        <h4 class="fw-bolder text-uppercase mb-1">LAPORAN HASIL PENAMBANGAN DATA LOGISTIK OBAT & PERAMALAN KEBUTUHAN STOK FARMASI</h4>
+        <div class="text-muted small">
+            Penelitian: “Prediksi Kebutuhan Stok Obat dan Analisis Tren Penyakit Musiman Berdasarkan Pola Pemakaian Obat pada Puskesmas Teluk Sasah di Kabupaten Bintan”
+        </div>
+        <div class="badge bg-primary text-white mt-2 px-3 py-1">
+            Periode Perencanaan: 2026-P5 (September – Oktober 2026)
+        </div>
+    </div>
+
+    <!-- 1. RINGKASAN INDIKATOR AUDIT DATASET -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase border-bottom pb-1 mb-2">I. Ringkasan Eksekutif Dataset Master</h6>
+        <div class="row g-2 small">
+            <div class="col-sm-6 col-md-3">
+                <div class="p-2 border rounded bg-light">
+                    <div class="text-muted">Total Transaksi LPLPO</div>
+                    <div class="fw-bold fs-6">{{ "{:,}".format(kpi.total_transaksi) }} Rekaman</div>
+                    <div class="text-muted" style="font-size: 0.72rem;">22 Dwibulan (737 Sediaan)</div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="p-2 border rounded bg-light">
+                    <div class="text-muted">Kunjungan Morbiditas</div>
+                    <div class="fw-bold fs-6">{{ "{:,}".format(kpi.total_pasien) }} Pasien</div>
+                    <div class="text-muted" style="font-size: 0.72rem;">45 Bulan (ICD-10 SIMPUS)</div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="p-2 border rounded bg-light">
+                    <div class="text-muted">Total Kerugian ED</div>
+                    <div class="fw-bold fs-6 text-danger">Rp {{ "{:,.0f}".format(kpi.total_kerugian_ed) }}</div>
+                    <div class="text-muted" style="font-size: 0.72rem;">138 Item (BA 2023–2025)</div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="p-2 border rounded bg-light">
+                    <div class="text-muted">Kejadian Stockout Nyata</div>
+                    <div class="fw-bold fs-6 text-warning-emphasis">{{ kpi.total_kejadian_stockout }} Kejadian</div>
+                    <div class="text-muted" style="font-size: 0.72rem;">292 Obat Mengalami Kosong</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. HASIL ANALISIS & TEMUAN ILMIAH -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase border-bottom pb-1 mb-2">II. Temuan Analisis Ilmiah & Pola Musiman</h6>
+        <ol class="small text-secondary ps-3 mb-0" style="line-height: 1.6;">
+            <li><strong>Dinamika Musiman ISPA:</strong> Kasus ISPA (J00) merupakan morbiditas tertinggi (10.623 kunjungan, 34,1%) dengan pola musiman sangat nyata, mencapai titik lembah di bulan April (indeks 0,63×) dan <strong>puncak ekstrem di bulan November (indeks 1,72×)</strong> seiring musim hujan/pancaroba di Kepulauan Riau.</li>
+            <li><strong>Koreksi Stok Parasetamol 2026-P4:</strong> Pemakaian tercatat 0 tablet pada Juli–Agustus 2026 terjadi akibat kehabisan stok fisik (*Total Stockout*). Nilai kebutuhan telah diimputasi normal sebesar 5.850 tablet sehingga rekomendasi pengadaan menjadi realistis sebesar <strong>7.487 tablet</strong>.</li>
+            <li><strong>Pencegahan Kerugian Kadaluarsa:</strong> Kerugian Rp 43.348.626 akibat obat kedaluwarsa dimitigasi dengan pembatasan buffer stok pada sediaan yang berstatus <em>Bearish</em> (Kalsium Laktat dan Asam Askorbat).</li>
+            <li><strong>Keunggulan Model Moving Average:</strong> Benchmarking 10-fold walk forward membuktikan metode Weighted Moving Average (WMA-3) dengan bias positif (+4,3%) yang dipadukan dengan Safety Stock 95% ($Z=1,645$) adalah kebijakan yang paling aman mencegah kehabisan obat dibandingkan Machine Learning yang bias negatif (-9,2%).</li>
+        </ol>
+    </div>
+
+    <!-- 3. TABEL REKOMENDASI PENGADAAN -->
+    <div class="mb-4">
+        <h6 class="fw-bold text-uppercase border-bottom pb-1 mb-2">III. Rekomendasi Prioritas Perencanaan Pengadaan Obat (2026-P5)</h6>
+        <div class="table-responsive">
+            <table class="table-prabotik table-sm" id="tableLaporanPengadaan" style="font-size: 0.8rem;">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Obat / Sediaan</th>
+                        <th>Satuan</th>
+                        <th>Model</th>
+                        <th class="text-end">Prediksi Konsumsi</th>
+                        <th class="text-end">Safety Stock (95%)</th>
+                        <th class="text-end fw-bold">Total Rencana Pengadaan</th>
+                        <th>Momentum MACD</th>
+                        <th>Kategori</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in rec_list %}
+                    <tr>
+                        <td class="text-muted">{{ loop.index }}</td>
+                        <td class="fw-semibold">{{ r.nama_obat }}</td>
+                        <td class="text-muted">{{ r.satuan }}</td>
+                        <td>{{ r.model_terbaik }}</td>
+                        <td class="text-end">{{ r.prediksi_fmt }}</td>
+                        <td class="text-end text-muted">+{{ r.safety_stock_fmt }}</td>
+                        <td class="text-end fw-bold text-primary">{{ r.total_pengadaan_fmt }}</td>
+                        <td>{{ r.momentum_status.split('(')[0] }}</td>
+                        <td>{{ r.prioritas_kategori.split('(')[0] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 4. LEMBAR PENGESAHAN -->
+    <div class="mt-5 pt-3 border-top">
+        <div class="row text-center small">
+            <div class="col-6">
+                <div>Mengetahui & Menyetujui,</div>
+                <div class="fw-bold text-uppercase mt-1">Kepala UPTD Puskesmas Teluk Sasah</div>
+                {% if 'Disetujui' in disposition_status %}
+                <div class="my-2">
+                    <span class="badge bg-success-subtle text-success border border-success p-2">
+                        <i class="fa-solid fa-stamp"></i> TELAH DIDISPOSISI ELEKTRONIK<br>
+                        <small class="fw-normal">Status: Disetujui ke Dinas Kesehatan</small>
+                    </span>
+                </div>
+                {% else %}
+                <div style="height: 65px;"></div>
+                {% endif %}
+                <div class="fw-bold text-decoration-underline">( _____________________________ )</div>
+                <div class="text-muted">NIP. ....................................................</div>
+            </div>
+            <div class="col-6">
+                <div>Teluk Sasah, November 2026</div>
+                <div class="fw-bold text-uppercase mt-1">Pengelola Instalasi Farmasi</div>
+                <div style="height: 65px;"></div>
+                <div class="fw-bold text-decoration-underline">( _____________________________ )</div>
+                <div class="text-muted">NIP. ....................................................</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

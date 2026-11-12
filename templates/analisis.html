@@ -1,0 +1,550 @@
+{% extends "base.html" %}
+
+{% block title %}Analisis & Prediksi — PRABOTIK Puskesmas Teluk Sasah{% endblock %}
+
+{% block content %}
+<!-- HEADER MENU ANALISIS -->
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <div>
+        <h2 class="h4 fw-bold mb-1"><i class="fa-solid fa-chart-line text-primary"></i> Modul Analisis & Pemodelan Data Mining</h2>
+        <p class="text-muted small mb-0">Eksplorasi data ilmiah, peramalan Moving Average adaptif, tren musiman penyakit, dan farmakoterapi preskripsi.</p>
+    </div>
+</div>
+
+<!-- SUB-TABS -->
+<div class="tab-wrapper">
+    <ul class="prabotik-nav-tabs">
+        <li>
+            <button class="prabotik-tab-btn active" data-target="pane-eda">
+                <i class="fa-solid fa-magnifying-glass-chart"></i> Eksplorasi Data (EDA)
+            </button>
+        </li>
+        <li>
+            <button class="prabotik-tab-btn" data-target="pane-ma">
+                <i class="fa-solid fa-calculator"></i> Prediksi Moving Average
+            </button>
+        </li>
+        <li>
+            <button class="prabotik-tab-btn" data-target="pane-musiman">
+                <i class="fa-solid fa-cloud-sun-rain"></i> Tren Musiman Penyakit
+            </button>
+        </li>
+        <li>
+            <button class="prabotik-tab-btn" data-target="pane-korelasi">
+                <i class="fa-solid fa-network-wired"></i> Korelasi Farmakoterapi
+            </button>
+        </li>
+        <li>
+            <button class="prabotik-tab-btn" data-target="pane-benchmark">
+                <i class="fa-solid fa-scale-balanced"></i> Benchmarking Model (ML vs MA)
+            </button>
+        </li>
+    </ul>
+
+    <!-- 1. PANE EDA -->
+    <div id="pane-eda" class="tab-pane-prabotik">
+        <div class="row g-3 mb-4">
+            <!-- Komposisi Kategori Obat & BMHP -->
+            <div class="col-lg-6">
+                <div class="content-card h-100">
+                    <div class="content-card-header">
+                        <h5 class="content-card-title"><i class="fa-solid fa-boxes-stacked text-primary"></i> Komposisi Transaksi Logistik (15.781 Baris)</h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table-prabotik">
+                            <thead>
+                                <tr>
+                                    <th>Kategori Logistik</th>
+                                    <th class="text-end">Jumlah Rekaman</th>
+                                    <th class="text-end">Proporsi</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge bg-primary-subtle text-primary fw-bold">OBAT</span></td>
+                                    <td class="text-end fw-bold">9.762</td>
+                                    <td class="text-end">61,86%</td>
+                                    <td class="small text-muted">Tablet, sirup, salep poli umum & anak</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-success-subtle text-success fw-bold">BMHP</span></td>
+                                    <td class="text-end fw-bold">3.354</td>
+                                    <td class="text-end">21,25%</td>
+                                    <td class="small text-muted">Kasa, spuit, plester, APD medis</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-info-subtle text-info fw-bold">LABORATORIUM</span></td>
+                                    <td class="text-end fw-bold">1.913</td>
+                                    <td class="text-end">12,12%</td>
+                                    <td class="small text-muted">Reagen, strip tes glukosa, HIV, Hb</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-warning-subtle text-warning fw-bold">KESEHATAN GIGI</span></td>
+                                    <td class="text-end fw-bold">752</td>
+                                    <td class="text-end">4,77%</td>
+                                    <td class="small text-muted">Bahan tumpatan, anastesi dental</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demografi Pasien -->
+            <div class="col-lg-6">
+                <div class="content-card h-100">
+                    <div class="content-card-header">
+                        <h5 class="content-card-title"><i class="fa-solid fa-venus-mars text-success"></i> Demografi Kunjungan Pasien (31.125 Pasien)</h5>
+                    </div>
+                    <div class="p-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span><i class="fa-solid fa-mars text-primary"></i> Laki-laki: <strong>12.915</strong> (41,49%)</span>
+                            <span><i class="fa-solid fa-venus text-danger"></i> Perempuan: <strong>18.210</strong> (58,51%)</span>
+                        </div>
+                        <div class="progress" style="height: 16px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 41.5%;">41,5%</div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 58.5%;">58,5%</div>
+                        </div>
+                        <div class="callout-info mt-3 mb-0 small">
+                            <strong>Analisis Morbiditas:</strong> Kunjungan pasien perempuan lebih tinggi dipengaruhi oleh pemeriksaan maternal (Posyandu bumil), poli KB, serta tingginya prevalensi penyakit metabolik & muskuloskeletal pada usia lanjut perempuan di wilayah kerja Teluk Sasah.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analisis Kejadian Stockout Nyata -->
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5 class="content-card-title"><i class="fa-solid fa-triangle-exclamation text-warning"></i> Bukti Kuantitatif Stockout Nyata (Stok Akhir = 0)</h5>
+                <span class="badge bg-danger text-white">482 Kejadian pada 292 Obat</span>
+            </div>
+            <p class="small text-muted mb-3">
+                Kondisi di mana stok akhir obat tercatat 0 pada akhir periode LPLPO padahal terdapat riwayat pemakaian rutin oleh pasien. Fakta ini membuktikan sistem perencanaan logistik lama belum optimal dan memperkuat urgensi pemodelan peramalan ilmiah.
+            </p>
+            <div class="table-responsive">
+                <table class="table-prabotik">
+                    <thead>
+                        <tr>
+                            <th>Nama Obat / Sediaan</th>
+                            <th>Satuan</th>
+                            <th class="text-end">Periode Stockout</th>
+                            <th>Periode Kejadian</th>
+                            <th>Klasifikasi Risiko</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for so in stockout_sample %}
+                        <tr>
+                            <td class="fw-semibold">{{ so.nama_obat }}</td>
+                            <td class="text-muted small">{{ so.satuan }}</td>
+                            <td class="text-end fw-bold text-danger">{{ so.jumlah_periode_stockout }} Dwibulan</td>
+                            <td><span class="badge bg-light text-dark border">{{ so.periode_pertama_stockout }} s/d {{ so.periode_terakhir_stockout }}</span></td>
+                            <td>
+                                <span class="badge bg-danger-subtle text-danger">{{ so.klasifikasi_risiko }}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. PANE MOVING AVERAGE FORECASTING -->
+    <div id="pane-ma" class="tab-pane-prabotik" style="display: none;">
+        <div class="content-card">
+            <div class="row g-3 align-items-center mb-4">
+                <div class="col-md-7">
+                    <label class="form-label fw-bold small text-muted">Pilih Obat untuk Analisis Peramalan Moving Average:</label>
+                    <select class="form-select" id="selectMedForecast" onchange="updateForecastView()">
+                        {% for med in available_drugs %}
+                        <option value="{{ med }}" {% if med == selected_drug %}selected{% endif %}>{{ med }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-5 text-md-end">
+                    <div class="badge bg-primary-subtle text-primary p-2 border">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Basis: 22 Dwibulan Kontinu (2023-P1 s/d 2026-P4)
+                    </div>
+                </div>
+            </div>
+
+            <!-- METRIC CARDS -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="p-3 border rounded bg-light">
+                        <div class="small text-muted fw-bold">Simple MA (k=2)</div>
+                        <div class="h4 fw-bold text-primary mb-1" id="valPredSma2">{{ ma_res.sma2.next }}</div>
+                        <div class="small text-muted">MAPE: <span class="fw-semibold">{{ ma_res.sma2.metrics.mape }}%</span></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border rounded bg-light">
+                        <div class="small text-muted fw-bold">Simple MA (k=3)</div>
+                        <div class="h4 fw-bold text-primary mb-1" id="valPredSma3">{{ ma_res.sma3.next }}</div>
+                        <div class="small text-muted">MAPE: <span class="fw-semibold">{{ ma_res.sma3.metrics.mape }}%</span></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border rounded bg-light">
+                        <div class="small text-muted fw-bold">Weighted MA (k=3)</div>
+                        <div class="h4 fw-bold text-success mb-1" id="valPredWma3">{{ ma_res.wma3.next }}</div>
+                        <div class="small text-muted">MAPE: <span class="fw-semibold">{{ ma_res.wma3.metrics.mape }}%</span></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 border rounded bg-primary text-white">
+                        <div class="small fw-bold opacity-75">Model Terbaik Terpilih</div>
+                        <div class="h4 fw-bold mb-1" id="valBestModel">{{ ma_res.best_model }}</div>
+                        <div class="small opacity-90">Rekomendasi Pemakaian: <strong id="valBestPred">{{ "{:,.0f}".format(ma_res.next_recommendation) }}</strong></div>
+                        {% if ma_res.has_correction %}
+                        <div class="badge bg-warning text-dark mt-1" style="font-size: 0.72rem;">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Terkoreksi Stockout (Asli: {{ "{:,.0f}".format(ma_res.uncorrected_pred) }})
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHART FORECAST -->
+            <div class="content-card-header">
+                <h6 class="fw-bold mb-0"><i class="fa-solid fa-chart-area text-primary"></i> Grafik Aktual vs Prediksi Model Moving Average</h6>
+            </div>
+            <div style="height: 340px; position: relative;">
+                <canvas id="maForecastChart"></canvas>
+            </div>
+
+            <!-- PENJELASAN KHUSUS METODOLOGI -->
+            <div class="callout-info mt-4 mb-0 small">
+                <strong>Catatan Penting Metodologi & Koreksi Ilmiah:</strong>
+                <ul class="mb-0 mt-1 ps-3">
+                    <li><strong>Parasetamol 500 mg:</strong> Pada periode 2026-P4 pemakaian tercatat 0 tablet akibat kehabisan stok fisik (*Total Stockout*). Nilai konsumsi diimputasi berbasis konsumsi normal rata-rata sebesar <strong>5.850 tablet</strong>, sehingga proyeksi kebutuhan 2026-P5 menjadi <strong>6.147 tablet</strong> (bukan anjlok 3.222 tablet).</li>
+                    <li><strong>Fero Sulfat (Tablet Tambah Darah):</strong> Lonjakan 118.295 tablet pada 2024-P1 merupakan program aksi bergizi serentak siswi sekolah & Posyandu bumil, dipisahkan dari peramalan kuratif reguler rawat jalan.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. PANE MUSIMAN PENYAKIT -->
+    <div id="pane-musiman" class="tab-pane-prabotik" style="display: none;">
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5 class="content-card-title"><i class="fa-solid fa-cloud-sun-rain text-primary"></i> Analisis Indeks Musiman 12 Bulan (Penyakit Utama)</h5>
+                <span class="badge bg-light text-dark border">Data Historis 2023–2025</span>
+            </div>
+            <p class="small text-muted mb-3">
+                Indeks musiman diperoleh dari rasio rata-rata kasus bulanan terhadap rata-rata tahunan ($S_m = \bar{Y}_m / \bar{Y}$). Indeks &gt; 1,0 menunjukkan periode di atas rata-rata (musim puncak), sedangkan indeks &lt; 1,0 menunjukkan musim lembah.
+            </p>
+
+            <div style="height: 320px; position: relative;" class="mb-4">
+                <canvas id="seasonalChart"></canvas>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table-prabotik">
+                    <thead>
+                        <tr>
+                            <th>Kode</th>
+                            <th>Nama Penyakit</th>
+                            <th>Bulan</th>
+                            <th class="text-end">Rata-Rata Kasus</th>
+                            <th class="text-end">Indeks Musiman</th>
+                            <th>Interpretasi Dinamis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in seasonal_table %}
+                        <tr>
+                            <td><span class="badge bg-primary-subtle text-primary fw-bold">{{ s.kode_icd }}</span></td>
+                            <td class="fw-semibold">{{ s.nama_penyakit }}</td>
+                            <td>{{ s.nama_bulan }} (Bulan {{ s.bulan_no }})</td>
+                            <td class="text-end">{{ "{:,.1f}".format(s.rata_rata_kasus_2023_2025) }}</td>
+                            <td class="text-end fw-bold {% if s.indeks_musiman >= 1.2 %}text-danger{% elif s.indeks_musiman <= 0.8 %}text-info{% else %}text-secondary{% endif %}">
+                                {{ "{:.3f}".format(s.indeks_musiman) }}
+                            </td>
+                            <td>
+                                {% if 'Peak' in s.interpretasi %}
+                                    <span class="badge bg-danger text-white">{{ s.interpretasi }}</span>
+                                {% elif 'Lembah' in s.interpretasi %}
+                                    <span class="badge bg-info text-dark">{{ s.interpretasi }}</span>
+                                {% elif 'Di atas' in s.interpretasi %}
+                                    <span class="badge bg-warning-subtle text-warning-emphasis border">{{ s.interpretasi }}</span>
+                                {% else %}
+                                    <span class="badge bg-light text-muted border">{{ s.interpretasi }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. PANE KORELASI FARMAKOTERAPI -->
+    <div id="pane-korelasi" class="tab-pane-prabotik" style="display: none;">
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5 class="content-card-title"><i class="fa-solid fa-network-wired text-primary"></i> Korelasi Farmakoterapi Obat vs Morbiditas Penyakit</h5>
+                <span class="badge bg-light text-muted border">10 Pasangan Klinis</span>
+            </div>
+            <div class="callout-warning small mb-3">
+                <i class="fa-solid fa-circle-exclamation me-1"></i>
+                <strong>Batasan Metodologi Ilmiah:</strong> Korelasi ini mengukur <em>farmakoterapi preskripsi simultan</em> (resep obat yang dikeluarkan bersamaan dengan diagnosis penyakit pasien pada periode waktu yang sama), <strong>bukan hubungan sebab-akibat murni</strong> (*kausalitas*).
+            </div>
+
+            <div class="table-responsive">
+                <table class="table-prabotik">
+                    <thead>
+                        <tr>
+                            <th>Kode</th>
+                            <th>Diagnosis Penyakit</th>
+                            <th>Obat Terkait (LPLPO)</th>
+                            <th>Indikasi Klinis</th>
+                            <th class="text-end">Pearson (r)</th>
+                            <th class="text-end">Spearman (ρ)</th>
+                            <th class="text-end">Rasio Dosis/Kasus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in correlation_table %}
+                        <tr>
+                            <td><span class="badge bg-primary-subtle text-primary fw-bold">{{ c.kode_icd }}</span></td>
+                            <td class="fw-semibold">{{ c.nama_penyakit }}</td>
+                            <td>{{ c.nama_obat_standar }}</td>
+                            <td class="small text-muted">{{ c.indikasi_klinis }}</td>
+                            <td class="text-end fw-bold {% if c.pearson_r|float > 0.5 %}text-success{% elif c.pearson_r|float < 0 %}text-secondary{% endif %}">
+                                {{ c.pearson_fmt }}
+                            </td>
+                            <td class="text-end fw-bold {% if c.spearman_rho|float > 0.5 %}text-success{% elif c.spearman_rho|float < 0 %}text-secondary{% endif %}">
+                                {{ c.spearman_fmt }}
+                            </td>
+                            <td class="text-end fw-bold">{{ c.rasio_fmt }} <span class="small fw-normal text-muted">unit/pasien</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout-info mt-3 mb-0 small">
+                <strong>Temuan Farmakoterapi Klinis Utama:</strong>
+                <ul class="mb-0 mt-1 ps-3">
+                    <li><strong>ISPA (J00) ↔ Amoksisilin & Parasetamol:</strong> Korelasi kuat ($r = 0,635$ dan $r = 0,585$) menegaskan peran keduanya sebagai analgesik/antipiretik dan antibiotik lini pertama.</li>
+                    <li><strong>DM Tipe 2 (E11) ↔ Metformin:</strong> Korelasi Spearman sangat tinggi ($\rho = 0,775$). Rasio ~40,95 butir per pasien konsisten dengan regimen terapi pemeliharaan 60 hari bagi pasien Prolanis puskesmas.</li>
+                    <li><strong>Hipertensi (I10) ↔ Amlodipin:</strong> Menunjukkan korelasi numerik rendah karena tingginya variasi preskripsi antara dosis 5 mg, 10 mg, dan substitusi Kaptopril saat terjadi keterlambatan distribusi obat dinas.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. PANE BENCHMARKING MODEL ML VS BASELINE -->
+    <div id="pane-benchmark" class="tab-pane-prabotik" style="display: none;">
+        <div class="content-card">
+            <div class="content-card-header">
+                <h5 class="content-card-title"><i class="fa-solid fa-scale-balanced text-primary"></i> Evaluasi Benchmarking 10-Fold Walk-Forward Validation</h5>
+                <span class="badge bg-light text-muted border">Panel 148 Obat Aktif</span>
+            </div>
+            <p class="small text-muted mb-3">
+                Validasi ilmiah menggunakan skema <em>10-Fold Expanding Window Walk-Forward</em> (periode uji selalu di masa depan dari periode latih) membandingkan model Machine Learning mutakhir dengan metode Statistik Baseline.
+            </p>
+
+            <div class="table-responsive">
+                <table class="table-prabotik">
+                    <thead>
+                        <tr>
+                            <th>Model / Algoritma</th>
+                            <th>Kategori</th>
+                            <th class="text-end">WAPE (Rata-rata Galat)</th>
+                            <th class="text-end">Bias Persentase</th>
+                            <th class="text-end">Stabilitas (SD WAPE)</th>
+                            <th>Karakteristik & Intepretasi Praktis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b in benchmark_table %}
+                        <tr>
+                            <td class="fw-bold">{{ b['Model / Algoritma'] }}</td>
+                            <td><span class="badge bg-light text-dark border">{{ b['Kategori'] }}</span></td>
+                            <td class="text-end fw-bold">{{ b['WAPE (Rata-rata Galat)'] }}</td>
+                            <td class="text-end fw-bold {% if '-' in b['Bias Persentase'] %}text-danger{% else %}text-success{% endif %}">
+                                {{ b['Bias Persentase'] }}
+                            </td>
+                            <td class="text-end">{{ b['Stabilitas (SD WAPE)'] }}</td>
+                            <td class="small">{{ b['Interpretasi Praktis'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert alert-info border-start border-4 border-info shadow-sm mt-3 mb-0 py-3 px-4" role="alert">
+                <div class="fw-bold mb-1"><i class="fa-solid fa-lightbulb text-info"></i> Kesimpulan Ilmiah Pemilihan Moving Average:</div>
+                <div class="small text-secondary">
+                    Meskipun model Machine Learning (*HistGradientBoosting*) mencatatkan galat WAPE 53,6%, model ini memiliki <strong>bias negatif (-9,2%)</strong> yang konsisten meramal lebih rendah dari kebutuhan aktual. Dalam manajemen farmasi puskesmas, bias negatif sangat berbahaya karena secara sistematis memicu <strong>kehabisan obat (*stockout*)</strong> bagi pasien rawat jalan.<br>
+                    Sebaliknya, metode <strong>Weighted Moving Average (WMA, k=3)</strong> dengan bias positif (+4,3%) yang dipadukan dengan <strong>Safety Stock 95%</strong> terbukti menjadi kebijakan inventaris paling aman, transparan, dan andal bagi fasilitas kesehatan tingkat pertama.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let maChartInstance = null;
+
+function updateForecastView() {
+    const medName = document.getElementById('selectMedForecast').value;
+    const url = new URL(window.location.href);
+    url.searchParams.set('med', medName);
+    window.location.href = url.toString();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    // 1. Inisialisasi Chart Moving Average
+    const tsData = {{ ts_data | tojson }};
+    const maData = {{ ma_res | tojson }};
+
+    if (tsData && maData) {
+        const ctxMa = document.getElementById('maForecastChart').getContext('2d');
+        
+        // Extended labels for next period
+        const labels = [...tsData.periods, '2026-P5 (Prediksi)'];
+        const actVals = [...tsData.values, null];
+        const sma2Vals = [...maData.sma2.pred_hist, maData.sma2.next];
+        const sma3Vals = [...maData.sma3.pred_hist, maData.sma3.next];
+        const wma3Vals = [...maData.wma3.pred_hist, maData.wma3.next];
+
+        maChartInstance = new Chart(ctxMa, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Pemakaian Riil (Aktual)',
+                        data: actVals,
+                        borderColor: '#0f172a',
+                        backgroundColor: '#0f172a',
+                        borderWidth: 2.5,
+                        pointRadius: 4,
+                        tension: 0.2
+                    },
+                    {
+                        label: 'SMA (k=2)',
+                        data: sma2Vals,
+                        borderColor: '#0284c7',
+                        borderDash: [5, 5],
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        tension: 0.2
+                    },
+                    {
+                        label: 'SMA (k=3)',
+                        data: sma3Vals,
+                        borderColor: '#f59e0b',
+                        borderDash: [5, 5],
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        tension: 0.2
+                    },
+                    {
+                        label: 'WMA (k=3) — Pilihan Resmi',
+                        data: wma3Vals,
+                        borderColor: '#10b981',
+                        borderWidth: 2.5,
+                        pointRadius: 4,
+                        tension: 0.2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: { mode: 'index', intersect: false }
+                },
+                scales: {
+                    x: {
+                        grid: { color: '#f1f5f9' },
+                        ticks: { font: { size: 10 } }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9' },
+                        ticks: { font: { size: 10 } }
+                    }
+                }
+            }
+        });
+    }
+
+    // 2. Inisialisasi Chart Musiman 12 Bulan
+    const seasonalChartData = {{ seasonal_chart | tojson }};
+    if (seasonalChartData && seasonalChartData.labels.length > 0) {
+        const ctxSeasonal = document.getElementById('seasonalChart').getContext('2d');
+        new Chart(ctxSeasonal, {
+            type: 'line',
+            data: {
+                labels: seasonalChartData.labels,
+                datasets: [
+                    {
+                        label: 'ISPA (J00)',
+                        data: seasonalChartData.series['J00'],
+                        borderColor: '#0284c7',
+                        borderWidth: 2.5,
+                        pointRadius: 4,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Hipertensi (I10)',
+                        data: seasonalChartData.series['I10'],
+                        borderColor: '#10b981',
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Dispepsia (K30)',
+                        data: seasonalChartData.series['K30'],
+                        borderColor: '#f59e0b',
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Diabetes Melitus (E11)',
+                        data: seasonalChartData.series['E11'],
+                        borderColor: '#ef4444',
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: { mode: 'index', intersect: false }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 10 } }
+                    },
+                    y: {
+                        grid: { color: '#f1f5f9' },
+                        ticks: { font: { size: 10 } },
+                        title: { display: true, text: 'Indeks Musiman (Baseline = 1.0)' }
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
